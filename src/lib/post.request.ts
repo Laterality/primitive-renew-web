@@ -21,9 +21,17 @@ export class PostAPIRequest {
 	}
 
 	public static retrievePostList = (page: number, year: number, boardTitle: string) => {
+		console.log("");
 		return axios(
-			`${config.baseurl}/api/v1/post/page/${page}?year=${year}&board_title=${boardTitle}`, {
+			`${config.baseurl}/api/v1/post/page/${page}`, {
 				method: "GET",
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded",
+				},
+				params: {
+					year,
+					board_title: boardTitle,
+				},
 				withCredentials: true,
 			});
 	}

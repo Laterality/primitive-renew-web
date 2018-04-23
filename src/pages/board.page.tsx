@@ -24,19 +24,53 @@ export interface IBoardPageProps {
 	location: any;
 }
 
-export class BoardPage extends React.Component<IBoardPageProps> {
+export interface IBoardPageState {
+	title: string;
+	page: number;
+	posts: any[];
+}
 
-	private posts: any;
+export class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
+
+	public constructor(props: any) {
+		super(props);
+		this.state = {
+			page: 1,
+			title: "세미나",
+			posts: [],
+		};
+	}
 
 	public componentDidMount() {
 		onComponentReady();
 
-		this.checkLogin();
 		const queries = query.parse(location.search);
-		console.log("title: " + queries["title"]);
-		console.log("page: " + queries["page"]);
+		// console.log("title: " + queries["title"]);
+		// console.log("page: " + queries["page"]);
 
-		
+		// if (!this.props.page) { this.setState({page: 1}); }
+		// else { this.setState({page: this.props.page}); }
+		// if (!this.props.title) { this.setState({title: "세미나"}); }
+		// else { this.setState({title: this.props.title}); }
+		console.log("p: ", this.state.page, ", t: ", this.state.title);
+		reqPost.PostAPIRequest.retrievePostList(this.state.page, 
+			new Date().getFullYear(), this.state.title)
+		.then((res: axios.AxiosResponse) => {
+			if (res.status === 200) {
+				const body = res.data;
+				this.setState({posts: body["posts"]});
+			}
+			else {
+				alert("게시물 목록을 가져오는 데 실패했습니다.");
+				this.setState({posts: []});
+			}
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+
+		this.checkLogin();
+		this.forceUpdate();
 	}
 
 	public render() {
@@ -45,9 +79,14 @@ export class BoardPage extends React.Component<IBoardPageProps> {
 				<nav className="navbar"></nav>
 				<h1 className="board-title"></h1>
 				<ReactRouter.Link to="/" >Home</ReactRouter.Link>
-				<ReactRouter.Link to="/write"><button className="btn">글쓰기</button>
+				<ReactRouter.Link to="/write">
+				<button className="btn">글쓰기</button>
 				</ReactRouter.Link>
 				<button className="btn" onClick={this.onLogout}>logout</button>
+				<ul className="list-group">
+					{ this.state.posts.map((obj: any, i: number) => 
+					<li className="list-group-item">{obj["post_title"]}</li>) }
+				</ul>
 			</div>
 		);
 	}
