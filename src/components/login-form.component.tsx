@@ -14,15 +14,11 @@ import * as axios from "axios";
 
 import * as reqUser from "../lib/user.request";
 
-export class LoginForm extends React.Component {
+export interface ILoginFormProps {
+	history: any;
+}
 
-	public static contextTypes = {
-		router: PropTypes.object.isRequired,
-	};
-
-	public constructor(props: never) {
-		super(props);
-	}
+export class LoginForm extends React.Component<ILoginFormProps> {
 
 	public componentDidMount() {
 		const usernameLabel = ReactDOM.findDOMNode(this.refs["usernameLabel"]);
@@ -40,7 +36,7 @@ export class LoginForm extends React.Component {
 
 			if (body["state"]["signed"] === true) {
 				alert("이미 로그인되어있습니다.");
-				this.context["router"]["history"]["push"]("/board");
+				this.props.history["push"]("/board");
 			}
 		});
 	}
@@ -49,14 +45,14 @@ export class LoginForm extends React.Component {
 		return (
 			<div className="container">
 			<div className="row">
-				<form className="col">
+				<form className="col" >
 					<div className="form-group">
 						<label ref="usernameLabel">ID</label>
-						<input id="username" type="text" className="form-control" placeholder="학번" aria-label="Username"/>
+						<input id="username" type="text" className="form-control" placeholder="학번" aria-label="Username" onKeyUp={this.onKeyUp}/>
 					</div>
 					<div className="form-group">
 						<label ref="passwordLabel">PW</label>
-						<input id="password" type="password" className="form-control" placeholder="Password" aria-label="Password"/>
+						<input id="password" type="password" className="form-control" placeholder="Password" aria-label="Password" onKeyUp={this.onKeyUp}/>
 					</div>
 				</form>
 				<button type="submit" className="btn text-white bg-primary col-2 my-5 mx-3 px-2" onClick={this.onLoginClicked}>LOGIN</button>
@@ -65,21 +61,21 @@ export class LoginForm extends React.Component {
 		);
 	}
 
+	public onKeyUp = (e: any) => {
+		if (e.keyCode === 13) {
+			this.onLoginClicked();
+		}
+	}
+
 	public onLoginClicked = () => {
 		const id = jquery("#username").val();
 		const pw = jquery("#password").val();
-		console.log("ID: " + id);
-		console.log("PW: " + pw);
 		reqUser.UserAPIRequest.loginUser(id as string, pw as string)
 		.then(async (res: axios.AxiosResponse) => {
-		// .then(async (res: Response) => {
 			const body = res.data;
-			// const body = await res.json();
-			console.log(body);
 			if (body["result"] === "ok") {
 				// 로그인 성공
-				this.context["router"]["history"]["push"]("/board");
-				
+				this.props.history["push"]("/board");
 			}
 			else {
 				if (res.status === 403) {

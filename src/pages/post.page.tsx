@@ -6,7 +6,13 @@
  */
 import * as React from "react";
 
+import { onComponentReady } from "../lib/component-ready";
+
 export class PostPage extends React.Component {
+
+	public componentDidMount() {
+		onComponentReady();
+	}
 
 	public render() {
 		return (

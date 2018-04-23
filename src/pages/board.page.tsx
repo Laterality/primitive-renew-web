@@ -11,26 +11,35 @@ import * as ReactRouter from "react-router-dom";
 
 import * as axios from "axios";
 
+import * as propTypes from "prop-types";
+import * as reqPost from "../lib/post.request";
 import * as reqUser from "../lib/user.request";
+
+import { onComponentReady } from "../lib/component-ready";
 
 export interface IBoardPageProps {
 	title: string;
 	page: number;
-	location: Location;
-	match: any;
+	history: any;
+	location: any;
 }
 
-export class BoardPage extends React.Component<IBoardPageProps, {location: any, match: any}> {
+export class BoardPage extends React.Component<IBoardPageProps> {
 
-	public static contextTypes = {
-		router: PropTypes.object.isRequired,
-	};
+	private posts: any;
 
-	public render() {
+	public componentDidMount() {
+		onComponentReady();
+
 		this.checkLogin();
 		const queries = query.parse(location.search);
 		console.log("title: " + queries["title"]);
 		console.log("page: " + queries["page"]);
+
+		
+	}
+
+	public render() {
 		return (
 			<div>
 				<nav className="navbar"></nav>
@@ -50,7 +59,7 @@ export class BoardPage extends React.Component<IBoardPageProps, {location: any, 
 			if (!body["state"]["signed"]) {
 				console.log(body);
 				alert("로그인이 필요합니다.");
-				this.context["router"]["history"]["push"]("/");
+				this.props.history["push"]("/");
 			}
 		});
 	}
@@ -61,7 +70,7 @@ export class BoardPage extends React.Component<IBoardPageProps, {location: any, 
 			const body = res.data;
 			if (body["result"] === "ok") {
 				alert("로그아웃되었습니다.");
-				this.context["router"]["history"]["push"]("/");
+				this.props.history["push"]("/");
 			}
 		});
 	}

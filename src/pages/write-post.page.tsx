@@ -13,15 +13,17 @@ import * as ReactDOM from "react-dom";
 import * as reqPost from "../lib/post.request";
 import * as reqUser from "../lib/user.request";
 
+import { onComponentReady } from "../lib/component-ready";
 import { PostObject } from "../lib/post.obj";
 
-export class WritePostPage extends React.Component {
+export interface IWritePostProp {
+	history: any;
+}
 
-	public static contextType = {
-		router: propTypes.object.isRequired,
-	};
+export class WritePostPage extends React.Component<IWritePostProp> {
 
 	public componentDidMount() {
+		onComponentReady();
 		const titleLabel = ReactDOM.findDOMNode(this.refs["titleLabel"]);
 		const contentLabel = ReactDOM.findDOMNode(this.refs["contentLabel"]);
 		const contentForm = ReactDOM.findDOMNode(this.refs["contentForm"]);
@@ -41,7 +43,7 @@ export class WritePostPage extends React.Component {
 			const body = res.data;
 			if (!body["state"]["signed"]) {
 				alert("로그인이 필요합니다.");
-				this.context["router"]["history"]["push"]("/");
+				this.props.history["push"]("/");
 			}
 		});
 	}
@@ -58,7 +60,7 @@ export class WritePostPage extends React.Component {
 					<label ref="contentLabel">내용</label>
 					<textarea id="content" className="form-control" ref="contentForm"/>
 				</div>
-				<button className="btn bg-primary text-white text-center float-right" onClick={this.onWriteClicked}><img src="/img/ic_create_white_48px.svg" className="icon" />완료</button>
+				<button className="btn bg-primary text-white text-center float-right" onClick={this.onWriteClicked}><img src="/img/ic_create_white_48px.svg" className="icon mr-2" />완료</button>
 			</div>
 		);
 	}
@@ -74,6 +76,7 @@ export class WritePostPage extends React.Component {
 			const body = res.data;
 			if (body["result"] === "ok") {
 				alert("등록되었습니다.");
+				this.props.history["push"]("/board");
 			}
 			else {
 				alert("등록에 실패하였습니다.");
