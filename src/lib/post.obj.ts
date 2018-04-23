@@ -12,8 +12,8 @@ import { UserObject } from "./user.obj";
 
 	public constructor(
 		private title: string,
-		private content: string,
 		private board: string,
+		private content?: string,
 		private filesAttached?: FileObject[],
 		private dateCreated?: Date,
 		private author?: UserObject,
