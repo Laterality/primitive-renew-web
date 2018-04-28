@@ -8,6 +8,12 @@ import { FileObject } from "./file.obj";
 import { ReplyObject } from "./reply.obj";
 import { UserObject } from "./user.obj";
 
+export enum BoardTitle {
+	seminar = "세미나",
+	works = "과제",
+	jrBoard = "신입생 자료실",
+}
+
  export class PostObject {
 
 	public constructor(
