@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as Router from "react-router-dom";
 
-import { BoardPage } from "./pages/board.page";
-import { HomePage } from "./pages/home.page";
-import { WritePostPage } from "./pages/write-post.page";
+import { BoardPage } from "./page/board.page";
+import { HomePage } from "./page/home.page";
+import { WritePostPage } from "./page/write-post.page";
 
 import { Routes } from "./routes";
 

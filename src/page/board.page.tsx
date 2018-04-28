@@ -17,7 +17,7 @@ import * as reqUser from "../lib/user.request";
 
 import { onComponentReady } from "../lib/component-ready";
 
-import { PostList } from "../components/post-list.component";
+import { PostList } from "../component/post-list.component";
 
 export interface IBoardPageProps {
 	title: string;
