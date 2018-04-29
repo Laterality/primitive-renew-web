@@ -9,43 +9,47 @@ import * as jquery from "jquery";
 import * as propTypes from "prop-types";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 
 import * as reqPost from "../lib/post.request";
 import * as reqUser from "../lib/user.request";
 
 import { onComponentReady } from "../lib/component-ready";
-import { PostObject } from "../lib/post.obj";
+import { ISessionVerifiable } from "../lib/session-verfying.interface";
 
-export interface IWritePostProp {
+import { PostObject } from "../lib/post.obj";
+import { UserObject } from "../lib/user.obj";
+
+import { UserActionCreator } from "../action/user.action";
+
+import { Button } from "../component/button.component";
+import { ObjectFactory } from "../lib/object-factory";
+import { IStore } from "../store";
+
+export interface IWritePostProp extends ISessionVerifiable {
 	history: any;
+	user: UserObject;
 }
 
-export class WritePostPage extends React.Component<IWritePostProp> {
+class WritePostPage extends React.Component<IWritePostProp> {
 
 	public componentDidMount() {
 		onComponentReady();
-		const titleLabel = ReactDOM.findDOMNode(this.refs["titleLabel"]);
-		const contentLabel = ReactDOM.findDOMNode(this.refs["contentLabel"]);
-		const contentForm = ReactDOM.findDOMNode(this.refs["contentForm"]);
 
-		if (titleLabel) {
-			jquery(titleLabel).attr("for", "title");
+		if (!this.props.user) {
+			reqUser.UserAPIRequest.checkSignedIn()
+			.then((res: axios.AxiosResponse) => {
+				const body = res.data;
+				if (!body["state"]["signed"]) {
+					alert("로그인이 필요합니다.");
+					this.props.history["push"]("/");
+				}
+				else {
+					this.props.onSessionVerified(ObjectFactory.createUserObject(body["state"]["user"]));
+				}
+			});
 		}
-		if (contentLabel) {
-			jquery(contentLabel).attr("for", "content");
-		}
-		if (contentForm) {
-			jquery(contentForm).attr("rows", "20");
-		}
-
-		reqUser.UserAPIRequest.checkSignedIn()
-		.then((res: axios.AxiosResponse) => {
-			const body = res.data;
-			if (!body["state"]["signed"]) {
-				alert("로그인이 필요합니다.");
-				this.props.history["push"]("/");
-			}
-		});
 	}
 
 	public render() {
@@ -53,14 +57,18 @@ export class WritePostPage extends React.Component<IWritePostProp> {
 			<div>
 				Write some post
 				<div className="form-group">
-					<label ref="titleLabel">제목</label>
+					<label htmlFor="title">제목</label>
 					<input type="text" id="title" className="form-control" placeholder="제목을 입력하세요." />
 				</div>
 				<div className="form-group">
-					<label ref="contentLabel">내용</label>
-					<textarea id="content" className="form-control" ref="contentForm"/>
+					<label htmlFor="content">내용</label>
+					<textarea id="content" className="form-control" ref="contentForm" rows={20} />
 				</div>
-				<button className="btn bg-primary text-white text-center float-right" onClick={this.onWriteClicked}><img src="/img/ic_create_white_48px.svg" className="icon mr-2" />완료</button>
+				<span className="float-right" onClick={() => this.onWriteClicked()}>
+					<Button 
+					text="완료"
+					iconSrc="/img/ic_create_white_48px.svg"/>
+				</span>
 			</div>
 		);
 	}
@@ -84,3 +92,19 @@ export class WritePostPage extends React.Component<IWritePostProp> {
 		});
 	}
 }
+
+const mapStateToProps = (state: IStore) => {
+	return {
+		user: state.user,
+	};
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+	return {
+		onSessionVerified: (user: UserObject) => {
+			dispatch(UserActionCreator.setUser(user));
+		},
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(WritePostPage);
