@@ -13,7 +13,7 @@ export enum UserActionType {
 }
 
 export interface ISetUserAction extends AnyAction {
-	user: UserObject;
+	user: UserObject | undefined;
 }
 
 export class UserActionCreator {
