@@ -4,42 +4,23 @@
  * author: Jinwoo Shin
  * date: 2018-04-20
  */
+import * as axios from "axios";
 import * as jquery from "jquery";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as ReactRouter from "react-router-dom";
 
-import * as axios from "axios";
-
 import * as reqUser from "../lib/user.request";
+
+import { UserObject } from "../lib/user.obj";
 
 export interface ILoginFormProps {
 	history: any;
+	onLoginButtonClick: (id: string, pw: string) => void;
 }
 
 export class LoginForm extends React.Component<ILoginFormProps> {
-
-	public componentDidMount() {
-		const usernameLabel = ReactDOM.findDOMNode(this.refs["usernameLabel"]);
-		const passwordLabel = ReactDOM.findDOMNode(this.refs["passwordLabel"]);
-		if (usernameLabel) {
-			jquery(usernameLabel).attr("for", "username");
-		}
-		if (passwordLabel) {
-			jquery(passwordLabel).attr("for", "password");
-		}
-		// 세션 검사해서 로그인여부 확인
-		reqUser.UserAPIRequest.checkSignedIn()
-		.then(async (res: axios.AxiosResponse) => {
-			const body = res.data;
-
-			if (body["state"]["signed"] === true) {
-				alert("이미 로그인되어있습니다.");
-				this.props.history["push"]("/board");
-			}
-		});
-	}
 
 	public render() {
 		return (
@@ -47,11 +28,11 @@ export class LoginForm extends React.Component<ILoginFormProps> {
 			<div className="row">
 				<form className="col" >
 					<div className="form-group">
-						<label ref="usernameLabel">ID</label>
+						<label htmlFor="username">ID</label>
 						<input id="username" type="text" className="form-control" placeholder="학번" aria-label="Username" onKeyUp={this.onKeyUp}/>
 					</div>
 					<div className="form-group">
-						<label ref="passwordLabel">PW</label>
+						<label htmlFor="password">PW</label>
 						<input id="password" type="password" className="form-control" placeholder="Password" aria-label="Password" onKeyUp={this.onKeyUp}/>
 					</div>
 				</form>
@@ -70,21 +51,7 @@ export class LoginForm extends React.Component<ILoginFormProps> {
 	public onLoginClicked = () => {
 		const id = jquery("#username").val();
 		const pw = jquery("#password").val();
-		reqUser.UserAPIRequest.loginUser(id as string, pw as string)
-		.then(async (res: axios.AxiosResponse) => {
-			const body = res.data;
-			if (body["result"] === "ok") {
-				// 로그인 성공
-				this.props.history["push"]("/board");
-			}
-			else {
-				if (res.status === 403) {
-					alert("로그인 정보 불일치");
-				}
-				else if (res.status === 500) {
-					alert("서버 이상, 관리자에게 문의 바랍니다.");
-				}
-			}
-		});
+		
+		this.props.onLoginButtonClick(id as string, pw as string);
 	}
 }
