@@ -10,10 +10,8 @@ import { IStore } from "../store";
 
 import { BoardTitle } from "../lib/post.obj";
 
-import { postReducer } from "./post";
 import { userReducer } from "./user";
 
-import { PostActionType } from "../action/post.action";
 import { UserActionType } from "../action/user.action";
 
 const initialState: IStore = {
