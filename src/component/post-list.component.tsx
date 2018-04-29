@@ -7,54 +7,20 @@ import * as reqPost from "../lib/post.request";
 
 import { PostObject } from "../lib/post.obj";
 
+import { PostListItem } from "./post-list-item.component";
+
 export interface IPostListProps {
-	title: string;
-	page: number;
-}
-
-export interface IPostListState {
 	posts: PostObject[];
+	onItemClick: (id: string | number) => void;
 }
 
-export class PostList extends React.Component<IPostListProps, IPostListState> {
-
-	public constructor(props: any) {
-		super(props);
-
-		this.state = {
-			posts: [],
-		};
-	}
-
-	public componentDidMount() {
-
-		reqPost.PostAPIRequest.retrievePostList(this.props.page, 
-			new Date().getFullYear(), this.props.title)
-		.then((res: axios.AxiosResponse) => {
-			if (res.status === 200) {
-				const body = res.data;
-				const posts: PostObject[] = [];
-
-				for (const p of body["posts"]) {
-					posts.push(ObjectFactory.createPostObject(p));
-				}
-				this.setState({posts});
-			}
-			else {
-				alert("게시물 목록을 가져오는 데 실패했습니다.");
-				this.setState({posts: []});
-			}
-		})
-		.catch((err) => {
-			console.log(err);
-		});
-	}
+export class PostList extends React.Component<IPostListProps> {
 
 	public render() {
 		return (
 			<ul className="list-group">
-				{ this.state.posts.map((obj: PostObject, i: number) => 
-					<li className="list-group-item">{obj.getTitle()}</li>) }
+				{ this.props.posts.map((obj: PostObject, i: number) => 
+					<PostListItem key={obj.getId()} post={obj} onClick={this.props.onItemClick}>{obj.getTitle()}</PostListItem>) }
 			</ul>
 		);
 	}
