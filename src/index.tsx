@@ -10,13 +10,8 @@ import { Provider } from "react-redux";
 import * as Router from "react-router-dom";
 
 import { App } from "./App";
-import { store } from "./store/index";
 
 ReactDOM.render(
-	<Provider store={store}>
-		<Router.BrowserRouter>
-			<App/>
-		</Router.BrowserRouter>
-	</Provider>,
+	<App />,
 	document.getElementById("root"),
 );
