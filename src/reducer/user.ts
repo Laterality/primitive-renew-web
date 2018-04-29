@@ -8,14 +8,14 @@ import { AnyAction } from "redux";
 
 import { IStore } from "../store/index";
 
-import { IAddUserAction, UserActionType } from "../action/user.action";
+import { ISetUserAction, UserActionType } from "../action/user.action";
 
-export const userReducer = (state: IStore, action: AnyAction | IAddUserAction): IStore => {
+export const userReducer = (state: IStore, action: AnyAction | ISetUserAction): IStore => {
 	const newState = Object.assign({}, state);
 
 	switch (action.type) {
 		case UserActionType.SET_USER: 
-			newState.user = (action as IAddUserAction).user;
+			newState.user = (action as ISetUserAction).user;
 			return newState;
 		case UserActionType.INVALIDATE_USER:
 			newState.user = undefined;
