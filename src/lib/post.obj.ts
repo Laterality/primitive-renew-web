@@ -19,12 +19,12 @@ export enum BoardTitle {
 	public constructor(
 		private title: string,
 		private board: string,
+		private id: string | number,
 		private content?: string,
 		private filesAttached?: FileObject[],
 		private dateCreated?: Date,
 		private author?: UserObject,
 		private replies?: ReplyObject[],
-		private id?: string | number,
 	) {}
 
 	public getTitle() { return this.title; }
