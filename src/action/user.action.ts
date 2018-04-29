@@ -18,14 +18,14 @@ export interface ISetUserAction extends AnyAction {
 
 export class UserActionCreator {
 
-	public setUser(user: UserObject): ISetUserAction {
+	public static setUser(user: UserObject | undefined): ISetUserAction {
 		return {
 			type: UserActionType.SET_USER,
 			user,
 		};
 	}
 
-	public invalidateUser() {
+	public static invalidateUser() {
 		return {
 			type: UserActionType.INVALIDATE_USER,
 		};
