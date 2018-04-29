@@ -50,8 +50,9 @@ export class ObjectFactory {
 		}
 		const post = new PostObject(
 			obj["post_title"],
-			obj["post_content"],
 			obj["board"],
+			obj["id"],
+			obj["post_content"],
 			files,
 			obj["date_created"],
 			this.createUserObject(obj["author"]),
