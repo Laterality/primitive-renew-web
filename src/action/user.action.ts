@@ -8,17 +8,17 @@ import { AnyAction } from "redux";
 import { UserObject } from "../lib/user.obj";
 
 export enum UserActionType {
-	SET_USER = "ADD_USER",
+	SET_USER = "SET_USER",
 	INVALIDATE_USER = "INVALIDATE_USER",
 }
 
-export interface IAddUserAction extends AnyAction {
+export interface ISetUserAction extends AnyAction {
 	user: UserObject;
 }
 
 export class UserActionCreator {
 
-	public setUser(user: UserObject): IAddUserAction {
+	public setUser(user: UserObject): ISetUserAction {
 		return {
 			type: UserActionType.SET_USER,
 			user,
