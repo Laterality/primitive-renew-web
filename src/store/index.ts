@@ -5,6 +5,7 @@
  * date: 2018-04-28
  */
 import * as redux from "redux";
+import * as reduxThunk from "redux-thunk";
 
 import { BoardTitle, PostObject } from "../lib/post.obj";
 import { UserObject } from "../lib/user.obj";
@@ -15,4 +16,6 @@ export interface IStore {
 	posts: {[k in BoardTitle]: PostObject[]};
 }
 
-export const store = redux.createStore(reduce);
+export const store = redux.createStore(reduce,
+	redux.applyMiddleware(reduxThunk.default),
+);
