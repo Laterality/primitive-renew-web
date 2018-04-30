@@ -6,6 +6,7 @@ import { Dispatch } from "redux";
 
 import { default as BoardPage } from "./page/board.page";
 import { default as HomePage } from "./page/home.page";
+import { default as PostPage } from "./page/post.page";
 import { default as WritePostPage } from "./page/write-post.page";
 
 import { Routes } from "./routes";
@@ -40,6 +41,7 @@ export class App extends React.Component {
 						<Router.Route exact path={Routes.routeRoot} component={HomePage} />
 						<Router.Route path={Routes.routeBoard} component={BoardPage} />
 						<Router.Route path={Routes.routeWrite} component={WritePostPage} />
+						<Router.Route path={Routes.routePost} component={PostPage} />
 					</div>
 				</Router.BrowserRouter>
 			</Provider>
