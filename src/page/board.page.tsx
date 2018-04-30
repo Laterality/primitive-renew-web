@@ -24,7 +24,9 @@ import { ISessionVerifiable } from "../lib/session-verfying.interface";
 
 import { Button } from "../component/button.component";
 import { PostList } from "../component/post-list.component";
+import { ISideMenuItem, SideMenu } from "../component/side-menu.component";
 
+import { NavigationActionCreator } from "../action/navigation.action";
 import { UserActionCreator } from "../action/user.action";
 
 import { IStore } from "../store";
@@ -33,12 +35,14 @@ export interface IBoardPageProps extends ISessionVerifiable {
 	history: any;
 	location: any;
 	user: UserObject | undefined;
+	onBoardLoaded: (title: BoardTitle, page: number) => void;
 }
 
 export interface IBoardPageState {
-	title: string;
+	title: BoardTitle;
 	page: number;
 	posts: PostObject[];
+	menuItems: ISideMenuItem[];
 }
 
 class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
@@ -49,7 +53,15 @@ class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 			title: BoardTitle.seminar,
 			page: 1,
 			posts: [],
+			menuItems: [],
 		};
+
+		for (const t in BoardTitle) {
+			this.state.menuItems.push({
+				name: BoardTitle[t],
+				linkTo: `/board?title=${BoardTitle[t]}&page=1`,
+			});
+		}
 	}
 
 	public componentDidMount() {
@@ -74,31 +86,14 @@ class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 			});
 		}
 
-		reqPost.PostAPIRequest.retrievePostList(this.state.page, 
-			new Date().getFullYear(), this.state.title)
-		.then((res: axios.AxiosResponse) => {
-			if (res.status === 200) {
-				const body = res.data;
-				const posts: PostObject[] = [];
-
-				for (const p of body["posts"]["posts"]) {
-					posts.push(ObjectFactory.createPostObject(p));
-				}
-				this.setState({posts});
-			}
-			else {
-				alert("게시물 목록을 가져오는 데 실패했습니다.");
-			}
-		})
-		.catch((err) => {
-			console.log(err);
-		});
+		this.update(this.state.title, this.state.page);
 	}
 
 	public render() {
 		return (
 			<div>
 				<nav className="navbar"></nav>
+				<SideMenu items={this.state.menuItems} onItemClick={(item: ISideMenuItem) => {this.update(item.name, 1); }} />
 				<h1 className="board-title">{this.state.title}</h1>
 				<PostList posts={this.state.posts} onItemClick={this.onPostClick}/>
 				<ReactRouter.Link to="/" >Home</ReactRouter.Link>
@@ -124,6 +119,39 @@ class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 	private onPostClick = (id: string | number) => {
 		console.log("clicked post: ", id);
 	}
+
+	private update = (title: string, page: number) => {
+		let matchedTitle: string | undefined;
+		for (const t in BoardTitle) {
+			if (title === BoardTitle[t]) { matchedTitle = BoardTitle[t]; break; }
+		}
+
+		if (!matchedTitle) { title = BoardTitle.seminar; }
+		
+		this.setState({title: title as BoardTitle, page}, () => {
+			reqPost.PostAPIRequest.retrievePostList(this.state.page, 
+				new Date().getFullYear(), this.state.title)
+			.then((res: axios.AxiosResponse) => {
+				if (res.status === 200) {
+					const body = res.data;
+					const posts: PostObject[] = [];
+	
+					for (const p of body["posts"]["posts"]) {
+						posts.push(ObjectFactory.createPostObject(p));
+					}
+					this.setState({posts});
+					this.props.onBoardLoaded(this.state.title, this.state.page);
+					// this.forceUpdate();
+				}
+				else {
+					alert("게시물 목록을 가져오는 데 실패했습니다.");
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+		});
+	}
 }
 
 const mapStateToProps = (state: IStore) => {
@@ -136,6 +164,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 	return {
 		onSessionVerified: (user: UserObject) => {
 			dispatch(UserActionCreator.setUser(user));
+		},
+		onBoardLoaded: (title: BoardTitle, page: number) => {
+			dispatch(NavigationActionCreator.setBoardTitle(title));
+			dispatch(NavigationActionCreator.setPageNum(page));
 		},
 	};
 };
