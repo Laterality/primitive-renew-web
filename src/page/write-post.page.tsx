@@ -18,7 +18,7 @@ import * as reqUser from "../lib/user.request";
 import { onComponentReady } from "../lib/component-ready";
 import { ISessionVerifiable } from "../lib/session-verfying.interface";
 
-import { PostObject } from "../lib/post.obj";
+import { BoardTitle, PostObject } from "../lib/post.obj";
 import { UserObject } from "../lib/user.obj";
 
 import { UserActionCreator } from "../action/user.action";
@@ -30,6 +30,7 @@ import { IStore } from "../store";
 export interface IWritePostProp extends ISessionVerifiable {
 	history: any;
 	user: UserObject;
+	boardFrom: BoardTitle;
 }
 
 class WritePostPage extends React.Component<IWritePostProp> {
@@ -76,7 +77,7 @@ class WritePostPage extends React.Component<IWritePostProp> {
 	private onWriteClicked = () => {
 		const title = jquery("#title").val();
 		const content = jquery("#content").val();
-		const boardTitle = "세미나";
+		const boardTitle = this.props.boardFrom;
 		const files: string[] = [];
 		reqPost.PostAPIRequest.createPost(title as string, content as string,
 			boardTitle, files)
@@ -96,6 +97,7 @@ class WritePostPage extends React.Component<IWritePostProp> {
 const mapStateToProps = (state: IStore) => {
 	return {
 		user: state.user,
+		boardFrom: state.current.boardTitle,
 	};
 };
 
