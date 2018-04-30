@@ -1,3 +1,9 @@
+/**
+ * Post list item component
+ * 
+ * author: Jinwoo Shin
+ * date: 2018-04-29
+ */
 import * as React from "react";
 
 import { PostObject } from "../lib/post.obj";
