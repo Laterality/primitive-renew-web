@@ -21,7 +21,6 @@ export class PostAPIRequest {
 	}
 
 	public static retrievePostList = (page: number, year: number, boardTitle: string) => {
-		console.log("");
 		return axios(
 			`${config.baseurl}/api/v1/post/page/${page}`, {
 				method: "GET",
