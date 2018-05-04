@@ -23,6 +23,7 @@ import { onComponentReady } from "../lib/component-ready";
 import { ISessionVerifiable } from "../lib/session-verfying.interface";
 
 import { Button } from "../component/button.component";
+import { BoardPaginator } from "../component/paginator.component";
 import { PostList } from "../component/post-list.component";
 import { ISideMenuItem, SideMenu } from "../component/side-menu.component";
 
@@ -41,17 +42,21 @@ export interface IBoardPageProps extends ISessionVerifiable {
 export interface IBoardPageState {
 	title: BoardTitle;
 	page: number;
+	pageMax: number;
 	posts: PostObject[];
 	menuItems: ISideMenuItem[];
 }
 
 class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 
+	private readonly POSTS_PER_PAGE = 5;
+
 	public constructor(props: IBoardPageProps) {
 		super(props);
 		this.state = {
 			title: BoardTitle.seminar,
 			page: 1,
+			pageMax: 1,
 			posts: [],
 			menuItems: [],
 		};
@@ -101,6 +106,17 @@ class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 				<Button text="글쓰기" iconSrc="/img/ic_create_white_48px.svg"/>
 				</ReactRouter.Link>
 				<button className="btn" onClick={this.onLogout}>logout</button>
+				<BoardPaginator 
+					pageMin={ 1 }
+					pageMax={this.state.pageMax}
+					pageCurrent={this.state.page}
+					pagePlusMinus={ 3 }
+					onPageClick={(page: number) => {this.update(this.state.title, page); }}
+					onNextClick={(currnet: number, max: number) => { 
+						this.update(this.state.title, max + 1); }}
+					onPreviousClick={(current: number, min: number) => {
+						this.update(this.state.title, min - 1);
+					}}/>
 			</div>
 		);
 	}
@@ -139,7 +155,12 @@ class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 					for (const p of body["posts"]["posts"]) {
 						posts.push(ObjectFactory.createPostObject(p));
 					}
-					this.setState({posts});
+					const totalPosts = body["posts"]["total"];
+					let pages = totalPosts / this.POSTS_PER_PAGE;
+					if (totalPosts % this.POSTS_PER_PAGE !== 0) {
+						pages++;
+					}
+					this.setState({posts, pageMax: pages});
 					this.props.onBoardLoaded(this.state.title, this.state.page);
 					// this.forceUpdate();
 				}
