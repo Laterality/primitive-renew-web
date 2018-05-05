@@ -29,18 +29,19 @@ export class BoardPaginator extends React.Component<IBoardPaginatorProps> {
 		this.arr = [];
 	}
 
-	public componentWillMount() {
+	public render() {
 		this.min = this.props.pageCurrent - this.props.pagePlusMinus;
 		this.max = this.props.pageCurrent + this.props.pagePlusMinus;
 
 		if (this.min < this.props.pageMin) { this.min = this.props.pageMin; }
 		if (this.max > this.props.pageMax) { this.max = this.props.pageMax; }
+		this.arr = [];
 		for (let i = this.min; i <= this.max; i++) {
 			this.arr.push(i);
 		}
-	}
 
-	public render() {
+		console.log("pmin: " + this.props.pageMin + ", pmax: " + this.props.pageMax);
+		console.log("min: " + this.min + ", max: " + this.max);
 		const toPrev = this.min > this.props.pageMin ? 
 		(<a onClick={() => { this.props.onPreviousClick(this.props.pageCurrent, this.min); }}>≪ 이전 페이지</a>) : undefined;
 		const toNext = this.max < this.props.pageMax ?
@@ -50,7 +51,13 @@ export class BoardPaginator extends React.Component<IBoardPaginatorProps> {
 			<div>
 				{toPrev}
 				{this.arr.map((num: number, idx: number) => {
+					if (this.props.pageCurrent === num) {
+						return <a
+						key={idx}
+						className="mx-3 "><strong>{num}</strong></a>;
+					}
 					return <a 
+					key={idx}
 					className="mx-3"
 					onClick={() => this.props.onPageClick(num)}>
 						{num}
