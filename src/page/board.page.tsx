@@ -53,9 +53,14 @@ class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 
 	public constructor(props: IBoardPageProps) {
 		super(props);
+
+		const queries = query.parse(location.search);
+		const title = queries["title"] ? queries["title"] : BoardTitle.seminar;
+		const page: string = queries["page"] ? queries["page"] : "1";
+
 		this.state = {
-			title: BoardTitle.seminar,
-			page: 1,
+			title,
+			page: parseInt(page, 10),
 			pageMax: 1,
 			posts: [],
 			menuItems: [],
@@ -67,15 +72,12 @@ class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 				linkTo: `/board?title=${BoardTitle[t]}&page=1`,
 			});
 		}
+
+		console.log(this.state);
 	}
 
-	public componentDidMount() {
+	public componentWillMount() {
 		onComponentReady();
-
-		const queries = query.parse(location.search);
-		this.setState({
-			title: queries["title"] || BoardTitle.seminar,
-			page: queries["page"] || 1});
 
 		if (!this.props.user) {
 			reqUser.UserAPIRequest.checkSignedIn()
