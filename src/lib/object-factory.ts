@@ -43,9 +43,15 @@ export class ObjectFactory {
 
 	public static createPostObject(obj: any): PostObject {
 		const files: FileObject[] = [];
+		const replies: ReplyObject[] = [];
 		if (Array.isArray(obj["files_Attached"])) {
 			for (const f of obj["files_attached"]) {
 				files.push(this.createFileObject(f));
+			}
+		}
+		if (Array.isArray(obj["replies"])) {
+			for (const r of obj["replies"]) {
+				replies.push(this.createReplyObject(r));
 			}
 		}
 		const post = new PostObject(
@@ -56,6 +62,7 @@ export class ObjectFactory {
 			files,
 			obj["date_created"],
 			this.createUserObject(obj["author"]),
+			replies,
 		);
 
 		return post;

@@ -2,7 +2,7 @@
  * Reply input box component
  * 
  * author: Jinwoo Shin
- * date: 2018-05-16
+ * date: 2018-05-14
  */
 import * as jquery from "jquery";
 import * as React from "react";

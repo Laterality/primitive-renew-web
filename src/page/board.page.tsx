@@ -72,11 +72,9 @@ class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 				linkTo: `/board?title=${BoardTitle[t]}&page=1`,
 			});
 		}
-
-		console.log(this.state);
 	}
 
-	public componentWillMount() {
+	public componentDidMount() {
 		onComponentReady();
 
 		if (!this.props.user) {
@@ -135,7 +133,7 @@ class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 	}
 
 	private onPostClick = (id: string | number) => {
-		console.log("clicked post: ", id);
+		// 
 	}
 
 	private update = (title: string, page: number) => {
