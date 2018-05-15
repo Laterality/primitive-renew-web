@@ -47,11 +47,8 @@ export class BoardPaginator extends React.Component<IBoardPaginatorProps> {
 			this.arr.push(i);
 		}
 
-		console.log("pmin: " + this.props.pageMin + ", pmax: " + this.props.pageMax);
-		console.log("min: " + this.min + ", max: " + this.max);
 		const showPrev = this.min > this.props.pageMin;
 		const showNext = this.max < this.props.pageMax;
-		console.log(this.arr);
 		return (
 			<div>
 				<a className={`${showPrev ? "visible" : "invisible"}`}
