@@ -110,7 +110,7 @@ class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 					pageMin={ 1 }
 					pageMax={this.state.pageMax}
 					pageCurrent={this.state.page}
-					pagePlusMinus={ 3 }
+					pagePlusMinus={ 2 }
 					onPageClick={(page: number) => {this.update(this.state.title, page); }}
 					onNextClick={(currnet: number, max: number) => { 
 						this.update(this.state.title, max + 1); }}
@@ -160,7 +160,7 @@ class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 					if (totalPosts % this.POSTS_PER_PAGE !== 0) {
 						pages++;
 					}
-					this.setState({posts, pageMax: pages});
+					this.setState({posts, pageMax: Math.floor(pages)});
 					this.props.onBoardLoaded(this.state.title, this.state.page);
 					// this.forceUpdate();
 				}

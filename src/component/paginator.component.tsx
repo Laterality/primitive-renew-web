@@ -31,10 +31,17 @@ export class BoardPaginator extends React.Component<IBoardPaginatorProps> {
 
 	public render() {
 		this.min = this.props.pageCurrent - this.props.pagePlusMinus;
-		this.max = this.props.pageCurrent + this.props.pagePlusMinus;
+		this.max = this.min + (this.props.pagePlusMinus * 2);
 
-		if (this.min < this.props.pageMin) { this.min = this.props.pageMin; }
-		if (this.max > this.props.pageMax) { this.max = this.props.pageMax; }
+		if (this.min < this.props.pageMin) {
+			this.max += this.props.pageMin - this.min;
+			this.min = this.props.pageMin;
+		}
+		if (this.max > this.props.pageMax) {
+			this.max = this.props.pageMax;
+			this.min -= this.max - this.props.pageMax;
+			if (this.min < this.props.pageMin) { this.min = this.props.pageMin; }
+		}
 		this.arr = [];
 		for (let i = this.min; i <= this.max; i++) {
 			this.arr.push(i);
@@ -42,14 +49,13 @@ export class BoardPaginator extends React.Component<IBoardPaginatorProps> {
 
 		console.log("pmin: " + this.props.pageMin + ", pmax: " + this.props.pageMax);
 		console.log("min: " + this.min + ", max: " + this.max);
-		const toPrev = this.min > this.props.pageMin ? 
-		(<a onClick={() => { this.props.onPreviousClick(this.props.pageCurrent, this.min); }}>≪ 이전 페이지</a>) : undefined;
-		const toNext = this.max < this.props.pageMax ?
-		(<a onClick={ () => { this.props.onNextClick(this.props.pageCurrent, this.max); } }>다음 페이지 ≫</a>) : undefined;
+		const showPrev = this.min > this.props.pageMin;
+		const showNext = this.max < this.props.pageMax;
 		console.log(this.arr);
 		return (
 			<div>
-				{toPrev}
+				<a className={`${showPrev ? "visible" : "invisible"}`}
+				onClick={() => { this.props.onPreviousClick(this.props.pageCurrent, this.min); }}>≪ 이전 페이지</a>
 				{this.arr.map((num: number, idx: number) => {
 					if (this.props.pageCurrent === num) {
 						return <a
@@ -63,7 +69,8 @@ export class BoardPaginator extends React.Component<IBoardPaginatorProps> {
 						{num}
 					</a>;
 				})}
-				{toNext}
+				<a className={`${showNext ? "visible" : "invisible"}`}
+				onClick={ () => { this.props.onNextClick(this.props.pageCurrent, this.max); } }>다음 페이지 ≫</a>
 			</div>
 		);
 	}
