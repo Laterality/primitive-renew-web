@@ -7,13 +7,15 @@
 import * as React from "react";
 
 export interface IButtonProps {
-	iconSrc: string;
+	iconSrc?: string;
 	text: string;
 	onClick?: () => void | undefined;
 }
 
 export class Button extends React.Component<IButtonProps> {
+
 	public render() {
-		return (<button className="btn bg-primary text-white text-center"><img src={this.props.iconSrc} alt="button" className="icon mr-2" onClick={this.props.onClick}/>{this.props.text}</button>);
+		const elmIcon = this.props.iconSrc ? (<img src={this.props.iconSrc} alt="button" className="icon mr-2" />) : undefined;
+		return (<button className="btn bg-primary text-white text-center" onClick={this.props.onClick}>{elmIcon}{this.props.text}</button>);
 	}
 }
