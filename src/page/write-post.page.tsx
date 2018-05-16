@@ -15,7 +15,6 @@ import { Dispatch } from "redux";
 import * as reqPost from "../lib/post.request";
 import * as reqUser from "../lib/user.request";
 
-import { onComponentReady } from "../lib/component-ready";
 import { ISessionVerifiable } from "../lib/session-verfying.interface";
 
 import { BoardTitle, PostObject } from "../lib/post.obj";
@@ -23,7 +22,7 @@ import { UserObject } from "../lib/user.obj";
 
 import { UserActionCreator } from "../action/user.action";
 
-import { Button } from "../component/button.component";
+import { MyButton as Button } from "../component/button.component";
 import { ObjectFactory } from "../lib/object-factory";
 import { IStore } from "../store";
 
@@ -36,8 +35,6 @@ export interface IWritePostProp extends ISessionVerifiable {
 class WritePostPage extends React.Component<IWritePostProp> {
 
 	public componentDidMount() {
-		onComponentReady();
-
 		if (!this.props.user) {
 			reqUser.UserAPIRequest.checkSignedIn()
 			.then((res: axios.AxiosResponse) => {

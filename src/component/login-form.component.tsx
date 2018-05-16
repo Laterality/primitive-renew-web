@@ -11,6 +11,9 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as ReactRouter from "react-router-dom";
 
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+
 import * as reqUser from "../lib/user.request";
 
 import { UserObject } from "../lib/user.obj";
@@ -28,15 +31,13 @@ export class LoginForm extends React.Component<ILoginFormProps> {
 			<div className="row">
 				<form className="col" >
 					<div className="form-group">
-						<label htmlFor="username">ID</label>
-						<input id="username" type="text" className="form-control" placeholder="학번" aria-label="Username" onKeyUp={this.onKeyUp}/>
+						<TextField id="username" type="text" label="아이디" fullWidth={true} onKeyUp={this.onKeyUp}/>
 					</div>
 					<div className="form-group">
-						<label htmlFor="password">PW</label>
-						<input id="password" type="password" className="form-control" placeholder="Password" aria-label="Password" onKeyUp={this.onKeyUp}/>
+						<TextField id="password" type="password" label="비밀번호" fullWidth={true} onKeyUp={this.onKeyUp}/>
 					</div>
 				</form>
-				<button type="submit" className="btn text-white bg-primary col-2 my-5 mx-3 px-2" onClick={this.onLoginClicked}>LOGIN</button>
+				<Button variant="raised" color="primary" className="btn text-white bg-primary col-2 my-5 mx-3 px-2 py-4" onClick={this.onLoginClicked}>LOGIN</Button>
 				</div>
 			</div>
 		);

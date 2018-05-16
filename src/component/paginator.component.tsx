@@ -51,22 +51,22 @@ export class BoardPaginator extends React.Component<IBoardPaginatorProps> {
 		const showNext = this.max < this.props.pageMax;
 		return (
 			<div>
-				<a className={`${showPrev ? "visible" : "invisible"}`}
+				<a className={`${showPrev ? "visible" : "invisible"} text-dark`} href="#"
 				onClick={() => { this.props.onPreviousClick(this.props.pageCurrent, this.min); }}>≪ 이전 페이지</a>
 				{this.arr.map((num: number, idx: number) => {
 					if (this.props.pageCurrent === num) {
 						return <a
 						key={idx}
-						className="mx-3 "><strong>{num}</strong></a>;
+						className="text-dark mx-3"><strong>{num}</strong></a>;
 					}
 					return <a 
 					key={idx}
-					className="mx-3"
+					className="text-dark mx-3" href="#"
 					onClick={() => this.props.onPageClick(num)}>
 						{num}
 					</a>;
 				})}
-				<a className={`${showNext ? "visible" : "invisible"}`}
+				<a className={`${showNext ? "visible" : "invisible"} text-dark`} href="#"
 				onClick={ () => { this.props.onNextClick(this.props.pageCurrent, this.max); } }>다음 페이지 ≫</a>
 			</div>
 		);

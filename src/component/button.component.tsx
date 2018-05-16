@@ -4,6 +4,7 @@
  * author: Jinwoo Shin
  * date: 2018-04-29
  */
+import Button from "@material-ui/core/Button";
 import * as React from "react";
 
 export interface IButtonProps {
@@ -12,10 +13,10 @@ export interface IButtonProps {
 	onClick?: () => void | undefined;
 }
 
-export class Button extends React.Component<IButtonProps> {
+export class MyButton extends React.Component<IButtonProps> {
 
 	public render() {
 		const elmIcon = this.props.iconSrc ? (<img src={this.props.iconSrc} alt="button" className="icon mr-2" />) : undefined;
-		return (<button className="btn bg-primary text-white text-center" onClick={this.props.onClick}>{elmIcon}{this.props.text}</button>);
+		return (<Button variant="raised" className={`bg-primary text-white`} onClick={this.props.onClick}>{elmIcon}{this.props.text}</Button>);
 	}
 }

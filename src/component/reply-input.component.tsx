@@ -7,7 +7,9 @@
 import * as jquery from "jquery";
 import * as React from "react";
 
-import { Button } from "./button.component";
+import TextField from "@material-ui/core/TextField";
+
+import { MyButton as Button } from "./button.component";
 
 export interface IReplyInputProps {
 	onInputClick: (input: string) => void;
@@ -18,7 +20,7 @@ export class ReplyInput extends React.Component<IReplyInputProps> {
 	public render() {
 		return (
 		<div className="form-group">
-			<textarea className="form-control" id="reply-input" rows={5} placeholder="댓글 입력"/>
+			<TextField className="form-control" id="reply-input" multiline rows={5} label="댓글" placeholder="댓글 입력"/>
 			<Button onClick={ () => this.onInputClick() } text="댓글 달기" />
 		</div>);
 	}

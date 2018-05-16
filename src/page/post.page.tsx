@@ -19,7 +19,6 @@ import { NavigationActionCreator } from "../action/navigation.action";
 import { BoardTitle, PostObject } from "../lib/post.obj";
 import { ReplyObject } from "../lib/reply.obj";
 
-import { onComponentReady } from "../lib/component-ready";
 import { ObjectFactory } from "../lib/object-factory";
 import { IStore } from "../store";
 
@@ -44,8 +43,6 @@ class PostPage extends React.Component<IPostPageProps> {
 	}
 
 	public componentDidMount() {
-		onComponentReady();
-
 		this.update();
 	}
 

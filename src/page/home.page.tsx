@@ -9,7 +9,8 @@ import * as React from "react";
 import { connect } from "react-redux";
 import * as Redux from "redux";
 
-import { onComponentReady } from "../lib/component-ready";
+import Paper from "@material-ui/core/Paper";
+
 import { ISessionVerifiable } from "../lib/session-verfying.interface";
 
 import { LoginForm } from "../component/login-form.component";
@@ -33,7 +34,6 @@ export interface IHomePageProps extends ISessionVerifiable {
 class HomePage extends React.Component<IHomePageProps> {
 
 	public componentDidMount() {
-		onComponentReady();
 		// 스토어로부터 로그인 여부 확인
 		if (this.props.user) {
 			alert("이미 로그인되어있습니다.");
@@ -56,10 +56,10 @@ class HomePage extends React.Component<IHomePageProps> {
 		return (
 			<div className="home-wrapper d-flex flex-column justify-content-center">
 				<img src="img/primitive_logo.svg" alt="logo" className="home-logo mx-auto mb-5"/>
-				<div className="home-login-box mx-auto mt-5 px-4 py-3">
+				<Paper elevation={3} className="home-login-box mx-auto mt-5 px-4 py-3 pt-5">
 					<LoginForm history={this.props.history}
 					onLoginButtonClick={this.onLoginButtonClick}/>
-				</div>
+				</Paper>
 			</div>
 		);
 	}

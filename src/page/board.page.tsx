@@ -19,10 +19,9 @@ import { UserObject } from "../lib/user.obj";
 
 import { ObjectFactory } from "../lib/object-factory";
 
-import { onComponentReady } from "../lib/component-ready";
 import { ISessionVerifiable } from "../lib/session-verfying.interface";
 
-import { Button } from "../component/button.component";
+import { MyButton as Button } from "../component/button.component";
 import { BoardPaginator } from "../component/paginator.component";
 import { PostList } from "../component/post-list.component";
 import { ISideMenuItem, SideMenu } from "../component/side-menu.component";
@@ -75,14 +74,13 @@ class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 	}
 
 	public componentDidMount() {
-		onComponentReady();
 
 		if (!this.props.user) {
 			reqUser.UserAPIRequest.checkSignedIn()
 			.then((res: axios.AxiosResponse) => {
 				const body = res.data;
 				if (body["state"]["signed"]) {
-					this.props.onSessionVerified(body["state"]["user"]);
+					this.props.onSessionVerified(ObjectFactory.createUserObject(body["state"]["user"]));
 				}
 				else {
 					alert("로그인이 필요합니다.");
@@ -101,9 +99,11 @@ class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 				<SideMenu items={this.state.menuItems} onItemClick={(item: ISideMenuItem) => {this.update(item.name, 1); }} />
 				<h1 className="board-title">{this.state.title}</h1>
 				<PostList posts={this.state.posts} onItemClick={this.onPostClick}/>
-				<ReactRouter.Link to="/" >Home</ReactRouter.Link>
-				<ReactRouter.Link to="/write">
+				<ReactRouter.Link style={{ textDecoration: "none" }} to="/write">
 				<Button text="글쓰기" iconSrc="/img/ic_create_white_48px.svg"/>
+				</ReactRouter.Link>
+				<ReactRouter.Link style={{ textDecoration: "none" }} to="/mypage">
+					<Button text="마이페이지" />
 				</ReactRouter.Link>
 				<button className="btn" onClick={this.onLogout}>logout</button>
 				<BoardPaginator 
