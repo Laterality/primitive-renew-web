@@ -105,6 +105,9 @@ class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 				<ReactRouter.Link style={{ textDecoration: "none" }} to="/mypage">
 					<Button text="마이페이지" />
 				</ReactRouter.Link>
+				<ReactRouter.Link style={{ textDecoration: "none" }} to="/admin">
+					<Button text="관리" />
+				</ReactRouter.Link>
 				<button className="btn" onClick={this.onLogout}>logout</button>
 				<BoardPaginator 
 					pageMin={ 1 }

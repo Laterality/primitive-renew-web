@@ -4,6 +4,7 @@ import { connect, Provider } from "react-redux";
 import * as Router from "react-router-dom";
 import { Dispatch } from "redux";
 
+import { default as AdminPage } from "./page/admin.page";
 import { default as BoardPage } from "./page/board.page";
 import { default as HomePage } from "./page/home.page";
 import { default as MyPage } from "./page/my-page.page";
@@ -44,6 +45,7 @@ export class App extends React.Component {
 						<Router.Route path={Routes.routeWrite} component={WritePostPage} />
 						<Router.Route path={Routes.routePost} component={PostPage} />
 						<Router.Route path={Routes.routeMyPage} component={MyPage} />
+						<Router.Route path={Routes.routeAdmin} component={AdminPage} />
 					</div>
 				</Router.BrowserRouter>
 			</Provider>

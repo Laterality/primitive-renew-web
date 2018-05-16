@@ -6,4 +6,5 @@ export class Routes {
 	public static readonly routeWrite = `/write`;
 	public static readonly routePost = `/post`;
 	public static readonly routeMyPage = `/mypage`;
+	public static readonly routeAdmin = `/admin`;
 }
