@@ -4,6 +4,7 @@
  * author: Jinwoo Shin
  * date: 2018-05-16
  */
+import { AxiosResponse } from "axios";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -87,7 +88,36 @@ class AdminPage extends React.Component<IAdminPageProps, IAdminPageState> {
 	}
 
 	private onCreateDialogClosed = (cancelled = true) => {
-		this.setState({createDialogOpened: false});
+		if (!cancelled) {
+			const name: string = jQuery("#create-name").val() as string;
+			const sid: string = jQuery("#create-sid").val() as string;
+			const password: string = jQuery("#create-password").val() as string;
+			const passwordConfirm: string = jQuery("#create-password-confirm").val() as string;
+			const pwMatched = password === passwordConfirm;
+			console.log("add user: ", {
+				name,
+				sid,
+				password,
+				pw_matched: password + "===" + passwordConfirm + ": " + pwMatched,
+			});
+
+			if (pwMatched) {
+				UserAPIRequest.registerUser(new UserObject(sid, name, this.state.selectedRoleToCreate), password)
+				.then((res: AxiosResponse) => {
+					if (res.status === 200) {
+						// user created
+
+					}
+				});
+				this.setState({createDialogOpened: false});
+			}
+			else {
+				// TODO: show helper text indicates password not matching with confirm input
+			}
+		}
+		else {
+			this.setState({createDialogOpened: false});
+		}
 	}
 
 	private onAddClick = () => {
