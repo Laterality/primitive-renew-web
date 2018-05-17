@@ -14,13 +14,19 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import IconButton from "@material-ui/core/IconButton";
 import MenuItem from "@material-ui/core/MenuItem";
+import SnackBar from "@material-ui/core/SnackBar";
 import TextField from "@material-ui/core/TextField";
+
+import CloseIcon from "@material-ui/icons/Close";
 
 import { MyButton } from "../component/button.component";
 import { MemberList } from "../component/member-list.component";
 
 import { RoleTitles, UserObject } from "../lib/user.obj";
+
+import { UserAPIRequest } from "../lib/user.request";
 
 import { ISessionVerifiable } from "../lib/session-verfying.interface";
 
@@ -34,6 +40,7 @@ export interface IAdminPageState {
 	createDialogOpened: boolean;
 	modifyDialogOpened: boolean;
 	selectedRoleToCreate: string;
+	snackBarUserCreatedOpened: boolean;
 }
 
 class AdminPage extends React.Component<IAdminPageProps, IAdminPageState> {
@@ -46,6 +53,7 @@ class AdminPage extends React.Component<IAdminPageProps, IAdminPageState> {
 			createDialogOpened: false,
 			modifyDialogOpened: false,
 			selectedRoleToCreate: RoleTitles.junior,
+			snackBarUserCreatedOpened: false,
 		};
 	}
 	
@@ -74,7 +82,6 @@ class AdminPage extends React.Component<IAdminPageProps, IAdminPageState> {
 						onChange={this.onChangeRoleToCreate} fullWidth select
 						className="my-3">
 							{titles.map((t: string, i: number) => {
-								console.log(i + ": " + t);
 								return (<MenuItem key={i} value={t}>{t}</MenuItem>);
 							})}
 						</TextField>
@@ -84,6 +91,22 @@ class AdminPage extends React.Component<IAdminPageProps, IAdminPageState> {
 						<Button className="px-4" onClick={() => this.onCreateDialogClosed(true)} color="primary">취소</Button>
 					</DialogActions>
 				</Dialog>
+				<SnackBar anchorOrigin={{
+					vertical: "top",
+					horizontal: "right",
+				}} 
+				open={this.state.snackBarUserCreatedOpened}
+				onClose={this.onSnackBarClosed}
+				autoHideDuration={1500}
+				ContentProps={{
+					"aria-describedby": "text-user-created",
+				}}
+				message={<span id="text-user-created">생성되었습니다</span>} 
+				action={[<IconButton
+					color="inherit"
+					onClick={this.onSnackBarClosed}>
+					<CloseIcon />
+				</IconButton>]} />
 			</div>);
 	}
 
@@ -106,7 +129,7 @@ class AdminPage extends React.Component<IAdminPageProps, IAdminPageState> {
 				.then((res: AxiosResponse) => {
 					if (res.status === 200) {
 						// user created
-
+						this.setState({snackBarUserCreatedOpened: true});
 					}
 				});
 				this.setState({createDialogOpened: false});
@@ -126,8 +149,13 @@ class AdminPage extends React.Component<IAdminPageProps, IAdminPageState> {
 
 	private onChangeRoleToCreate = (event: any) => {
 		this.setState({selectedRoleToCreate: event["target"]["value"]});
-		
+
 	}
+
+	private onSnackBarClosed = () => {
+		this.setState({snackBarUserCreatedOpened: false});
+	}
+
 }
 
 const mapStateToProps = () => {
