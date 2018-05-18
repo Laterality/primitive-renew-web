@@ -25,11 +25,11 @@ export class UserAPIRequest {
 			});
 	}
 
-	public static loginUser = (id: string, pw: string) => {
+	public static loginUser = (sid: string, pw: string) => {
 		return axios(`${config.baseurl}/api/v1/auth/login`, {
 			method: "POST",
 			data: {
-				id,
+				id: sid,
 				pw,
 			},
 			withCredentials: true,
