@@ -20,9 +20,16 @@ export class MemberListItem extends React.Component<IMemberListItemProps> {
 
 	public render() {
 		return (
-			<ListItem onClick={() => this.props.onClick}>
+			<ListItem onClick={() => { this.onClick(); }}
+				button>
 				<ListItemText primary={`${this.props.user.getName()}(${this.props.user.getSid()})`} secondary={this.props.user.getRole()}/>
 			</ListItem>
 		);
+	}
+
+	public onClick = () => {
+		if (this.props.onClick) {
+			this.props.onClick(this.props.user);
+		}
 	}
 }
