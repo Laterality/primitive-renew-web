@@ -16,8 +16,8 @@ export class UserObject {
 	public constructor(
 		private sid: string,
 		private name: string,
-		private role?: string,
-		private id?: string | number,
+		private role: string,
+		private id: string,
 	) { }
 
 	public getSid() { return this.sid; }
