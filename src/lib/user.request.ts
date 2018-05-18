@@ -4,7 +4,7 @@
  * author: Jinwoo Shin
  * date: 2018-04-18
  */
-import { default as axios } from "axios";
+import { CancelTokenSource, default as axios} from "axios";
 
 import { config } from "../config";
 import { UserObject } from "./user.obj";
@@ -46,6 +46,42 @@ export class UserAPIRequest {
 	public static checkSignedIn = () => {
 		return axios(`${config.baseurl}/api/v1/auth/check`, {
 			method: "GET",
+			withCredentials: true,
+		});
+	}
+
+	public static searchUser = (key: string, role: string, canceler?: CancelTokenSource) => {
+		if (canceler) {
+			return axios(`${config.baseurl}/api/v1/user/find-by-name-or-sid`, {
+				cancelToken: canceler.token,
+				method: "GET",
+				params: {
+					key,
+					roles: role,
+				},
+				withCredentials: true,
+			});
+		}
+		else {
+			return axios(`${config.baseurl}/api/v1/user/find-by-name-or-sid`, {
+				method: "GET",
+				params: {
+					key,
+					roles: role,
+				},
+				withCredentials: true,
+			});
+		}
+	}
+
+	public static updateUser = (id: string, pwCurrent: string, pwNew: string, roleTitleNew: string) => {
+		return axios(`${config.baseurl}/api/v1/user/update/${id}`, {
+			method: "PUT",
+			data: {
+				current_password: pwCurrent, 
+				new_password: pwNew,
+				role: roleTitleNew,
+			},
 			withCredentials: true,
 		});
 	}
