@@ -11,7 +11,7 @@ import * as Redux from "redux";
 
 import Paper from "@material-ui/core/Paper";
 
-import { ISessionVerifiable } from "../lib/session-verfying.interface";
+import { ISessionVerifiable, verifySession } from "../lib/session-verfying.interface";
 
 import { LoginForm } from "../component/login-form.component";
 
@@ -28,28 +28,17 @@ import { IStore } from "../store";
 export interface IHomePageProps extends ISessionVerifiable {
 	history: any;
 	onLoginSucceed: (user: UserObject) => void;
-	user: UserObject | undefined;
 }
 
 class HomePage extends React.Component<IHomePageProps> {
 
 	public componentDidMount() {
-		// 스토어로부터 로그인 여부 확인
-		if (this.props.user) {
-			alert("이미 로그인되어있습니다.");
-			this.props.history["push"]("/board");
-		}
-		else {
-			UserAPIRequest.checkSignedIn()
-			.then((res: axios.AxiosResponse) => {
-				const body = res.data;
-				if (body["state"]["signed"]) {
-					this.props.onSessionVerified(ObjectFactory.createUserObject(body["state"]["user"]));
-					alert("이미 로그인되어있습니다.");
-					this.props.history["push"]("/board");
-				}
-			});
-		}
+		verifySession(this.props, (signed: boolean) => {
+			if (signed) {
+				alert("이미 로그인되어있습니다.");
+				this.props.history["push"]("/board");
+			}
+		});
 	}
 
 	public render() {

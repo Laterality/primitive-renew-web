@@ -18,7 +18,7 @@ import { MyButton as Button } from "../component/button.component";
 
 import { UserActionCreator } from "../action/user.action";
 
-import { ISessionVerifiable } from "../lib/session-verfying.interface";
+import { ISessionVerifiable, verifySession } from "../lib/session-verfying.interface";
 import { IStore } from "../store";
 
 import { ObjectFactory } from "../lib/object-factory";
@@ -30,26 +30,18 @@ import { UserAPIRequest } from "../lib/user.request";
 export interface IMyPageProps extends ISessionVerifiable {
 	history: any;
 	location: any;
-	user: UserObject | undefined;
 }
 
 class MyPage extends React.Component<IMyPageProps> {
 
 	public componentDidMount() {
 
-		if (!this.props.user) {
-			UserAPIRequest.checkSignedIn()
-			.then((res: axios.AxiosResponse) => {
-				const body = res.data;
-				if (body["state"]["signed"]) {
-					this.props.onSessionVerified(ObjectFactory.createUserObject(body["state"]["user"]));
-				}
-				else {
-					alert("로그인이 필요합니다.");
-					this.props.history["push"]("/");
-				}
-			});
-		}
+		verifySession(this.props, (signed: boolean) => {
+			if (!signed) {
+				alert("로그인이 필요합니다.");
+				this.props.history["push"]("/");
+			}
+		});
 	}
 
 	public render() {

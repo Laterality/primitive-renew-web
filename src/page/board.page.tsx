@@ -19,7 +19,7 @@ import { UserObject } from "../lib/user.obj";
 
 import { ObjectFactory } from "../lib/object-factory";
 
-import { ISessionVerifiable } from "../lib/session-verfying.interface";
+import { ISessionVerifiable, verifySession } from "../lib/session-verfying.interface";
 
 import { MyButton as Button } from "../component/button.component";
 import { BoardPaginator } from "../component/paginator.component";
@@ -34,7 +34,6 @@ import { IStore } from "../store";
 export interface IBoardPageProps extends ISessionVerifiable {
 	history: any;
 	location: any;
-	user: UserObject | undefined;
 	onBoardLoaded: (title: BoardTitle, page: number) => void;
 }
 
@@ -75,21 +74,15 @@ class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 
 	public componentDidMount() {
 
-		if (!this.props.user) {
-			reqUser.UserAPIRequest.checkSignedIn()
-			.then((res: axios.AxiosResponse) => {
-				const body = res.data;
-				if (body["state"]["signed"]) {
-					this.props.onSessionVerified(ObjectFactory.createUserObject(body["state"]["user"]));
-				}
-				else {
-					alert("로그인이 필요합니다.");
-					this.props.history["push"]("/");
-				}
-			});
-		}
-
-		this.update(this.state.title, this.state.page);
+		verifySession(this.props, (signed: boolean) => {
+			if (!signed) {
+				alert("로그인이 필요합니다.");
+				this.props.history["push"]("/");
+			}
+			else {
+				this.update(this.state.title, this.state.page);
+			}
+		});
 	}
 
 	public render() {

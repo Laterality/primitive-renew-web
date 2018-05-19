@@ -15,7 +15,7 @@ import { Dispatch } from "redux";
 import * as reqPost from "../lib/post.request";
 import * as reqUser from "../lib/user.request";
 
-import { ISessionVerifiable } from "../lib/session-verfying.interface";
+import { ISessionVerifiable, verifySession } from "../lib/session-verfying.interface";
 
 import { BoardTitle, PostObject } from "../lib/post.obj";
 import { UserObject } from "../lib/user.obj";
@@ -35,19 +35,12 @@ export interface IWritePostProp extends ISessionVerifiable {
 class WritePostPage extends React.Component<IWritePostProp> {
 
 	public componentDidMount() {
-		if (!this.props.user) {
-			reqUser.UserAPIRequest.checkSignedIn()
-			.then((res: axios.AxiosResponse) => {
-				const body = res.data;
-				if (!body["state"]["signed"]) {
-					alert("로그인이 필요합니다.");
-					this.props.history["push"]("/");
-				}
-				else {
-					this.props.onSessionVerified(ObjectFactory.createUserObject(body["state"]["user"]));
-				}
-			});
-		}
+		verifySession(this.props, (signed: boolean) => {
+			if (!signed) {
+				alert("로그인이 필요합니다.");
+				this.props.history["push"]("/");
+			}
+		});
 	}
 
 	public render() {

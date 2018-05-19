@@ -24,13 +24,16 @@ import CloseIcon from "@material-ui/icons/Close";
 import { MyButton } from "../component/button.component";
 import { MemberList } from "../component/member-list.component";
 
+import { UserActionCreator } from "../action/user.action";
+
 import { ObjectFactory } from "../lib/object-factory";
 
 import { RoleTitles, UserObject } from "../lib/user.obj";
 
 import { UserAPIRequest } from "../lib/user.request";
 
-import { ISessionVerifiable } from "../lib/session-verfying.interface";
+import { ISessionVerifiable, verifySession } from "../lib/session-verfying.interface";
+import { IStore } from "../store";
 
 export interface IAdminPageProps extends ISessionVerifiable {
 	location: any;
@@ -77,6 +80,15 @@ class AdminPage extends React.Component<IAdminPageProps, IAdminPageState> {
 				sid: "",
 			},
 		};
+	}
+
+	public componentDidMount() {
+		verifySession(this.props, (signed: boolean) => {
+			if (!signed) {
+				alert("로그인이 필요합니다.");
+				this.props.history["push"]("/");
+			}
+		});
 	}
 	
 	public render() {
