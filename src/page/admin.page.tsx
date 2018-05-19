@@ -267,12 +267,18 @@ class AdminPage extends React.Component<IAdminPageProps, IAdminPageState> {
 	}
 }
 
-const mapStateToProps = () => {
-	return {};
+const mapStateToProps = (state: IStore) => {
+	return {
+		user: state.user,
+	};
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
-	return {};
+	return {
+		onSessionVerified: (user: UserObject) => {
+			dispatch(UserActionCreator.setUser(user));
+		},
+	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPage);
