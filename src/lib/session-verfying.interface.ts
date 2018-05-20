@@ -17,6 +17,9 @@ export const verifySession = (verifiable: ISessionVerifiable, callback?: (signed
 			const body = res.data;
 			if (body["state"]["signed"]) {
 				verifiable.onSessionVerified(ObjectFactory.createUserObject(body["state"]["user"]));
+				if (callback) {
+					callback(true);
+				}
 			}
 			else {
 				if (callback) {
@@ -24,5 +27,10 @@ export const verifySession = (verifiable: ISessionVerifiable, callback?: (signed
 				}
 			}
 		});
+	}
+	else {
+		if (callback) {
+			callback(true);
+		}
 	}
 };

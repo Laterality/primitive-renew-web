@@ -56,7 +56,7 @@ class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 		const title = queries["title"] ? queries["title"] : BoardTitle.seminar;
 		const page: string = queries["page"] ? queries["page"] : "1";
 
-		this.state = {
+		const initialState: IBoardPageState = {
 			title,
 			page: parseInt(page, 10),
 			pageMax: 1,
@@ -65,15 +65,16 @@ class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 		};
 
 		for (const t in BoardTitle) {
-			this.state.menuItems.push({
+			initialState.menuItems.push({
 				name: BoardTitle[t],
 				linkTo: `/board?title=${BoardTitle[t]}&page=1`,
 			});
 		}
+
+		this.state = initialState;
 	}
 
 	public componentDidMount() {
-
 		verifySession(this.props, (signed: boolean) => {
 			if (!signed) {
 				alert("로그인이 필요합니다.");
@@ -158,7 +159,6 @@ class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 					}
 					this.setState({posts, pageMax: Math.floor(pages)});
 					this.props.onBoardLoaded(this.state.title, this.state.page);
-					// this.forceUpdate();
 				}
 				else {
 					alert("게시물 목록을 가져오는 데 실패했습니다.");
