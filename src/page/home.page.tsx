@@ -43,9 +43,12 @@ class HomePage extends React.Component<IHomePageProps> {
 
 	public render() {
 		return (
-			<div className="home-wrapper d-flex flex-column justify-content-center">
-				<img src="img/primitive_logo.svg" alt="logo" className="home-logo mx-auto mb-5"/>
-				<Paper elevation={3} className="home-login-box mx-auto mt-5 px-4 py-3 pt-5">
+			<div className="d-flex flex-column justify-content-center"
+				style={{
+					height: "100%",
+				}}>
+				<img src="img/primitive_logo.svg" alt="logo" className="mx-auto mb-5" style={{width: "20rem"}}/>
+				<Paper elevation={3} className="mx-auto mt-5 px-4 py-3 pt-5" style={{width: "32rem"}}>
 					<LoginForm history={this.props.history}
 					onLoginButtonClick={this.onLoginButtonClick}/>
 				</Paper>
