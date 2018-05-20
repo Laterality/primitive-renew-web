@@ -18,6 +18,6 @@ export class MyButton extends React.Component<IButtonProps> {
 
 	public render() {
 		const elmIcon = this.props.iconSrc ? (<img src={this.props.iconSrc} alt="button" className="icon mr-2" />) : undefined;
-		return (<Button variant="raised" className={`bg-primary text-white ${this.props.className ? this.props.className : ""}`} onClick={this.props.onClick}>{elmIcon}{this.props.text}</Button>);
+		return (<Button variant="raised" color="primary" className={`text-white ${this.props.className ? this.props.className : ""}`} onClick={this.props.onClick}>{elmIcon}{this.props.text}</Button>);
 	}
 }

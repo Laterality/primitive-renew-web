@@ -11,6 +11,8 @@ import { default as MyPage } from "./page/my-page.page";
 import { default as PostPage } from "./page/post.page";
 import { default as WritePostPage } from "./page/write-post.page";
 
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+
 import { Routes } from "./routes";
 
 import { UserActionCreator } from "./action/user.action";
@@ -36,19 +38,28 @@ export class App extends React.Component {
 	}
 
 	public render() {
+		const theme = createMuiTheme({
+			palette: {
+				primary: {
+					main: "#0097A7",
+				},
+			},
+		});
 		return (
-			<Provider store={store}>
-				<Router.BrowserRouter>
-					<div className="router-wrapper">
-						<Router.Route exact path={Routes.routeRoot} component={HomePage} />
-						<Router.Route path={Routes.routeBoard} component={BoardPage} />
-						<Router.Route path={Routes.routeWrite} component={WritePostPage} />
-						<Router.Route path={Routes.routePost} component={PostPage} />
-						<Router.Route path={Routes.routeMyPage} component={MyPage} />
-						<Router.Route path={Routes.routeAdmin} component={AdminPage} />
-					</div>
-				</Router.BrowserRouter>
-			</Provider>
+			<MuiThemeProvider theme={theme}>
+				<Provider store={store}>
+					<Router.BrowserRouter>
+						<div className="router-wrapper">
+							<Router.Route exact path={Routes.routeRoot} component={HomePage} />
+							<Router.Route path={Routes.routeBoard} component={BoardPage} />
+							<Router.Route path={Routes.routeWrite} component={WritePostPage} />
+							<Router.Route path={Routes.routePost} component={PostPage} />
+							<Router.Route path={Routes.routeMyPage} component={MyPage} />
+							<Router.Route path={Routes.routeAdmin} component={AdminPage} />
+						</div>
+					</Router.BrowserRouter>
+				</Provider>
+			</MuiThemeProvider>
 		);
 	}
 }

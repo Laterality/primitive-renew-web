@@ -37,7 +37,7 @@ export class LoginForm extends React.Component<ILoginFormProps> {
 						<TextField id="password" type="password" label="비밀번호" fullWidth={true} onKeyUp={this.onKeyUp}/>
 					</div>
 				</form>
-				<Button variant="raised" color="primary" className="btn text-white bg-primary col-2 my-5 mx-3 px-2 py-4" onClick={this.onLoginClicked}>LOGIN</Button>
+				<Button variant="raised" color="primary" className="btn text-white col-2 my-5 mx-3 px-2 py-4" onClick={this.onLoginClicked}>LOGIN</Button>
 				</div>
 			</div>
 		);
