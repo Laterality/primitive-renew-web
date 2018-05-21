@@ -63,7 +63,7 @@ const styles = (theme: Theme) => ({
 		position: "absolute" as "absolute",
 		marginLeft: drawerWidth,
 		[theme.breakpoints.up("md")]: {
-			width: `calc(100% - ${drawerWidth})px`,
+			width: `calc(100% - ${drawerWidth}px)`,
 		},
 	},
 	boardContent: {
