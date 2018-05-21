@@ -11,7 +11,15 @@ import { connect } from "react-redux";
 import * as ReactRouter from "react-router-dom";
 import { Dispatch } from "redux";
 
+import Divider from "@material-ui/core/Divider";
+import Drawer from "@material-ui/core/Drawer";
+import Hidden from "@material-ui/core/Hidden";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+
+import { Theme, withStyles, WithStyles } from "@material-ui/core";
 
 import * as reqPost from "../lib/post.request";
 import * as reqUser from "../lib/user.request";
@@ -24,7 +32,7 @@ import { ObjectFactory } from "../lib/object-factory";
 import { ISessionVerifiable, verifySession } from "../lib/session-verfying.interface";
 
 import { MyButton as Button } from "../component/button.component";
-import { Header } from "../component/header.component";
+import { default as Header } from "../component/header.component";
 import { BoardPaginator } from "../component/paginator.component";
 import { PostList } from "../component/post-list.component";
 import { ISideMenuItem, SideMenu } from "../component/side-menu.component";
@@ -40,19 +48,88 @@ export interface IBoardPageProps extends ISessionVerifiable {
 	onBoardLoaded: (title: BoardTitle, page: number) => void;
 }
 
-export interface IBoardPageState {
+interface IBoardPageState {
 	title: BoardTitle;
 	page: number;
 	pageMax: number;
 	posts: PostObject[];
 	menuItems: ISideMenuItem[];
+	mobileDrawerOpened: boolean;
 }
 
-class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
+const drawerWidth = 320;
+const styles = (theme: Theme) => ({
+	appBar: {
+		position: "absolute" as "absolute",
+		marginLeft: drawerWidth,
+		[theme.breakpoints.up("md")]: {
+			width: `calc(100% - ${drawerWidth})px`,
+		},
+	},
+	boardContent: {
+		width: "80%",
+		paddingLeft: "15%",
+		paddingRight: "15%",
+		paddingTop: "48px",
+		paddingBottom: "48px",
+		marginLeft: "auto",
+		marginRight: "auto",
+	},
+	boardTitle: {
+		paddingLeft: "16px",
+		marginLeft: "25%",
+		marginTop: "24px",
+		marginBottom: "24px",
+		borderLeftStyle: "solid" as "solid",
+		borderLeftColor: "#0097A7",
+		borderLeftWidth: "4px",
+	},
+	content: {
+		flexGrow: 1,
+		padding: theme.spacing.unit * 3,
+	},
+	drawerPaper: {
+		width: drawerWidth,
+		[theme.breakpoints.up("md")]: {
+			position: "relative" as "relative",
+		},
+	},
+	link: { 
+		textDecoration: "none",
+		float: "right" as "right",
+		marginRight: "10%",
+		marginTop: "16px", 
+		marginBottom: "16px",
+	},
+	navIconHide: {
+		[theme.breakpoints.up("md")]: {
+			display: "none",
+		},
+	},
+	paginatorWrapper: {
+		width: "100%",
+		display: "flex",
+		flexDirection: "row" as "row",
+		justifyContent: "center",
+	},
+	root: {
+		flexGrow: 1,
+		zIndex: 1,
+		overflow: "hidden",
+		position: "relative" as "relative",
+		display: "flex",
+		width: "100%",
+	},
+	toolbar: theme.mixins.toolbar,
+});
+
+type BoardPageProps = IBoardPageProps & WithStyles<"appBar" | "boardContent" | "boardTitle" | "content" | "drawerPaper" | "link" | "navIconHide" | "paginatorWrapper" | "root" | "toolbar">;
+
+class BoardPage extends React.Component<BoardPageProps, IBoardPageState> {
 
 	private readonly POSTS_PER_PAGE = 5;
 
-	public constructor(props: IBoardPageProps) {
+	public constructor(props: BoardPageProps) {
 		super(props);
 
 		const queries = query.parse(location.search);
@@ -65,6 +142,7 @@ class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 			pageMax: 1,
 			posts: [],
 			menuItems: [],
+			mobileDrawerOpened: false,
 		};
 
 		for (const t in BoardTitle) {
@@ -90,67 +168,92 @@ class BoardPage extends React.Component<IBoardPageProps, IBoardPageState> {
 	}
 
 	public render() {
+		const drawer = <div>
+				<div className={this.props.classes.toolbar}/>
+				<Divider />
+				{this.state.menuItems.map((item: ISideMenuItem, idx: number) => {
+					return <ListItem button key={idx} onClick={() => { this.update(item.name, 1); }}>
+						<ListItemText primary={item.name}/>
+					</ListItem>;
+				})}
+				<Divider />
+				{this.props.user && this.props.user.getRole() === "관리자" && 
+				<ListItem button>
+					<ListItemText primary="관리" 
+					onClick={() => { this.onAdmin(); }}/>
+				</ListItem>}
+				<ListItem button>
+					<ListItemText primary="마이페이지" 
+					onClick={() => { this.onMyPage(); }}/>
+				</ListItem>
+				<ListItem button>
+					<ListItemText primary="로그아웃"
+					onClick={() => { this.onLogout(); }}/>
+				</ListItem>
+				<Divider/>
+			</div>;
 		return (
-			<div>
+			<div className={this.props.classes.root}>
 				<Header user={this.props.user} 
-				onLogoClick={this.onLogoClicked}
-				onLogout={this.onLogout}
-				onMyPage={this.onMyPage}
-				onAdmin={this.onAdmin}/>
-				<SideMenu items={this.state.menuItems} onItemClick={(item: ISideMenuItem) => {this.update(item.name, 1); }} />
-				<h1 style={{
-					paddingLeft: "16px",
-					marginLeft: "25%",
-					marginTop: "24px",
-					marginBottom: "24px",
-					borderLeftStyle: "solid",
-					borderLeftColor: "#0097A7",
-					borderLeftWidth: "4px",
-				}}>{this.state.title}</h1>
-				<Paper elevation={2}
-				style={{
-					width: "80%",
-					paddingLeft: "15%",
-					paddingRight: "15%",
-					paddingTop: "48px",
-					paddingBottom: "48px",
-					marginLeft: "auto",
-					marginRight: "auto",
-				}}>
-					<PostList posts={this.state.posts} onItemClick={this.onPostClick}/>
-				</Paper>
-				<ReactRouter.Link 
-				style={{ textDecoration: "none",
-					float: "right",
-					marginRight: "10%",
-					marginTop: "16px", 
-					marginBottom: "16px"}} to="/write">
-					<Button text="글쓰기" iconSrc="/img/ic_create_white_48px.svg"/>
-				</ReactRouter.Link>
-				<div style={{
-					width: "100%",
-					display: "flex",
-					flexDirection: "row",
-					justifyContent: "center",
-				}}>
-					<BoardPaginator 
-							pageMin={ 1 }
-							pageMax={this.state.pageMax}
-							pageCurrent={this.state.page}
-							pagePlusMinus={ 2 }
-							onPageClick={(page: number) => {this.update(this.state.title, page); }}
-							onNextClick={(currnet: number, max: number) => { 
-								this.update(this.state.title, max + 1); }}
-							onPreviousClick={(current: number, min: number) => {
-								this.update(this.state.title, min - 1);
-							}}/>
-				</div>
+				onMenu={this.onMenuClicked}
+				classes={{appBar: this.props.classes.appBar,
+				menuIcon: this.props.classes.navIconHide}}/>
+				<Hidden mdUp>
+					<Drawer
+						variant="temporary"
+						open={this.state.mobileDrawerOpened}
+						onClose={this.onMenuClose}
+						classes={{paper: this.props.classes.drawerPaper}}
+						ModalProps={{
+							keepMounted: true,
+						}}>
+						{drawer}
+					</Drawer>
+				</Hidden>
+				<Hidden smDown>
+					<Drawer
+						variant="permanent"
+						open
+						classes={{paper: this.props.classes.drawerPaper}}>
+						{drawer}
+					</Drawer>
+				</Hidden>
+				<main className={this.props.classes.content}>
+					<div className={this.props.classes.toolbar}/>
+					<Typography variant="headline" className={this.props.classes.boardTitle}>{this.state.title}</Typography>
+					<Paper elevation={2}
+					className={this.props.classes.boardContent}>
+						<PostList posts={this.state.posts} onItemClick={this.onPostClick}/>
+					</Paper>
+					<ReactRouter.Link 
+					className={this.props.classes.link}
+					to="/write">
+						<Button text="글쓰기" iconSrc="/img/ic_create_white_48px.svg"/>
+					</ReactRouter.Link>
+					<div className={this.props.classes.paginatorWrapper}>
+						<BoardPaginator 
+								pageMin={ 1 }
+								pageMax={this.state.pageMax}
+								pageCurrent={this.state.page}
+								pagePlusMinus={ 2 }
+								onPageClick={(page: number) => {this.update(this.state.title, page); }}
+								onNextClick={(currnet: number, max: number) => { 
+									this.update(this.state.title, max + 1); }}
+								onPreviousClick={(current: number, min: number) => {
+									this.update(this.state.title, min - 1);
+						}}/>
+					</div>
+				</main>
 			</div>
 		);
 	}
 
-	private onLogoClicked = () => {
-		this.props.history["push"]("/board");
+	private onMenuClicked = () => {
+		this.setState({mobileDrawerOpened: true});
+	}
+
+	private onMenuClose = () => {
+		this.setState({mobileDrawerOpened: false});
 	}
 
 	private onLogout = () => {
@@ -232,4 +335,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BoardPage);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, {withTheme: true})<IBoardPageProps>(BoardPage));
