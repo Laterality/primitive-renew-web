@@ -7,7 +7,7 @@ import * as reqPost from "../lib/post.request";
 
 import { PostObject } from "../lib/post.obj";
 
-import { PostListItem } from "./post-list-item.component";
+import { default as PostListItem } from "./post-list-item.component";
 
 export interface IPostListProps {
 	posts: PostObject[];

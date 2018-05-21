@@ -9,6 +9,8 @@ import { Link } from "react-router-dom";
 
 import Typography from "@material-ui/core/Typography";
 
+import { Theme, withStyles, WithStyles } from "@material-ui/core";
+
 import { PostObject } from "../lib/post.obj";
 
 export interface IPostListItemProps {
@@ -16,24 +18,33 @@ export interface IPostListItemProps {
 	onClick: (id: string | number) => void;
 }
 
-export class PostListItem extends React.Component<IPostListItemProps> {
+const styles = (theme: Theme) => ({
+	contentExcerpt: {
+		marginTop: "4px",
+		marginBottom: "4px",
+	},
+});
+
+type PostListItemProps = IPostListItemProps & WithStyles<"contentExcerpt">;
+
+class PostListItem extends React.Component<PostListItemProps> {
 	public render() {
 		return(<li className="list-group-item" 
 			style={{
 				paddingTop: "16px",
 				paddingBottom: "16px",
+				display: "inline",
 			}}
 			onClick={() => this.props.onClick(this.props.post.getId())}>
 			<Link to={`/post?id=${this.props.post.getId()}`} >
 				<Typography variant="title">{this.props.post.getTitle()}</Typography>
 			</Link>
 			<Typography variant="body2" color="textSecondary" 
-			style={{
-				marginTop: "4px",
-				marginBottom: "4px",
-			}}>{this.props.post.getContent()}</Typography>
+			className={this.props.classes.contentExcerpt}>{this.props.post.getContent()}</Typography>
 			<Typography variant="caption" color="textSecondary"
 			>{this.props.post.getDateCreated() ? this.props.post.getDateCreated() : ""}</Typography>
 		</li>);
 	}
 }
+
+export default withStyles(styles, {withTheme: true})<IPostListItemProps>(PostListItem);
