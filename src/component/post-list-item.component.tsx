@@ -13,6 +13,8 @@ import { Theme, withStyles, WithStyles } from "@material-ui/core";
 
 import { PostObject } from "../lib/post.obj";
 
+import { Routes } from "../routes";
+
 export interface IPostListItemProps {
 	post: PostObject;
 	onClick: (id: string | number) => void;
@@ -36,7 +38,7 @@ class PostListItem extends React.Component<PostListItemProps> {
 				display: "inline",
 			}}
 			onClick={() => this.props.onClick(this.props.post.getId())}>
-			<Link to={`/post?id=${this.props.post.getId()}`} >
+			<Link to={`${Routes.routePostContent}?id=${this.props.post.getId()}`} >
 				<Typography variant="title">{this.props.post.getTitle()}</Typography>
 			</Link>
 			<Typography variant="body2" color="textSecondary" 

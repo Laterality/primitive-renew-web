@@ -11,7 +11,7 @@ import { default as PostListItem } from "./post-list-item.component";
 
 export interface IPostListProps {
 	posts: PostObject[];
-	onItemClick: (id: string | number) => void;
+	onItemClick?: (id: string | number) => void;
 }
 
 export class PostList extends React.Component<IPostListProps> {
@@ -20,7 +20,7 @@ export class PostList extends React.Component<IPostListProps> {
 		return (
 			<ul className="list-group list-group-flush">
 				{ this.props.posts.map((obj: PostObject, i: number) => 
-					<PostListItem key={obj.getId()} post={obj} onClick={this.props.onItemClick}>{obj.getTitle()}</PostListItem>) }
+					<PostListItem key={obj.getId()} post={obj} onClick={() => { if (this.props.onItemClick){ this.props.onItemClick(obj.getId()); }}}>{obj.getTitle()}</PostListItem>) }
 			</ul>
 		);
 	}
