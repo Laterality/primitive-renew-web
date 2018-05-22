@@ -37,7 +37,7 @@ import { BoardPaginator } from "../component/paginator.component";
 import { PostList } from "../component/post-list.component";
 import { ISideMenuItem, SideMenu } from "../component/side-menu.component";
 
-import {default as BoardContent } from "../component/board-content.component";
+import {default as BoardContent, IBoardContentProps } from "../component/board-content.component";
 
 import { default as PostContent } from "../component/post-content.component";
 
@@ -48,7 +48,7 @@ import { ICurrentNavigation, IStore } from "../store";
 
 import { Routes } from "../routes";
 
-export interface IBoardPageProps extends ISessionVerifiable {
+export interface IContentProps extends ISessionVerifiable {
 	history: any;
 	location: any;
 	navInfor: ICurrentNavigation;
@@ -56,9 +56,7 @@ export interface IBoardPageProps extends ISessionVerifiable {
 	onPostNavigated: (post: PostObject) => void;
 }
 
-interface IBoardPageState {
-	title: BoardTitle;
-	page: number;
+interface IContentState {
 	menuItems: ISideMenuItem[];
 	mobileDrawerOpened: boolean;
 }
@@ -100,22 +98,18 @@ const styles = (theme: Theme) => ({
 	toolbar: theme.mixins.toolbar,
 });
 
-type BoardPageProps = IBoardPageProps & WithStyles<"appBar" | "content" | "drawerPaper" | "navIconHide" | "root" | "toolbar">;
+type BoardContentProps = IContentProps & WithStyles<"appBar" | "content" | "drawerPaper" | "navIconHide" | "root" | "toolbar">;
 
-class BoardPage extends React.Component<BoardPageProps, IBoardPageState> {
+class BoardPage extends React.Component<BoardContentProps, IContentState> {
 
 	private readonly POSTS_PER_PAGE = 5;
 
-	public constructor(props: BoardPageProps) {
+	private boardUpdater: ((title: BoardTitle, page: number) => void) | undefined;
+
+	public constructor(props: BoardContentProps) {
 		super(props);
 
-		const queries = query.parse(location.search);
-		const title = queries["title"] ? queries["title"] : BoardTitle.seminar;
-		const page: string = queries["page"] ? queries["page"] : "1";
-
-		const initialState: IBoardPageState = {
-			title,
-			page: parseInt(page, 10),
+		const initialState: IContentState = {
 			menuItems: [],
 			mobileDrawerOpened: false,
 		};
@@ -128,6 +122,7 @@ class BoardPage extends React.Component<BoardPageProps, IBoardPageState> {
 		}
 
 		this.state = initialState;
+		this.boardUpdater = undefined;
 	}
 
 	public componentDidMount() {
@@ -198,10 +193,9 @@ class BoardPage extends React.Component<BoardPageProps, IBoardPageState> {
 							render={() => <BoardContent 
 								location={this.props.location}
 								history={this.props.history}
-								title={this.state.title}
-								page={this.state.page}
 								postPerPage={this.POSTS_PER_PAGE}
-								onBoardLoaded={this.props.onBoardLoaded}/>} />
+								onBoardLoaded={this.props.onBoardLoaded}
+								onSetUpdater={(updater) => {this.boardUpdater = updater;}}/>} />
 						{/* <ReactRouter.Route path={Routes.routeWrite} component={WritePostPage} /> */}
 						<ReactRouter.Route path={Routes.routePostContent}
 							render={() => <PostContent
@@ -238,6 +232,9 @@ class BoardPage extends React.Component<BoardPageProps, IBoardPageState> {
 
 	private onBoardItemClicked = (title: string) => {
 		this.props.history["push"](`${Routes.routeBoardContent}?title=${title}&page=1`);
+		if (this.boardUpdater) {
+			this.boardUpdater(title as BoardTitle, 1);
+		}
 	}
 
 	private onMyPage = () => {
@@ -272,4 +269,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, {withTheme: true})<IBoardPageProps>(BoardPage));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, {withTheme: true})<IContentProps>(BoardPage));
