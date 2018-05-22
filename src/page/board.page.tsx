@@ -87,11 +87,12 @@ const styles = (theme: Theme) => ({
 	content: {
 		flexGrow: 1,
 		padding: theme.spacing.unit * 3,
+		marginLeft: drawerWidth,
 	},
 	drawerPaper: {
 		width: drawerWidth,
 		[theme.breakpoints.up("md")]: {
-			position: "relative" as "relative",
+			position: "fixed" as "fixed",
 		},
 	},
 	link: { 
