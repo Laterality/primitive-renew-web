@@ -37,22 +37,28 @@ import { BoardPaginator } from "../component/paginator.component";
 import { PostList } from "../component/post-list.component";
 import { ISideMenuItem, SideMenu } from "../component/side-menu.component";
 
+import {default as BoardContent } from "../component/board-content.component";
+
+import { default as PostContent } from "../component/post-content.component";
+
 import { NavigationActionCreator } from "../action/navigation.action";
 import { UserActionCreator } from "../action/user.action";
 
-import { IStore } from "../store";
+import { ICurrentNavigation, IStore } from "../store";
+
+import { Routes } from "../routes";
 
 export interface IBoardPageProps extends ISessionVerifiable {
 	history: any;
 	location: any;
+	navInfor: ICurrentNavigation;
 	onBoardLoaded: (title: BoardTitle, page: number) => void;
+	onPostNavigated: (post: PostObject) => void;
 }
 
 interface IBoardPageState {
 	title: BoardTitle;
 	page: number;
-	pageMax: number;
-	posts: PostObject[];
 	menuItems: ISideMenuItem[];
 	mobileDrawerOpened: boolean;
 }
@@ -66,27 +72,10 @@ const styles = (theme: Theme) => ({
 			width: `calc(100% - ${drawerWidth}px)`,
 		},
 	},
-	boardContent: {
-		width: "80%",
-		paddingLeft: "15%",
-		paddingRight: "15%",
-		paddingTop: "48px",
-		paddingBottom: "48px",
-		marginLeft: "auto",
-		marginRight: "auto",
-	},
-	boardTitle: {
-		paddingLeft: "16px",
-		marginLeft: "25%",
-		marginTop: "24px",
-		marginBottom: "24px",
-		borderLeftStyle: "solid" as "solid",
-		borderLeftColor: "#0097A7",
-		borderLeftWidth: "4px",
-	},
 	content: {
 		flexGrow: 1,
 		padding: theme.spacing.unit * 3,
+		marginTop: theme.mixins.toolbar.height,
 		marginLeft: drawerWidth,
 	},
 	drawerPaper: {
@@ -95,23 +84,10 @@ const styles = (theme: Theme) => ({
 			position: "fixed" as "fixed",
 		},
 	},
-	link: { 
-		textDecoration: "none",
-		float: "right" as "right",
-		marginRight: "10%",
-		marginTop: "16px", 
-		marginBottom: "16px",
-	},
 	navIconHide: {
 		[theme.breakpoints.up("md")]: {
 			display: "none",
 		},
-	},
-	paginatorWrapper: {
-		width: "100%",
-		display: "flex",
-		flexDirection: "row" as "row",
-		justifyContent: "center",
 	},
 	root: {
 		flexGrow: 1,
@@ -124,7 +100,7 @@ const styles = (theme: Theme) => ({
 	toolbar: theme.mixins.toolbar,
 });
 
-type BoardPageProps = IBoardPageProps & WithStyles<"appBar" | "boardContent" | "boardTitle" | "content" | "drawerPaper" | "link" | "navIconHide" | "paginatorWrapper" | "root" | "toolbar">;
+type BoardPageProps = IBoardPageProps & WithStyles<"appBar" | "content" | "drawerPaper" | "navIconHide" | "root" | "toolbar">;
 
 class BoardPage extends React.Component<BoardPageProps, IBoardPageState> {
 
@@ -140,8 +116,6 @@ class BoardPage extends React.Component<BoardPageProps, IBoardPageState> {
 		const initialState: IBoardPageState = {
 			title,
 			page: parseInt(page, 10),
-			pageMax: 1,
-			posts: [],
 			menuItems: [],
 			mobileDrawerOpened: false,
 		};
@@ -162,9 +136,6 @@ class BoardPage extends React.Component<BoardPageProps, IBoardPageState> {
 				alert("로그인이 필요합니다.");
 				this.props.history["push"]("/");
 			}
-			else {
-				this.update(this.state.title, this.state.page);
-			}
 		});
 	}
 
@@ -173,7 +144,7 @@ class BoardPage extends React.Component<BoardPageProps, IBoardPageState> {
 				<div className={this.props.classes.toolbar}/>
 				<Divider />
 				{this.state.menuItems.map((item: ISideMenuItem, idx: number) => {
-					return <ListItem button key={idx} onClick={() => { this.update(item.name, 1); }}>
+					return <ListItem button key={idx} onClick={() => { this.onBoardItemClicked(item.name); }}>
 						<ListItemText primary={item.name}/>
 					</ListItem>;
 				})}
@@ -221,29 +192,26 @@ class BoardPage extends React.Component<BoardPageProps, IBoardPageState> {
 				</Hidden>
 				<main className={this.props.classes.content}>
 					<div className={this.props.classes.toolbar}/>
-					<Typography variant="headline" className={this.props.classes.boardTitle}>{this.state.title}</Typography>
-					<Paper elevation={2}
-					className={this.props.classes.boardContent}>
-						<PostList posts={this.state.posts} onItemClick={this.onPostClick}/>
-					</Paper>
-					<ReactRouter.Link 
-					className={this.props.classes.link}
-					to="/write">
-						<Button text="글쓰기" iconSrc="/img/ic_create_white_48px.svg"/>
-					</ReactRouter.Link>
-					<div className={this.props.classes.paginatorWrapper}>
-						<BoardPaginator 
-								pageMin={ 1 }
-								pageMax={this.state.pageMax}
-								pageCurrent={this.state.page}
-								pagePlusMinus={ 2 }
-								onPageClick={(page: number) => {this.update(this.state.title, page); }}
-								onNextClick={(currnet: number, max: number) => { 
-									this.update(this.state.title, max + 1); }}
-								onPreviousClick={(current: number, min: number) => {
-									this.update(this.state.title, min - 1);
-						}}/>
-					</div>
+					{/* render content component */}
+					<ReactRouter.Switch>
+						<ReactRouter.Route path={Routes.routeBoardContent} 
+							render={() => <BoardContent 
+								location={this.props.location}
+								history={this.props.history}
+								title={this.state.title}
+								page={this.state.page}
+								postPerPage={this.POSTS_PER_PAGE}
+								onBoardLoaded={this.props.onBoardLoaded}/>} />
+						{/* <ReactRouter.Route path={Routes.routeWrite} component={WritePostPage} /> */}
+						<ReactRouter.Route path={Routes.routePostContent}
+							render={() => <PostContent
+								location={this.props.location}
+								boardTitleFrom={this.props.navInfor.boardTitle}
+								pageNumFrom={this.props.navInfor.page}
+								onPostNavigated={this.props.onPostNavigated}/>} />
+						{/* <ReactRouter.Route path={Routes.routeMyPage} component={MyPage} />
+						<ReactRouter.Route path={Routes.routeAdmin} component={AdminPage} /> */}
+					</ReactRouter.Switch>
 				</main>
 			</div>
 		);
@@ -268,59 +236,24 @@ class BoardPage extends React.Component<BoardPageProps, IBoardPageState> {
 		});
 	}
 
+	private onBoardItemClicked = (title: string) => {
+		this.props.history["push"](`${Routes.routeBoardContent}?title=${title}&page=1`);
+	}
+
 	private onMyPage = () => {
-		this.props.history["push"]("/mypage");
+		this.props.history["push"](Routes.routeMyPageContent);
 	}
 
 	private onAdmin = () => {
-		this.props.history["push"]("/admin");
+		this.props.history["push"](Routes.routeAdminContent);
 	}
 
-	private onPostClick = (id: string | number) => {
-		// 
-	}
-
-	private update = (title: string, page: number) => {
-		let matchedTitle: string | undefined;
-		for (const t in BoardTitle) {
-			if (title === BoardTitle[t]) { matchedTitle = BoardTitle[t]; break; }
-		}
-
-		if (!matchedTitle) { title = BoardTitle.seminar; }
-		
-		this.setState({title: title as BoardTitle, page}, () => {
-			reqPost.PostAPIRequest.retrievePostList(this.state.page, 
-				new Date().getFullYear(), this.state.title)
-			.then((res: axios.AxiosResponse) => {
-				if (res.status === 200) {
-					const body = res.data;
-					const posts: PostObject[] = [];
-	
-					for (const p of body["posts"]["posts"]) {
-						posts.push(ObjectFactory.createPostObject(p));
-					}
-					const totalPosts = body["posts"]["total"];
-					let pages = totalPosts / this.POSTS_PER_PAGE;
-					if (totalPosts % this.POSTS_PER_PAGE !== 0) {
-						pages++;
-					}
-					this.setState({posts, pageMax: Math.floor(pages)});
-					this.props.onBoardLoaded(this.state.title, this.state.page);
-				}
-				else {
-					alert("게시물 목록을 가져오는 데 실패했습니다.");
-				}
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-		});
-	}
 }
 
 const mapStateToProps = (state: IStore) => {
 	return {
 		user: state.user,
+		navInfor: state.current,
 	};
 };
 
@@ -332,6 +265,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 		onBoardLoaded: (title: BoardTitle, page: number) => {
 			dispatch(NavigationActionCreator.setBoardTitle(title));
 			dispatch(NavigationActionCreator.setPageNum(page));
+		},
+		onPostNavigated: (post: PostObject) => {
+			dispatch(NavigationActionCreator.setPost(post));
 		},
 	};
 };

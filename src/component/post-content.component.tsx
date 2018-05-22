@@ -25,20 +25,26 @@ import { IStore } from "../store";
 import { ReplyInput } from "../component/reply-input.component";
 import { ReplyList } from "../component/reply-list.component";
 
-export interface IPostPageProps {
+import { Routes } from "../routes";
+
+export interface IPostContentProps {
 	location: any;
 	boardTitleFrom: BoardTitle;
 	pageNumFrom: number;
-	post: PostObject | undefined;
 	onPostNavigated: (post: PostObject) => void;
 }
 
-class PostPage extends React.Component<IPostPageProps> {
+interface IPostContentState {
+	post: PostObject;
+}
+
+class PostContent extends React.Component<IPostContentProps, IPostContentState> {
 
 	public constructor(props: any) {
 		super(props);
+
 		this.state = {
-			post: undefined,
+			post: new PostObject("", "", ""),
 		};
 	}
 
@@ -47,15 +53,15 @@ class PostPage extends React.Component<IPostPageProps> {
 	}
 
 	public render() {
-		const replyList = this.props.post ? 
-		(<ReplyList replies={this.props.post.getReplies()}/>) : undefined;
+		const replyList = this.state.post ? 
+		(<ReplyList replies={this.state.post.getReplies()}/>) : undefined;
 		return (
 			<div>
-				<h1>{this.props.post ? this.props.post.getTitle() : ""}</h1> 
-				<p>{this.props.post ? this.props.post.getContent() : ""}</p>
-				<Link to={`/write?mod=true&id=`}><h5>수정</h5></Link>
+				<h1>{this.state.post ? this.state.post.getTitle() : ""}</h1> 
+				<p>{this.state.post ? this.state.post.getContent() : ""}</p>
+				<Link to={`${Routes.routeWriteContent}?mod=true&id=${this.state.post.getId()}`}><h5>수정</h5></Link>
 				<h5>삭제</h5>
-				<Link to={`/board?title=${this.props.boardTitleFrom}&page=${this.props.pageNumFrom}`} >
+				<Link to={`${Routes.routeBoardContent}?title=${this.props.boardTitleFrom}&page=${this.props.pageNumFrom}`} >
 					<h5>≪ 목록으로</h5>
 				</Link>
 				<ReplyInput 
@@ -76,14 +82,16 @@ class PostPage extends React.Component<IPostPageProps> {
 				alert("Error occurred while load post");
 			}
 			else {
-				this.props.onPostNavigated(ObjectFactory.createPostObject(res.data["post"]));
+				const post = ObjectFactory.createPostObject(res.data["post"]);
+				this.props.onPostNavigated(post);
+				this.setState({post});
 			}
 		});
 	}
 
 	private writeReply = (input: string) => {
-		if (!this.props.post) { return; }
-		ReplyAPIRequest.createReply(this.props.post.getId().toString(), input)
+		if (!this.state.post) { return; }
+		ReplyAPIRequest.createReply(this.state.post.getId().toString(), input)
 		.then((res: AxiosResponse) => {
 			const body = res.data;
 			this.update();
@@ -107,4 +115,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostPage);
+export default PostContent;

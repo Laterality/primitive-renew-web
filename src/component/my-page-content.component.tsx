@@ -27,22 +27,13 @@ import { UserObject } from "../lib/user.obj";
 
 import { UserAPIRequest } from "../lib/user.request";
 
-export interface IMyPageProps extends ISessionVerifiable {
+export interface IMyPageProps {
 	history: any;
 	location: any;
+	user: UserObject;
 }
 
 class MyPage extends React.Component<IMyPageProps> {
-
-	public componentDidMount() {
-
-		verifySession(this.props, (signed: boolean) => {
-			if (!signed) {
-				alert("로그인이 필요합니다.");
-				this.props.history["push"]("/");
-			}
-		});
-	}
 
 	public render() {
 		return (
@@ -83,4 +74,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyPage);
+export default MyPage;

@@ -6,8 +6,6 @@
  */
 import { AxiosResponse, CancelTokenSource, default as axios } from "axios";
 import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -35,7 +33,7 @@ import { UserAPIRequest } from "../lib/user.request";
 import { ISessionVerifiable, verifySession } from "../lib/session-verfying.interface";
 import { IStore } from "../store";
 
-export interface IAdminPageProps extends ISessionVerifiable {
+export interface IAdminPageProps {
 	location: any;
 	history: any;
 }
@@ -80,15 +78,6 @@ class AdminPage extends React.Component<IAdminPageProps, IAdminPageState> {
 				sid: "",
 			},
 		};
-	}
-
-	public componentDidMount() {
-		verifySession(this.props, (signed: boolean) => {
-			if (!signed) {
-				alert("로그인이 필요합니다.");
-				this.props.history["push"]("/");
-			}
-		});
 	}
 	
 	public render() {
@@ -279,18 +268,4 @@ class AdminPage extends React.Component<IAdminPageProps, IAdminPageState> {
 	}
 }
 
-const mapStateToProps = (state: IStore) => {
-	return {
-		user: state.user,
-	};
-};
-
-const mapDispatchToProps = (dispatch: Dispatch) => {
-	return {
-		onSessionVerified: (user: UserObject) => {
-			dispatch(UserActionCreator.setUser(user));
-		},
-	};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AdminPage);
+export default AdminPage;
