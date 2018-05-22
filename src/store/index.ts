@@ -13,7 +13,7 @@ import { reduce } from "../reducer";
 export interface ICurrentNavigation {
 	boardTitle: BoardTitle;
 	page: number;
-	post: PostObject | undefined;
+	post: PostObject;
 }
 
 export interface IStore {

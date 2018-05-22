@@ -8,7 +8,7 @@ import { AnyAction } from "redux";
 
 import { IStore } from "../store";
 
-import { BoardTitle } from "../lib/post.obj";
+import { BoardTitle, PostObject } from "../lib/post.obj";
 
 import { navigationReducer } from "./navigation";
 import { userReducer } from "./user";
@@ -21,7 +21,7 @@ const initialState: IStore = {
 	current: {
 		boardTitle: BoardTitle.seminar,
 		page: 1,
-		post: undefined,
+		post: new PostObject("", "", ""),
 	},
 };
 
