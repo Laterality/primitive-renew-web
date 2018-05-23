@@ -195,7 +195,7 @@ class BoardPage extends React.Component<BoardContentProps, IContentState> {
 								history={this.props.history}
 								postPerPage={this.POSTS_PER_PAGE}
 								onBoardLoaded={this.props.onBoardLoaded}
-								onSetUpdater={(updater) => {this.boardUpdater = updater;}}/>} />
+								onSetUpdater={(updater) => { this.boardUpdater = updater; }}/>} />
 						{/* <ReactRouter.Route path={Routes.routeWrite} component={WritePostPage} /> */}
 						<ReactRouter.Route path={Routes.routePostContent}
 							render={() => <PostContent
