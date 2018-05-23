@@ -6,7 +6,7 @@ import { UserObject } from "./user.obj";
 import { UserAPIRequest } from "./user.request";
 
 export interface ISessionVerifiable {
-	user: UserObject | undefined;
+	user: UserObject;
 	onSessionVerified: (user: UserObject) => void;
 }
 
