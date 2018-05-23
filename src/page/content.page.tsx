@@ -39,7 +39,10 @@ import { ISideMenuItem, SideMenu } from "../component/side-menu.component";
 
 import {default as BoardContent, IBoardContentProps } from "../component/board-content.component";
 
+import { default as AdminContent } from "../component/admin-content.component";
+import { default as MyPageContent } from "../component/my-page-content.component";
 import { default as PostContent } from "../component/post-content.component";
+import { default as WritePostContent } from "../component/write-post-content.component";
 
 import { NavigationActionCreator } from "../action/navigation.action";
 import { UserActionCreator } from "../action/user.action";
@@ -75,6 +78,28 @@ const styles = (theme: Theme) => ({
 		padding: theme.spacing.unit * 3,
 		marginTop: theme.mixins.toolbar.height,
 		marginLeft: drawerWidth,
+		[theme.breakpoints.down("md")]: {
+			marginLeft: "auto",
+			marginRight: "auto",
+		},
+	},
+	contentPaperNarrow: {
+		width: "80%",
+		paddingLeft: "15%",
+		paddingRight: "15%",
+		paddingTop: "48px",
+		paddingBottom: "48px",
+		marginLeft: "auto",
+		marginRight: "auto",
+	},
+	contentPaperNormal: {
+		width: "80%",
+		paddingLeft: "10%",
+		paddingRight: "10%",
+		paddingTop: "48px",
+		paddingBottom: "48px",
+		marginLeft: "auto",
+		marginRight: "auto",
 	},
 	drawerPaper: {
 		width: drawerWidth,
@@ -98,7 +123,7 @@ const styles = (theme: Theme) => ({
 	toolbar: theme.mixins.toolbar,
 });
 
-type BoardContentProps = IContentProps & WithStyles<"appBar" | "content" | "drawerPaper" | "navIconHide" | "root" | "toolbar">;
+type BoardContentProps = IContentProps & WithStyles<"appBar" | "content" | "contentPaperNarrow" | "contentPaperNormal" | "drawerPaper" | "navIconHide" | "root" | "toolbar">;
 
 class BoardPage extends React.Component<BoardContentProps, IContentState> {
 
@@ -117,7 +142,7 @@ class BoardPage extends React.Component<BoardContentProps, IContentState> {
 		for (const t in BoardTitle) {
 			initialState.menuItems.push({
 				name: BoardTitle[t],
-				linkTo: `/board?title=${BoardTitle[t]}&page=1`,
+				linkTo: `${Routes.routeBoardContent}?title=${BoardTitle[t]}&page=1`,
 			});
 		}
 
@@ -135,6 +160,7 @@ class BoardPage extends React.Component<BoardContentProps, IContentState> {
 	}
 
 	public render() {
+		const { classes } = this.props;
 		const drawer = <div>
 				<div className={this.props.classes.toolbar}/>
 				<Divider />
@@ -160,17 +186,17 @@ class BoardPage extends React.Component<BoardContentProps, IContentState> {
 				<Divider/>
 			</div>;
 		return (
-			<div className={this.props.classes.root}>
+			<div className={classes.root}>
 				<Header user={this.props.user} 
 				onMenu={this.onMenuClicked}
-				classes={{appBar: this.props.classes.appBar,
-				menuIcon: this.props.classes.navIconHide}}/>
+				classes={{appBar: classes.appBar,
+				menuIcon: classes.navIconHide}}/>
 				<Hidden mdUp>
 					<Drawer
 						variant="temporary"
 						open={this.state.mobileDrawerOpened}
 						onClose={this.onMenuClose}
-						classes={{paper: this.props.classes.drawerPaper}}
+						classes={{paper: classes.drawerPaper}}
 						ModalProps={{
 							keepMounted: true,
 						}}>
@@ -181,30 +207,37 @@ class BoardPage extends React.Component<BoardContentProps, IContentState> {
 					<Drawer
 						variant="permanent"
 						open
-						classes={{paper: this.props.classes.drawerPaper}}>
+						classes={{paper: classes.drawerPaper}}>
 						{drawer}
 					</Drawer>
 				</Hidden>
-				<main className={this.props.classes.content}>
-					<div className={this.props.classes.toolbar}/>
+				<main className={classes.content}>
+					<div className={classes.toolbar}/>
 					{/* render content component */}
 					<ReactRouter.Switch>
 						<ReactRouter.Route path={Routes.routeBoardContent} 
 							render={() => <BoardContent 
+								classes={{boardContent: classes.contentPaperNarrow}}
 								location={this.props.location}
 								history={this.props.history}
 								postPerPage={this.POSTS_PER_PAGE}
 								onBoardLoaded={this.props.onBoardLoaded}
-								onSetUpdater={(updater) => { this.boardUpdater = updater; }}/>} />
-						{/* <ReactRouter.Route path={Routes.routeWrite} component={WritePostPage} /> */}
+								onSetUpdater={(updater: (title: BoardTitle, page: number) => void) => { this.boardUpdater = updater; }}/>} />
+						<ReactRouter.Route path={Routes.routeWriteContent}
+							render={() => <WritePostContent 
+								classes={{contentPaper: classes.contentPaperNormal}}
+								history={this.props.history}
+								boardFrom={this.props.navInfor.boardTitle}/>} />
 						<ReactRouter.Route path={Routes.routePostContent}
 							render={() => <PostContent
+								classes={{contentPaper: classes.contentPaperNormal}}
 								location={this.props.location}
 								boardTitleFrom={this.props.navInfor.boardTitle}
 								pageNumFrom={this.props.navInfor.page}
-								onPostNavigated={this.props.onPostNavigated}/>} />
-						{/* <ReactRouter.Route path={Routes.routeMyPage} component={MyPage} />
-						<ReactRouter.Route path={Routes.routeAdmin} component={AdminPage} /> */}
+								onPostNavigated={this.props.onPostNavigated}
+								user={this.props.user}/>} />
+						<ReactRouter.Route path={Routes.routeMyPageContent} component={MyPageContent} />
+						<ReactRouter.Route path={Routes.routeAdminContent} component={AdminContent} />
 					</ReactRouter.Switch>
 				</main>
 			</div>
@@ -233,7 +266,13 @@ class BoardPage extends React.Component<BoardContentProps, IContentState> {
 	private onBoardItemClicked = (title: string) => {
 		this.props.history["push"](`${Routes.routeBoardContent}?title=${title}&page=1`);
 		if (this.boardUpdater) {
-			this.boardUpdater(title as BoardTitle, 1);
+			try {
+				this.boardUpdater(title as BoardTitle, 1);
+			}
+			catch (e) { 
+				// throw away exception
+				const err = e;
+			}
 		}
 	}
 
