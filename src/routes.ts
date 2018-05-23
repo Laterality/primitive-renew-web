@@ -2,9 +2,10 @@ import { config } from "./config";
 
 export class Routes {
 	public static readonly routeRoot = `/`;
-	public static readonly routeBoard = `/board`;
-	public static readonly routeWrite = `/write`;
-	public static readonly routePost = `/post`;
-	public static readonly routeMyPage = `/mypage`;
-	public static readonly routeAdmin = `/admin`;
+	public static readonly routeContent = `/content`;
+	public static readonly routeBoardContent = `/content/board`;
+	public static readonly routeWriteContent = `/content/write`;
+	public static readonly routePostContent = `/content/post`;
+	public static readonly routeMyPageContent = `/content/mypage`;
+	public static readonly routeAdminContent = `/content/admin`;
 }

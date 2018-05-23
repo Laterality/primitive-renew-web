@@ -4,12 +4,8 @@ import { connect, Provider } from "react-redux";
 import * as Router from "react-router-dom";
 import { Dispatch } from "redux";
 
-import { default as AdminPage } from "./page/admin.page";
-import { default as BoardPage } from "./page/board.page";
+import { default as ContentPage } from "./page/content.page";
 import { default as HomePage } from "./page/home.page";
-import { default as MyPage } from "./page/my-page.page";
-import { default as PostPage } from "./page/post.page";
-import { default as WritePostPage } from "./page/write-post.page";
 
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
@@ -51,11 +47,7 @@ export class App extends React.Component {
 					<Router.BrowserRouter>
 						<div className="router-wrapper">
 							<Router.Route exact path={Routes.routeRoot} component={HomePage} />
-							<Router.Route path={Routes.routeBoard} component={BoardPage} />
-							<Router.Route path={Routes.routeWrite} component={WritePostPage} />
-							<Router.Route path={Routes.routePost} component={PostPage} />
-							<Router.Route path={Routes.routeMyPage} component={MyPage} />
-							<Router.Route path={Routes.routeAdmin} component={AdminPage} />
+							<Router.Route path={"/content"} component={ContentPage}/>
 						</div>
 					</Router.BrowserRouter>
 				</Provider>
