@@ -25,6 +25,8 @@ import { UserActionCreator } from "../action/user.action";
 
 import { IStore } from "../store";
 
+import { Routes } from "../routes";
+
 export interface IHomePageProps extends ISessionVerifiable {
 	history: any;
 	onLoginSucceed: (user: UserObject) => void;
@@ -36,7 +38,7 @@ class HomePage extends React.Component<IHomePageProps> {
 		verifySession(this.props, (signed: boolean) => {
 			if (signed) {
 				alert("이미 로그인되어있습니다.");
-				this.props.history["push"]("/board");
+				this.props.history["push"](Routes.routeBoardContent);
 			}
 		});
 	}
@@ -63,7 +65,7 @@ class HomePage extends React.Component<IHomePageProps> {
 			if (body["result"] === "ok") {
 				// 로그인 성공
 				this.props.onLoginSucceed(ObjectFactory.createUserObject(body["user"]));
-				this.props.history["push"]("/board");
+				this.props.history["push"](Routes.routeBoardContent);
 			}
 			else {
 				if (res.status === 403) {
