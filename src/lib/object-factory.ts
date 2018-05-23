@@ -60,7 +60,7 @@ export class ObjectFactory {
 			obj["id"],
 			obj["post_content"],
 			files,
-			obj["date_created"],
+			new Date(obj["date_created"]),
 			this.createUserObject(obj["author"]),
 			replies,
 		);

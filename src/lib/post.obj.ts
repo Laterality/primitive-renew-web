@@ -20,10 +20,10 @@ export enum BoardTitle {
 		private title: string,
 		private board: string,
 		private id: string | number,
-		private content?: string,
-		private filesAttached?: FileObject[],
-		private dateCreated?: Date,
-		private author?: UserObject,
+		private content: string,
+		private filesAttached: FileObject[],
+		private dateCreated: Date,
+		private author: UserObject,
 		private replies?: ReplyObject[],
 	) {}
 

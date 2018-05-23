@@ -9,6 +9,7 @@ import { AnyAction } from "redux";
 import { IStore } from "../store";
 
 import { BoardTitle, PostObject } from "../lib/post.obj";
+import { UserObject } from "../lib/user.obj";
 
 import { navigationReducer } from "./navigation";
 import { userReducer } from "./user";
@@ -21,7 +22,7 @@ const initialState: IStore = {
 	current: {
 		boardTitle: BoardTitle.seminar,
 		page: 1,
-		post: new PostObject("", "", ""),
+		post: new PostObject("", "", "", "", [], new Date(), new UserObject("", "", "", "")),
 	},
 };
 
