@@ -11,6 +11,8 @@ import Typography from "@material-ui/core/Typography";
 
 import { Theme, withStyles, WithStyles } from "@material-ui/core";
 
+import { formatDate } from "../lib/utils";
+
 import { PostObject } from "../lib/post.obj";
 
 import { Routes } from "../routes";
@@ -44,7 +46,7 @@ class PostListItem extends React.Component<PostListItemProps> {
 			<Typography variant="body2" color="textSecondary" 
 			className={this.props.classes.contentExcerpt}>{this.props.post.getContent()}</Typography>
 			<Typography variant="caption" color="textSecondary"
-			>{this.props.post.getDateCreated() ? this.props.post.getDateCreated() : ""}</Typography>
+			>{formatDate(this.props.post.getDateCreated())}</Typography>
 		</li>);
 	}
 }

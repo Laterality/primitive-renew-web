@@ -8,7 +8,7 @@ import * as React from "react";
 
 import { ReplyObject } from "../lib/reply.obj";
 
-import { ReplyListItem } from "./reply-list-item.component";
+import { default as ReplyListItem } from "./reply-list-item.component";
 
 export interface IReplyListProps {
 	replies?: ReplyObject[];

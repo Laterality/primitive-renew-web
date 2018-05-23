@@ -18,7 +18,7 @@ export class PostList extends React.Component<IPostListProps> {
 
 	public render() {
 		return (
-			<ul className="list-group list-group-flush">
+			<ul className="list-group list-group-flush" style={{width: "100%"}}>
 				{ this.props.posts.map((obj: PostObject, i: number) => 
 					<PostListItem key={obj.getId()} post={obj} onClick={() => { if (this.props.onItemClick){ this.props.onItemClick(obj.getId()); }}}>{obj.getTitle()}</PostListItem>) }
 			</ul>

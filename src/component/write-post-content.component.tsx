@@ -12,10 +12,14 @@ import * as ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
+import Paper from "@material-ui/core/Paper";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+
+import { withStyles, WithStyles } from "@material-ui/core";
+
 import * as reqPost from "../lib/post.request";
 import * as reqUser from "../lib/user.request";
-
-import { ISessionVerifiable, verifySession } from "../lib/session-verfying.interface";
 
 import { BoardTitle, PostObject } from "../lib/post.obj";
 import { UserObject } from "../lib/user.obj";
@@ -26,40 +30,63 @@ import { MyButton as Button } from "../component/button.component";
 import { ObjectFactory } from "../lib/object-factory";
 import { IStore } from "../store";
 
-export interface IWritePostProp extends ISessionVerifiable {
+import { Routes } from "../routes";
+
+export interface IWritePostProps {
 	history: any;
-	user: UserObject;
 	boardFrom: BoardTitle;
 }
 
-class WritePostPage extends React.Component<IWritePostProp> {
+const styles = {
+	boardTitle: {
+		paddingLeft: "16px",
+		marginLeft: "25%",
+		marginTop: "24px",
+		marginBottom: "24px",
+		borderLeftStyle: "solid" as "solid",
+		borderLeftColor: "#0097A7",
+		borderLeftWidth: "4px",
+	},
+	buttonWriteWrapper: {
+		float: "right" as "right",
+		marginRight: "10%",
+		marginTop: "16px", 
+		marginBottom: "16px",
+	},
+	contentPaper: {},
+};
 
-	public componentDidMount() {
-		verifySession(this.props, (signed: boolean) => {
-			if (!signed) {
-				alert("로그인이 필요합니다.");
-				this.props.history["push"]("/");
-			}
-		});
-	}
+type WritePostProps = IWritePostProps & WithStyles<"boardTitle" | "buttonWriteWrapper" | "contentPaper">;
+
+class WritePostContent extends React.Component<WritePostProps> {
 
 	public render() {
+		const { classes } = this.props;
 		return (
 			<div>
-				Write some post
-				<div className="form-group">
-					<label htmlFor="title">제목</label>
-					<input type="text" id="title" className="form-control" placeholder="제목을 입력하세요." />
-				</div>
-				<div className="form-group">
-					<label htmlFor="content">내용</label>
-					<textarea id="content" className="form-control" ref="contentForm" rows={20} />
-				</div>
-				<span className="float-right" onClick={() => this.onWriteClicked()}>
+				<Typography variant="headline" className={classes.boardTitle}>{this.props.boardFrom}</Typography>
+				<Paper elevation={2}
+					className={classes.contentPaper}>
+					<div className="form-group">
+						<TextField fullWidth id="title" type="text" label="제목" 
+						placeholder="제목을 입력하세요"
+						margin="normal"/>
+					</div>
+					<div className="form-group">
+						{/* <label htmlFor="content">내용</label>
+						<textarea id="content" className="form-control" ref="contentForm" rows={20} /> */}
+						<TextField multiline fullWidth
+						id="content" label="내용"
+						placeholder="게시물 내용" 
+						margin="normal"/>
+					</div>
+				</Paper>
+				<div className={classes.buttonWriteWrapper}>
 					<Button 
+					onClick={() => this.onWriteClicked()}
 					text="완료"
 					iconSrc="/img/ic_create_white_48px.svg"/>
-				</span>
+				</div>
 			</div>
 		);
 	}
@@ -75,7 +102,7 @@ class WritePostPage extends React.Component<IWritePostProp> {
 			const body = res.data;
 			if (body["result"] === "ok") {
 				alert("등록되었습니다.");
-				this.props.history["push"]("/board");
+				this.props.history["push"](Routes.routeBoardContent);
 			}
 			else {
 				alert("등록에 실패하였습니다.");
@@ -84,19 +111,4 @@ class WritePostPage extends React.Component<IWritePostProp> {
 	}
 }
 
-const mapStateToProps = (state: IStore) => {
-	return {
-		user: state.user,
-		boardFrom: state.current.boardTitle,
-	};
-};
-
-const mapDispatchToProps = (dispatch: Dispatch) => {
-	return {
-		onSessionVerified: (user: UserObject) => {
-			dispatch(UserActionCreator.setUser(user));
-		},
-	};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(WritePostPage);
+export default withStyles(styles)<IWritePostProps>(WritePostContent);
