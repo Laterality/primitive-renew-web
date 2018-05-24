@@ -14,10 +14,14 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
 import MenuItem from "@material-ui/core/MenuItem";
+import Paper from "@material-ui/core/Paper";
 import SnackBar from "@material-ui/core/SnackBar";
 import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
 
 import CloseIcon from "@material-ui/icons/Close";
+
+import { withStyles, WithStyles } from "@material-ui/core";
 
 import { MyButton } from "../component/button.component";
 import { MemberList } from "../component/member-list.component";
@@ -30,15 +34,12 @@ import { RoleTitles, UserObject } from "../lib/user.obj";
 
 import { UserAPIRequest } from "../lib/user.request";
 
-import { ISessionVerifiable, verifySession } from "../lib/session-verfying.interface";
-import { IStore } from "../store";
-
-export interface IAdminPageProps {
+export interface IAdminContentProps {
 	location: any;
 	history: any;
 }
 
-export interface IAdminPageState {
+interface IAdminContentState {
 	users: UserObject[];
 	userSelectedToUpdate: UserObject | undefined;
 	dialogOpened: boolean;
@@ -55,12 +56,29 @@ enum DialogFor {
 	FOR_UPDATE = 2,
 }
 
-class AdminPage extends React.Component<IAdminPageProps, IAdminPageState> {
+const styles = {
+	buttonAdd: {
+		float: "right" as "right",
+		marginTop: "16px",
+	},
+	contentPaper: {
+		display: "flex",
+		flexDirection: "column" as "column",
+	},
+	selector: {
+		paddingRight: "16px",
+	},
+	title: {},
+};
+
+type AdminContentProps = IAdminContentProps & WithStyles<"buttonAdd" | "contentPaper" | "selector" | "title">;
+
+class AdminContent extends React.Component<AdminContentProps, IAdminContentState> {
 
 	private canceler: CancelTokenSource;
 	private inputTimer: number | null;
 
-	public constructor(props: IAdminPageProps, state: IAdminPageState) {
+	public constructor(props: AdminContentProps, state: IAdminContentState) {
 		super(props);
 		this.canceler = axios.CancelToken.source();
 		this.inputTimer = null;
@@ -81,33 +99,48 @@ class AdminPage extends React.Component<IAdminPageProps, IAdminPageState> {
 	}
 	
 	public render() {
+		const { classes } = this.props;
 		const titles: string[] = [];
 		for (const i in RoleTitles) {
 			titles.push(RoleTitles[i]);
 		}
+		const menu = titles.map((t: string, i: number) => {
+			return (<MenuItem key={i} value={t}>{t}</MenuItem>);
+		});
 		return (
 			<div>
-				<div className="container row">
-					<TextField id="create-role" 
-								value={this.state.selectedRoleToSearch}
-								onChange={this.onChangeRoleToSearch} select
-								className="my-3 col-4"
-								fullWidth>
-									{titles.map((t: string, i: number) => {
-										return (<MenuItem key={i} value={t}>{t}</MenuItem>);
-									})}
+				<Typography variant="headline" 
+					className={this.props.classes.title}>관리</Typography>
+				<Paper elevation={2}
+					className={classes.contentPaper}>
+					<div className="container row">
+						<TextField id="create-role" 
+							value={this.state.selectedRoleToSearch}
+							onChange={this.onChangeRoleToSearch} select
+							className={["my-3", "col-2", classes.selector].join(" ")}>
+								{menu}
 						</TextField>
-					<TextField id="keyword" type="text" label="검색(이름, 학번)" className="col-8" onChange={this.onSearchInputChanged} fullWidth/>
-				</div>
-				<MemberList members={this.state.users} onItemClick={this.onMemberItemClick} />
-				<MyButton text="추가" onClick={this.onAddClick}/>
+						<TextField id="keyword" type="text" label="검색(이름, 학번)" className="col-10" 
+							onChange={this.onSearchInputChanged} fullWidth/>
+					</div>
+					<MemberList members={this.state.users} 
+						onItemClick={this.onMemberItemClick} />
+					<div>
+						<MyButton text="추가" onClick={this.onAddClick}
+							className={classes.buttonAdd}/>
+					</div>
+				</Paper>
+				
+				{/* BEGIN: Member add/mod. dialog */}
 				<Dialog open={this.state.dialogOpened} 
 				onClose={() => this.onCreateDialogClosed(true)}
 				aria-labelledby="create-dialog-title">
 					<DialogTitle id="create-dialog-title">회원 추가/수정</DialogTitle>
 					<DialogContent>
-						<TextField id="dialog-name" type="text" label="이름" fullWidth margin="dense" className="my-3" value={this.state.inputs["name"]} />
-						<TextField id="dialog-sid" type="text" label="학번" fullWidth margin="dense" className="my-3" value={this.state.inputs["sid"]} />
+						<TextField id="dialog-name" type="text" label="이름" fullWidth margin="dense" className="my-3" 
+						defaultValue={this.state.inputs["name"]} />
+						<TextField id="dialog-sid" type="text" label="학번" fullWidth margin="dense" className="my-3" 
+						defaultValue={this.state.inputs["sid"]} />
 						<TextField id="dialog-password" type="password" label="비밀번호" fullWidth margin="dense" className="my-3" />
 						<TextField id="dialog-password-confirm" type="password" label="비밀번호 확인" fullWidth margin="dense" />
 						<TextField id="create-role" 
@@ -125,6 +158,7 @@ class AdminPage extends React.Component<IAdminPageProps, IAdminPageState> {
 						<Button className="px-4" onClick={() => this.onCreateDialogClosed(true)} color="primary">취소</Button>
 					</DialogActions>
 				</Dialog>
+				{/* END: Member add/mod. dialog */}
 				<SnackBar anchorOrigin={{
 					vertical: "top",
 					horizontal: "right",
@@ -210,7 +244,6 @@ class AdminPage extends React.Component<IAdminPageProps, IAdminPageState> {
 	}
 
 	private onMemberItemClick = (user: UserObject) => {
-		console.log("role: " + user.getRole());
 		this.setState({
 			userSelectedToUpdate: user, 
 			dialogOpened: true, 
@@ -227,7 +260,6 @@ class AdminPage extends React.Component<IAdminPageProps, IAdminPageState> {
 
 	private onChangeRoleToSearch = (event: any) => {
 		this.setState({selectedRoleToSearch: event["target"]["value"]}, () => {
-			console.log("changed: ", this.state.selectedRoleToSearch);
 			this.onSearchInputChanged();
 		});
 	}
@@ -268,4 +300,4 @@ class AdminPage extends React.Component<IAdminPageProps, IAdminPageState> {
 	}
 }
 
-export default AdminPage;
+export default withStyles(styles)<IAdminContentProps>(AdminContent);

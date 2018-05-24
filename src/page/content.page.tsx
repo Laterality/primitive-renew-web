@@ -258,7 +258,15 @@ class BoardPage extends React.Component<BoardContentProps, IContentState> {
 								location={this.props.location}
 								history={this.props.history}
 								user={this.props.user} />} />
-						<ReactRouter.Route path={Routes.routeAdminContent} component={AdminContent} />
+						<ReactRouter.Route path={Routes.routeAdminContent} 
+							render={() => <AdminContent 
+								classes={{
+									title: classes.contentTitle,
+									contentPaper: classes.contentPaperNormal,
+								}}
+								location={this.props.location}
+								history={this.props.history}
+							/>} />
 					</ReactRouter.Switch>
 				</main>
 			</div>
