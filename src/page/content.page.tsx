@@ -101,6 +101,15 @@ const styles = (theme: Theme) => ({
 		marginLeft: "auto",
 		marginRight: "auto",
 	},
+	contentTitle: {
+		paddingLeft: "16px",
+		marginLeft: "25%",
+		marginTop: "24px",
+		marginBottom: "24px",
+		borderLeftStyle: "solid" as "solid",
+		borderLeftColor: "#0097A7",
+		borderLeftWidth: "4px",
+	},
 	drawerPaper: {
 		width: drawerWidth,
 		[theme.breakpoints.up("md")]: {
@@ -123,7 +132,7 @@ const styles = (theme: Theme) => ({
 	toolbar: theme.mixins.toolbar,
 });
 
-type BoardContentProps = IContentProps & WithStyles<"appBar" | "content" | "contentPaperNarrow" | "contentPaperNormal" | "drawerPaper" | "navIconHide" | "root" | "toolbar">;
+type BoardContentProps = IContentProps & WithStyles<"appBar" | "content" | "contentPaperNarrow" | "contentPaperNormal" | "contentTitle" | "drawerPaper" | "navIconHide" | "root" | "toolbar">;
 
 class BoardPage extends React.Component<BoardContentProps, IContentState> {
 
@@ -217,7 +226,9 @@ class BoardPage extends React.Component<BoardContentProps, IContentState> {
 					<ReactRouter.Switch>
 						<ReactRouter.Route path={Routes.routeBoardContent} 
 							render={() => <BoardContent 
-								classes={{boardContent: classes.contentPaperNarrow}}
+								classes={{
+									boardContent: classes.contentPaperNarrow,
+									boardTitle: classes.contentTitle}}
 								location={this.props.location}
 								history={this.props.history}
 								postPerPage={this.POSTS_PER_PAGE}
@@ -230,7 +241,9 @@ class BoardPage extends React.Component<BoardContentProps, IContentState> {
 								boardFrom={this.props.navInfor.boardTitle}/>} />
 						<ReactRouter.Route path={Routes.routePostContent}
 							render={() => <PostContent
-								classes={{contentPaper: classes.contentPaperNormal}}
+								classes={{
+									contentPaper: classes.contentPaperNormal,
+									boardTitle: classes.contentTitle}}
 								location={this.props.location}
 								boardTitleFrom={this.props.navInfor.boardTitle}
 								pageNumFrom={this.props.navInfor.page}

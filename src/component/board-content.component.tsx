@@ -29,15 +29,7 @@ import { Routes } from "../routes";
 
 const styles = (theme: Theme) => ({
 	boardContent: {},
-	boardTitle: {
-		paddingLeft: "16px",
-		marginLeft: "25%",
-		marginTop: "24px",
-		marginBottom: "24px",
-		borderLeftStyle: "solid" as "solid",
-		borderLeftColor: "#0097A7",
-		borderLeftWidth: "4px",
-	},
+	boardTitle: {},
 	link: { 
 		textDecoration: "none",
 		float: "right" as "right",
