@@ -249,7 +249,15 @@ class BoardPage extends React.Component<BoardContentProps, IContentState> {
 								pageNumFrom={this.props.navInfor.page}
 								onPostNavigated={this.props.onPostNavigated}
 								user={this.props.user}/>} />
-						<ReactRouter.Route path={Routes.routeMyPageContent} component={MyPageContent} />
+						<ReactRouter.Route path={Routes.routeMyPageContent} 
+							render={() => <MyPageContent
+								classes={{
+									title: classes.contentTitle,
+									paper: classes.contentPaperNarrow,
+								}}
+								location={this.props.location}
+								history={this.props.history}
+								user={this.props.user} />} />
 						<ReactRouter.Route path={Routes.routeAdminContent} component={AdminContent} />
 					</ReactRouter.Switch>
 				</main>
