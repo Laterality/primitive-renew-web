@@ -180,17 +180,14 @@ class BoardPage extends React.Component<BoardContentProps, IContentState> {
 				})}
 				<Divider />
 				{this.props.user && this.props.user.getRole() === "관리자" && 
-				<ListItem button>
-					<ListItemText primary="관리" 
-					onClick={() => { this.onAdmin(); }}/>
+				<ListItem button onClick={() => { this.onAdmin(); }}>
+					<ListItemText primary="관리"/>
 				</ListItem>}
-				<ListItem button>
-					<ListItemText primary="마이페이지" 
-					onClick={() => { this.onMyPage(); }}/>
+				<ListItem button onClick={() => { this.onMyPage(); }}>
+					<ListItemText primary="마이페이지"/>
 				</ListItem>
-				<ListItem button>
-					<ListItemText primary="로그아웃"
-					onClick={() => { this.onLogout(); }}/>
+				<ListItem button onClick={() => { this.onLogout(); }}>
+					<ListItemText primary="로그아웃"/>
 				</ListItem>
 				<Divider/>
 			</div>;
