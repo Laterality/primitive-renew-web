@@ -56445,7 +56445,7 @@ const DialogTitle_1 = __webpack_require__(/*! @material-ui/core/DialogTitle */ "
 const IconButton_1 = __webpack_require__(/*! @material-ui/core/IconButton */ "./node_modules/@material-ui/core/IconButton/index.js");
 const MenuItem_1 = __webpack_require__(/*! @material-ui/core/MenuItem */ "./node_modules/@material-ui/core/MenuItem/index.js");
 const Paper_1 = __webpack_require__(/*! @material-ui/core/Paper */ "./node_modules/@material-ui/core/Paper/index.js");
-const SnackBar_1 = __webpack_require__(/*! @material-ui/core/SnackBar */ "./node_modules/@material-ui/core/SnackBar/index.js");
+const Snackbar_1 = __webpack_require__(/*! @material-ui/core/Snackbar */ "./node_modules/@material-ui/core/Snackbar/index.js");
 const TextField_1 = __webpack_require__(/*! @material-ui/core/TextField */ "./node_modules/@material-ui/core/TextField/index.js");
 const Typography_1 = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/Typography/index.js");
 const Close_1 = __webpack_require__(/*! @material-ui/icons/Close */ "./node_modules/@material-ui/icons/Close.js");
@@ -56623,14 +56623,14 @@ class AdminContent extends React.Component {
                 React.createElement(DialogActions_1.default, null,
                     React.createElement(Button_1.default, { className: "px-4", onClick: () => this.onCreateDialogClosed(false), color: "primary" }, "\uD655\uC778"),
                     React.createElement(Button_1.default, { className: "px-4", onClick: () => this.onCreateDialogClosed(true), color: "primary" }, "\uCDE8\uC18C"))),
-            React.createElement(SnackBar_1.default, { anchorOrigin: {
+            React.createElement(Snackbar_1.default, { anchorOrigin: {
                     vertical: "top",
                     horizontal: "right",
                 }, open: this.state.snackBarUserCreatedOpened, onClose: this.onSnackBarClosed, autoHideDuration: 1500, ContentProps: {
                     "aria-describedby": "text-user-created",
                 }, message: React.createElement("span", { id: "text-user-created" }, "\uC0DD\uC131\uB418\uC5C8\uC2B5\uB2C8\uB2E4"), action: [React.createElement(IconButton_1.default, { color: "inherit", onClick: this.onSnackBarClosed },
                         React.createElement(Close_1.default, null))] }),
-            React.createElement(SnackBar_1.default, { anchorOrigin: {
+            React.createElement(Snackbar_1.default, { anchorOrigin: {
                     vertical: "top",
                     horizontal: "right",
                 }, open: this.state.snackBarUserUpdatedOpened, onClose: this.onSnackBarClosed, autoHideDuration: 1500, ContentProps: {
