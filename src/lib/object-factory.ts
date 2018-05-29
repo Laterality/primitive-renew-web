@@ -15,7 +15,6 @@ export class ObjectFactory {
 	public static createFileObject(obj: any): FileObject { 
 		const file = new FileObject(
 			obj["filename"],
-			obj["path"],
 			obj["id"],
 		);
 		return file;
@@ -44,7 +43,7 @@ export class ObjectFactory {
 	public static createPostObject(obj: any): PostObject {
 		const files: FileObject[] = [];
 		const replies: ReplyObject[] = [];
-		if (Array.isArray(obj["files_Attached"])) {
+		if (Array.isArray(obj["files_attached"])) {
 			for (const f of obj["files_attached"]) {
 				files.push(this.createFileObject(f));
 			}

@@ -8,8 +8,10 @@ import { PostObject } from "./post.obj";
 import { UserObject } from "./user.obj";
 
 export function checkPermission(post: PostObject, user: UserObject): boolean {
-	if (user.getRole() === "관리자") {
-		return true;
+	if (user) {
+		if (user.getRole() === "관리자") {
+			return true;
+		}
 	}
 	
 	const author = post.getAuthor();
