@@ -9,11 +9,9 @@
 
 	public constructor(
 		private filename: string,
-		private path: string,
 		private id: string | number,
 	) {}
 
 	public getFilename() { return this.filename; }
-	public getPath() { return this.path; }
 	public getId() { return this.id; }
 }

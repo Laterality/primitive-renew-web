@@ -23,6 +23,7 @@ import { checkPermission, formatDate } from "../lib/utils";
 
 import { NavigationActionCreator } from "../action/navigation.action";
 
+import { FileObject } from "../lib/file.obj";
 import { BoardTitle, PostObject } from "../lib/post.obj";
 import { ReplyObject } from "../lib/reply.obj";
 import { UserObject } from "../lib/user.obj";
@@ -34,6 +35,8 @@ import { default as ReplyInput } from "../component/reply-input.component";
 import { ReplyList } from "../component/reply-list.component";
 
 import { Routes } from "../routes";
+
+import { config } from "../config";
 
 export interface IPostContentProps {
 	location: any;
@@ -129,15 +132,29 @@ class PostContent extends React.Component<PostContentProps, IPostContentState> {
 				</a>
 			</div>
 		);
+		console.log("files: ", this.state.post.getFilesAttached().length);
+		const filesAttached = (<div>
+			{this.state.post.getFilesAttached().map((f: FileObject) => {
+				return (
+				<a key={f.getId()} 
+					href={`${config.baseurl}/${f.getFilename()}`}>
+					<Typography variant="subheading">{f.getFilename()}
+					</Typography>
+				</a>);
+			})}
+		</div>);
 		return (
 			<div>
 				<Typography variant="headline" className={classes.boardTitle}>{this.props.boardTitleFrom}</Typography>
 				<Paper className={classes.contentPaper}>
+
+					{/* 게시물 제목 */}
 					<Typography variant="title"
 						className={classes.postTitle}>
-						{this.state.post ? this.state.post.getTitle() : ""}</Typography>
-						
+						{this.state.post ? this.state.post.getTitle() : ""}
+					</Typography>
 					{postInfo}
+					{filesAttached}
 					<Typography paragraph variant="body1">{this.state.post ? this.state.post.getContent() : ""}</Typography>
 					{editPost}
 					<Link to={`${Routes.routeBoardContent}?title=${this.props.boardTitleFrom}&page=${this.props.pageNumFrom}`} >
