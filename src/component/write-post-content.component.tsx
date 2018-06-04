@@ -73,8 +73,6 @@ class WritePostContent extends React.Component<WritePostProps> {
 						margin="normal"/>
 					</div>
 					<div className="form-group">
-						{/* <label htmlFor="content">내용</label>
-						<textarea id="content" className="form-control" ref="contentForm" rows={20} /> */}
 						<TextField multiline fullWidth
 						id="content" label="내용"
 						placeholder="게시물 내용" 
