@@ -58,22 +58,21 @@ class HomePage extends React.Component<IHomePageProps> {
 		);
 	}
 
-	private onLoginButtonClick = (id: string, pw: string) => {
-		UserAPIRequest.loginUser(id as string, pw as string)
-		.then(async (res: axios.AxiosResponse) => {
+	private onLoginButtonClick = async (id: string, pw: string) => {
+		return UserAPIRequest.loginUser(id as string, pw as string)
+		.then((res: axios.AxiosResponse) => {
 			const body = res.data;
 			if (body["result"] === "ok") {
 				// 로그인 성공
 				this.props.onLoginSucceed(ObjectFactory.createUserObject(body["user"]));
 				this.props.history["push"](Routes.routeBoardContent);
+				return true;
 			}
 			else {
-				if (res.status === 403) {
-					alert("로그인 정보 불일치");
-				}
-				else if (res.status === 500) {
+				if (res.status === 500) {
 					alert("서버 이상, 관리자에게 문의 바랍니다.");
 				}
+				return false;
 			}
 		});
 	}

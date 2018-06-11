@@ -32,6 +32,7 @@ export class UserAPIRequest {
 				id: sid,
 				pw,
 			},
+			validateStatus: () => true,
 			withCredentials: true,
 		});
 	}

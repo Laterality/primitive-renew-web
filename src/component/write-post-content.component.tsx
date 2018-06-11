@@ -71,8 +71,20 @@ type WritePostProps = IWritePostProps & WithStyles<"boardTitle" | "buttonWriteWr
 
 class WritePostContent extends React.Component<WritePostProps, IWritePostState> {
 
+	public constructor(props: WritePostProps) {
+		super(props);
+
+		this.state = {
+			currentFile: null,
+		};
+	}
+
 	public render() {
 		const { classes } = this.props;
+		let filename = "";
+		if (this.state.currentFile) {
+			filename = this.state.currentFile.name;
+		}
 		return (
 			<div>
 				<Typography variant="headline" className={classes.boardTitle}>{this.props.boardFrom}</Typography>
@@ -96,6 +108,7 @@ class WritePostContent extends React.Component<WritePostProps, IWritePostState> 
 					{/* 파일 첨부 영역 */}
 					<div>
 						<AttachButton onChange={this.onFileChanged}/>
+						<Typography>{filename}</Typography>
 					</div>
 				</Paper>
 				<div className={classes.buttonWriteWrapper}>
