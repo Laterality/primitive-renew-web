@@ -11,6 +11,12 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Dispatch } from "redux";
 
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 
@@ -40,6 +46,7 @@ import { config } from "../config";
 
 export interface IPostContentProps {
 	location: any;
+	history: any;
 	user: UserObject;
 	boardTitleFrom: BoardTitle;
 	pageNumFrom: number;
@@ -48,6 +55,7 @@ export interface IPostContentProps {
 
 interface IPostContentState {
 	post: PostObject;
+	deletionDialogOpened: boolean;
 }
 
 const styles = {
@@ -96,6 +104,7 @@ class PostContent extends React.Component<PostContentProps, IPostContentState> {
 
 		this.state = {
 			post: new PostObject("", "", "", "", [], new Date(), this.props.user),
+			deletionDialogOpened: false,
 		};
 	}
 
@@ -107,6 +116,7 @@ class PostContent extends React.Component<PostContentProps, IPostContentState> {
 		const { classes } = this.props;
 		const replyList = this.state.post ? 
 		(<ReplyList replies={this.state.post.getReplies()}/>) : undefined;
+
 		const author = this.state.post.getAuthor();
 		const postInfo = 
 			<div className={classes.postDataWrapper}> 
@@ -119,20 +129,7 @@ class PostContent extends React.Component<PostContentProps, IPostContentState> {
 					{formatDate(this.state.post.getDateCreated())}
 				</Typography>
 			</div>;
-		const editPost = checkPermission(this.state.post, this.props.user) && (
-			<div>
-				<Link to={`${Routes.routeWriteContent}?mod=true&id=${this.state.post.getId()}`}
-					className={classes.postActionItem}>
-					<Typography variant="caption">수정</Typography>
-				</Link>
-				<a className={classes.postActionItem}>
-						<Typography variant="caption">
-							삭제
-						</Typography>
-				</a>
-			</div>
-		);
-		console.log("files: ", this.state.post.getFilesAttached().length);
+
 		const filesAttached = (<div>
 			{this.state.post.getFilesAttached().map((f: FileObject) => {
 				return (
@@ -143,6 +140,41 @@ class PostContent extends React.Component<PostContentProps, IPostContentState> {
 				</a>);
 			})}
 		</div>);
+
+		// Link to Edit and Delete post
+		const editPost = checkPermission(this.state.post, this.props.user) && (
+			<div>
+				<Link to={`${Routes.routeWriteContent}?mod=true&id=${this.state.post.getId()}`}
+					className={classes.postActionItem}>
+					<Typography variant="caption">수정</Typography>
+				</Link>
+				<a className={classes.postActionItem}
+				onClick={() => this.handleDelete()}>
+					<Typography variant="caption">
+						삭제
+					</Typography>
+				</a>
+			</div>
+		);
+
+		// Dialog asking confirmation for deleting post
+		const postDeletionDialog = (<Dialog 
+			open={this.state.deletionDialogOpened}
+			onClose={() => this.handleDeletionDialogClose(false)}>
+			<DialogTitle>게시물 삭제</DialogTitle>
+			<DialogContent>
+				<DialogContentText>
+					게시물을 정말 삭제하시겠습니까?
+				</DialogContentText>
+			</DialogContent>
+			<DialogActions>
+				<Button color="primary" 
+				onClick={() => this.handleDeletionDialogClose(false)}>아니오</Button>
+				<Button color="primary"
+				onClick={() => this.handleDeletionDialogClose(true)}>예</Button>
+			</DialogActions>
+		</Dialog>);
+
 		return (
 			<div>
 				<Typography variant="headline" className={classes.boardTitle}>{this.props.boardTitleFrom}</Typography>
@@ -165,7 +197,7 @@ class PostContent extends React.Component<PostContentProps, IPostContentState> {
 					/>
 					{replyList}
 				</Paper>
-				
+				{postDeletionDialog}
 			</div>
 		);
 	}
@@ -193,6 +225,28 @@ class PostContent extends React.Component<PostContentProps, IPostContentState> {
 		.then((res: AxiosResponse) => {
 			const body = res.data;
 			this.update();
+		});
+	}
+
+	private handleDeletionDialogClose = (accepted?: boolean) => {
+		if (accepted) {
+			this.deletePost();
+		}
+
+		this.setState({deletionDialogOpened: false});
+	}
+
+	private handleDelete = () => {
+		this.setState({deletionDialogOpened: true});
+	}
+
+	private deletePost = async () => {
+		PostAPIRequest.deletePost(this.state.post.getId())
+		.then((res: AxiosResponse) => {
+			if (res.status === 200) {
+				alert("삭제되었습니다");
+				this.props.history["push"](Routes.routeBoardContent);
+			}
 		});
 	}
 }

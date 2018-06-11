@@ -15,7 +15,7 @@ export function checkPermission(post: PostObject, user: UserObject): boolean {
 	}
 	
 	const author = post.getAuthor();
-	if (author) {
+	if (author && user) {
 		return author.getId() === user.getId();
 	}
 	return false;

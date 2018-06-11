@@ -242,6 +242,7 @@ class BoardPage extends React.Component<BoardContentProps, IContentState> {
 									contentPaper: classes.contentPaperNormal,
 									boardTitle: classes.contentTitle}}
 								location={this.props.location}
+								history={this.props.history}
 								boardTitleFrom={this.props.navInfor.boardTitle}
 								pageNumFrom={this.props.navInfor.page}
 								onPostNavigated={this.props.onPostNavigated}
