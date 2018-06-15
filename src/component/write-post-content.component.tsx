@@ -46,6 +46,10 @@ export interface IWritePostProps {
 
 interface IWritePostState {
 	currentFile: File | null;
+	titleError: boolean;
+	contentError: boolean;
+	titleHelperText: string;
+	contentHelperText: string;
 }
 
 const styles = {
@@ -71,11 +75,18 @@ type WritePostProps = IWritePostProps & WithStyles<"boardTitle" | "buttonWriteWr
 
 class WritePostContent extends React.Component<WritePostProps, IWritePostState> {
 
+	private static readonly HELPERTEXT_INPUT_TITLE = "제목을 입력해주세요";
+	private static readonly HLEPERTEXT_INPUT_CONTENT = "내용을 입력해주세요";
+
 	public constructor(props: WritePostProps) {
 		super(props);
 
 		this.state = {
 			currentFile: null,
+			titleError: false,
+			contentError: false,
+			titleHelperText: "",
+			contentHelperText: "",
 		};
 	}
 
@@ -94,7 +105,9 @@ class WritePostContent extends React.Component<WritePostProps, IWritePostState> 
 					<div className="form-group">
 						<TextField fullWidth id="title" type="text" label="제목" 
 						placeholder="제목을 입력하세요"
-						margin="normal"/>
+						margin="normal"
+						error={this.state.titleError}
+						helperText={this.state.titleHelperText}/>
 					</div>
 
 					{/* 내용 필드 */}
@@ -102,7 +115,9 @@ class WritePostContent extends React.Component<WritePostProps, IWritePostState> 
 						<TextField multiline fullWidth
 						id="content" label="내용"
 						placeholder="게시물 내용" 
-						margin="normal"/>
+						margin="normal"
+						error={this.state.contentError}
+						helperText={this.state.contentHelperText}/>
 					</div>
 
 					{/* 파일 첨부 영역 */}
@@ -122,10 +137,32 @@ class WritePostContent extends React.Component<WritePostProps, IWritePostState> 
 	}
 
 	private onWriteClicked = () => {
-		const title = jquery("#title").val();
-		const content = jquery("#content").val();
+		const title = jquery("#title").val() as string;
+		const content = jquery("#content").val() as string;
 		const boardTitle = this.props.boardFrom;
 		const files: string[] = [];
+
+		let hasError = false;
+
+		// Validation input value
+		if (title.length === 0) {
+			this.setState({titleError: true, titleHelperText: WritePostContent.HELPERTEXT_INPUT_TITLE});
+			hasError = true;
+		}
+		else {
+			this.setState({titleError: false, titleHelperText: ""});
+		}
+
+		if (content.length === 0) {
+			this.setState({contentError: true, contentHelperText: WritePostContent.HLEPERTEXT_INPUT_CONTENT});
+			hasError = true;
+		}
+		else {
+			this.setState({contentError: false, contentHelperText: ""});
+		}
+		
+		if (hasError) { return; }
+
 		if (this.state.currentFile) {
 			FileAPIRequest.upload(this.state.currentFile)
 			.then((res: axios.AxiosResponse) => {
