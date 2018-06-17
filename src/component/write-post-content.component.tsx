@@ -36,10 +36,17 @@ export interface IWritePostProps {
 
 interface IWritePostState {
 	currentFile: File | null;
+<<<<<<< HEAD
 	mod: boolean;
 	modPostId: string;
 	modPostTitle: string;
 	modPostContent: string;
+=======
+	titleError: boolean;
+	contentError: boolean;
+	titleHelperText: string;
+	contentHelperText: string;
+>>>>>>> 681d17d2eaa1a263eb0493400ba4b3c26bd7d817
 }
 
 const styles = {
@@ -65,6 +72,9 @@ type WritePostProps = IWritePostProps & WithStyles<"boardTitle" | "buttonWriteWr
 
 class WritePostContent extends React.Component<WritePostProps, IWritePostState> {
 
+	private static readonly HELPERTEXT_INPUT_TITLE = "제목을 입력해주세요";
+	private static readonly HLEPERTEXT_INPUT_CONTENT = "내용을 입력해주세요";
+
 	public constructor(props: WritePostProps) {
 		super(props);
 
@@ -74,10 +84,17 @@ class WritePostContent extends React.Component<WritePostProps, IWritePostState> 
 
 		this.state = {
 			currentFile: null,
+<<<<<<< HEAD
 			mod: mod === "true",
 			modPostId: id,
 			modPostTitle: "",
 			modPostContent: "",
+=======
+			titleError: false,
+			contentError: false,
+			titleHelperText: "",
+			contentHelperText: "",
+>>>>>>> 681d17d2eaa1a263eb0493400ba4b3c26bd7d817
 		};
 		console.log("mod: " + this.state.mod);
 	}
@@ -113,7 +130,12 @@ class WritePostContent extends React.Component<WritePostProps, IWritePostState> 
 						<TextField fullWidth id="title" type="text" label="제목" 
 						placeholder="제목을 입력하세요"
 						margin="normal"
+<<<<<<< HEAD
 						value={this.state.modPostTitle}/>
+=======
+						error={this.state.titleError}
+						helperText={this.state.titleHelperText}/>
+>>>>>>> 681d17d2eaa1a263eb0493400ba4b3c26bd7d817
 					</div>
 
 					{/* 내용 필드 */}
@@ -122,7 +144,12 @@ class WritePostContent extends React.Component<WritePostProps, IWritePostState> 
 						id="content" label="내용"
 						placeholder="게시물 내용" 
 						margin="normal"
+<<<<<<< HEAD
 						value={this.state.modPostContent}/>
+=======
+						error={this.state.contentError}
+						helperText={this.state.contentHelperText}/>
+>>>>>>> 681d17d2eaa1a263eb0493400ba4b3c26bd7d817
 					</div>
 
 					{/* 파일 첨부 영역 */}
@@ -142,10 +169,32 @@ class WritePostContent extends React.Component<WritePostProps, IWritePostState> 
 	}
 
 	private onWriteClicked = () => {
-		const title = jquery("#title").val();
-		const content = jquery("#content").val();
+		const title = jquery("#title").val() as string;
+		const content = jquery("#content").val() as string;
 		const boardTitle = this.props.boardFrom;
 		const files: string[] = [];
+
+		let hasError = false;
+
+		// Validation input value
+		if (title.length === 0) {
+			this.setState({titleError: true, titleHelperText: WritePostContent.HELPERTEXT_INPUT_TITLE});
+			hasError = true;
+		}
+		else {
+			this.setState({titleError: false, titleHelperText: ""});
+		}
+
+		if (content.length === 0) {
+			this.setState({contentError: true, contentHelperText: WritePostContent.HLEPERTEXT_INPUT_CONTENT});
+			hasError = true;
+		}
+		else {
+			this.setState({contentError: false, contentHelperText: ""});
+		}
+		
+		if (hasError) { return; }
+
 		if (this.state.currentFile) {
 			FileAPIRequest.upload(this.state.currentFile)
 			.then((res: axios.AxiosResponse) => {
