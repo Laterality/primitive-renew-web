@@ -42,15 +42,20 @@ export class PostAPIRequest {
 		});
 	}
 
-	public static updatePost = (post: PostObject) => {
+	/**
+	 * 게시물 수정
+	 * 
+	 * files 배열은 기존 상태를 유지하는 경우 null값
+	 */
+	public static updatePost = (postId: string, title: string, content: string, files: string[] | null) => {
 		return axios(
-			`${config.baseurl}/api/v1/post/update/${post.getId()}`,
+			`${config.baseurl}/api/v1/post/update/${postId}`,
 			{
 				method: "PUT",
 				data: {
-					post_title: post.getTitle(),
-					post_content: post.getContent(),
-					files_attached: post.getFilesAttached(),
+					post_title: title,
+					post_content: content,
+					files_attached: files,
 				},
 				withCredentials: true,
 			});

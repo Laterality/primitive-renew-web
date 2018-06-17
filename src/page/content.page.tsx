@@ -234,6 +234,7 @@ class BoardPage extends React.Component<BoardContentProps, IContentState> {
 						<ReactRouter.Route path={Routes.routeWriteContent}
 							render={() => <WritePostContent 
 								classes={{contentPaper: classes.contentPaperNormal}}
+								location={this.props.location}
 								history={this.props.history}
 								boardFrom={this.props.navInfor.boardTitle}/>} />
 						<ReactRouter.Route path={Routes.routePostContent}

@@ -6,14 +6,9 @@
  */
 import * as axios from "axios";
 import * as jquery from "jquery";
-import * as propTypes from "prop-types";
+import * as query from "query-string";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 
-import MUIButton from "@material-ui/core/Button";
-import Input from "@material-ui/core/Input";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -23,29 +18,28 @@ import { withStyles, WithStyles } from "@material-ui/core";
 import { default as FileAPIRequest } from "../lib/file.req";
 
 import * as reqPost from "../lib/post.request";
-import * as reqUser from "../lib/user.request";
 
 import { BoardTitle, PostObject } from "../lib/post.obj";
-import { UserObject } from "../lib/user.obj";
 
 import { ObjectFactory } from "../lib/object-factory";
-
-import { UserActionCreator } from "../action/user.action";
 
 import { default as AttachButton } from "./button-attach.component";
 import { MyButton as Button } from "./button.component";
 
-import { IStore } from "../store";
-
 import { Routes } from "../routes";
 
 export interface IWritePostProps {
+	location: any;
 	history: any;
 	boardFrom: BoardTitle;
 }
 
 interface IWritePostState {
 	currentFile: File | null;
+	mod: boolean;
+	modPostId: string;
+	modPostTitle: string;
+	modPostContent: string;
 }
 
 const styles = {
@@ -74,9 +68,33 @@ class WritePostContent extends React.Component<WritePostProps, IWritePostState> 
 	public constructor(props: WritePostProps) {
 		super(props);
 
+		const queries = query.parse(location.search);
+		const mod = queries["mod"];
+		const id = queries["id"];
+
 		this.state = {
 			currentFile: null,
+			mod: mod === "true",
+			modPostId: id,
+			modPostTitle: "",
+			modPostContent: "",
 		};
+		console.log("mod: " + this.state.mod);
+	}
+
+	public componentDidMount() {
+		if (this.state.mod) {
+			reqPost.PostAPIRequest.retrievePostById(this.state.modPostId)
+			.then((res: axios.AxiosResponse) => {
+				if (res.status === 200) {
+					const post = ObjectFactory.createPostObject(res.data["post"]);
+					this.setState({
+						modPostTitle: post.getTitle(),
+						modPostContent: post.getContent(),
+					});
+				}
+			});
+		}
 	}
 
 	public render() {
@@ -94,7 +112,8 @@ class WritePostContent extends React.Component<WritePostProps, IWritePostState> 
 					<div className="form-group">
 						<TextField fullWidth id="title" type="text" label="제목" 
 						placeholder="제목을 입력하세요"
-						margin="normal"/>
+						margin="normal"
+						value={this.state.modPostTitle}/>
 					</div>
 
 					{/* 내용 필드 */}
@@ -102,7 +121,8 @@ class WritePostContent extends React.Component<WritePostProps, IWritePostState> 
 						<TextField multiline fullWidth
 						id="content" label="내용"
 						placeholder="게시물 내용" 
-						margin="normal"/>
+						margin="normal"
+						value={this.state.modPostContent}/>
 					</div>
 
 					{/* 파일 첨부 영역 */}
@@ -132,6 +152,17 @@ class WritePostContent extends React.Component<WritePostProps, IWritePostState> 
 				if (res.status === 200) {
 					files.push(String(ObjectFactory.createFileObject(res.data["file"]).getId()));
 
+					if (this.state.mod) {
+						reqPost.PostAPIRequest.updatePost(this.state.modPostId,
+						this.state.modPostTitle, this.state.modPostContent,
+						files)
+						.then((res2: axios.AxiosResponse) => {
+							if (res2.status === 200) {
+								alert("수정되었습니다.");
+								this.props.history["push"](Routes.routeBoardContent);
+							}
+						});
+					}
 					reqPost.PostAPIRequest.createPost(title as string, 
 						content as string, boardTitle, files)
 					.then((res2: axios.AxiosResponse) => {
