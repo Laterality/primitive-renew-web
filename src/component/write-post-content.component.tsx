@@ -36,17 +36,14 @@ export interface IWritePostProps {
 
 interface IWritePostState {
 	currentFile: File | null;
-<<<<<<< HEAD
 	mod: boolean;
 	modPostId: string;
 	modPostTitle: string;
 	modPostContent: string;
-=======
 	titleError: boolean;
 	contentError: boolean;
 	titleHelperText: string;
 	contentHelperText: string;
->>>>>>> 681d17d2eaa1a263eb0493400ba4b3c26bd7d817
 }
 
 const styles = {
@@ -84,17 +81,14 @@ class WritePostContent extends React.Component<WritePostProps, IWritePostState> 
 
 		this.state = {
 			currentFile: null,
-<<<<<<< HEAD
 			mod: mod === "true",
 			modPostId: id,
 			modPostTitle: "",
 			modPostContent: "",
-=======
 			titleError: false,
 			contentError: false,
 			titleHelperText: "",
 			contentHelperText: "",
->>>>>>> 681d17d2eaa1a263eb0493400ba4b3c26bd7d817
 		};
 		console.log("mod: " + this.state.mod);
 	}
@@ -130,12 +124,9 @@ class WritePostContent extends React.Component<WritePostProps, IWritePostState> 
 						<TextField fullWidth id="title" type="text" label="제목" 
 						placeholder="제목을 입력하세요"
 						margin="normal"
-<<<<<<< HEAD
-						value={this.state.modPostTitle}/>
-=======
+						value={this.state.modPostTitle}
 						error={this.state.titleError}
 						helperText={this.state.titleHelperText}/>
->>>>>>> 681d17d2eaa1a263eb0493400ba4b3c26bd7d817
 					</div>
 
 					{/* 내용 필드 */}
@@ -144,12 +135,9 @@ class WritePostContent extends React.Component<WritePostProps, IWritePostState> 
 						id="content" label="내용"
 						placeholder="게시물 내용" 
 						margin="normal"
-<<<<<<< HEAD
-						value={this.state.modPostContent}/>
-=======
+						value={this.state.modPostContent}
 						error={this.state.contentError}
 						helperText={this.state.contentHelperText}/>
->>>>>>> 681d17d2eaa1a263eb0493400ba4b3c26bd7d817
 					</div>
 
 					{/* 파일 첨부 영역 */}
