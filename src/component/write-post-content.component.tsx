@@ -90,10 +90,7 @@ class WritePostContent extends React.Component<WritePostProps, IWritePostState> 
 			titleHelperText: "",
 			contentHelperText: "",
 		};
-		console.log("mod: " + this.state.mod);
-	}
 
-	public componentDidMount() {
 		if (this.state.mod) {
 			reqPost.PostAPIRequest.retrievePostById(this.state.modPostId)
 			.then((res: axios.AxiosResponse) => {
@@ -125,6 +122,7 @@ class WritePostContent extends React.Component<WritePostProps, IWritePostState> 
 						placeholder="제목을 입력하세요"
 						margin="normal"
 						value={this.state.modPostTitle}
+						onChange={this.onTitleChanged}
 						error={this.state.titleError}
 						helperText={this.state.titleHelperText}/>
 					</div>
@@ -136,6 +134,7 @@ class WritePostContent extends React.Component<WritePostProps, IWritePostState> 
 						placeholder="게시물 내용" 
 						margin="normal"
 						value={this.state.modPostContent}
+						onChange={this.onContentChanged}
 						error={this.state.contentError}
 						helperText={this.state.contentHelperText}/>
 					</div>
@@ -239,6 +238,14 @@ class WritePostContent extends React.Component<WritePostProps, IWritePostState> 
 			const file = files.item(0);
 			this.setState({currentFile: file});
 		}
+	}
+
+	private onTitleChanged = (event: any) => {
+		this.setState({modPostTitle: event["target"]["value"]});
+	}
+
+	private onContentChanged = (event: any) => {
+		this.setState({modPostContent: event["target"]["value"]});
 	}
 }
 
