@@ -1,3 +1,3 @@
 export const config = {
-	baseurl: "http://altair.latera.kr/pw",
+	baseurl: "http://pluto.latera.kr/pw",
 };

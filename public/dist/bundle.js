@@ -21785,534 +21785,6 @@ var _Slide = _interopRequireDefault(__webpack_require__(/*! ./Slide */ "./node_m
 
 /***/ }),
 
-/***/ "./node_modules/@material-ui/core/SnackBar/Snackbar.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/@material-ui/core/SnackBar/Snackbar.js ***!
-  \*************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.styles = void 0;
-
-var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "./node_modules/@babel/runtime/helpers/extends.js"));
-
-var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "./node_modules/@babel/runtime/helpers/objectWithoutProperties.js"));
-
-var _getPrototypeOf = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/core-js/object/get-prototype-of */ "./node_modules/@babel/runtime/core-js/object/get-prototype-of.js"));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js"));
-
-var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "./node_modules/@babel/runtime/helpers/assertThisInitialized.js"));
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js"));
-
-var _objectSpread8 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectSpread */ "./node_modules/@babel/runtime/helpers/objectSpread.js"));
-
-var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
-var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
-
-var _classnames = _interopRequireDefault(__webpack_require__(/*! classnames */ "./node_modules/classnames/index.js"));
-
-var _reactEventListener = _interopRequireDefault(__webpack_require__(/*! react-event-listener */ "./node_modules/react-event-listener/lib/index.js"));
-
-var _withStyles = _interopRequireDefault(__webpack_require__(/*! ../styles/withStyles */ "./node_modules/@material-ui/core/styles/withStyles.js"));
-
-var _transitions = __webpack_require__(/*! ../styles/transitions */ "./node_modules/@material-ui/core/styles/transitions.js");
-
-var _ClickAwayListener = _interopRequireDefault(__webpack_require__(/*! ../ClickAwayListener */ "./node_modules/@material-ui/core/ClickAwayListener/index.js"));
-
-var _helpers = __webpack_require__(/*! ../utils/helpers */ "./node_modules/@material-ui/core/utils/helpers.js");
-
-var _Slide = _interopRequireDefault(__webpack_require__(/*! ../Slide */ "./node_modules/@material-ui/core/Slide/index.js"));
-
-var _SnackbarContent = _interopRequireDefault(__webpack_require__(/*! ../SnackbarContent */ "./node_modules/@material-ui/core/SnackbarContent/index.js"));
-
-var styles = function styles(theme) {
-  var gutter = theme.spacing.unit * 3;
-  var top = {
-    top: 0
-  };
-  var bottom = {
-    bottom: 0
-  };
-  var right = {
-    justifyContent: 'flex-end'
-  };
-  var left = {
-    justifyContent: 'flex-start'
-  };
-  var topSpace = {
-    top: gutter
-  };
-  var bottomSpace = {
-    bottom: gutter
-  };
-  var rightSpace = {
-    right: gutter
-  };
-  var leftSpace = {
-    left: gutter
-  };
-  var center = {
-    left: '50%',
-    right: 'auto',
-    transform: 'translateX(-50%)'
-  };
-  return {
-    root: {
-      zIndex: theme.zIndex.snackbar,
-      position: 'fixed',
-      display: 'flex',
-      left: 0,
-      right: 0,
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-    anchorOriginTopCenter: (0, _objectSpread8.default)({}, top, (0, _defineProperty2.default)({}, theme.breakpoints.up('md'), (0, _objectSpread8.default)({}, center))),
-    anchorOriginBottomCenter: (0, _objectSpread8.default)({}, bottom, (0, _defineProperty2.default)({}, theme.breakpoints.up('md'), (0, _objectSpread8.default)({}, center))),
-    anchorOriginTopRight: (0, _objectSpread8.default)({}, top, right, (0, _defineProperty2.default)({}, theme.breakpoints.up('md'), (0, _objectSpread8.default)({
-      left: 'auto'
-    }, topSpace, rightSpace))),
-    anchorOriginBottomRight: (0, _objectSpread8.default)({}, bottom, right, (0, _defineProperty2.default)({}, theme.breakpoints.up('md'), (0, _objectSpread8.default)({
-      left: 'auto'
-    }, bottomSpace, rightSpace))),
-    anchorOriginTopLeft: (0, _objectSpread8.default)({}, top, left, (0, _defineProperty2.default)({}, theme.breakpoints.up('md'), (0, _objectSpread8.default)({
-      right: 'auto'
-    }, topSpace, leftSpace))),
-    anchorOriginBottomLeft: (0, _objectSpread8.default)({}, bottom, left, (0, _defineProperty2.default)({}, theme.breakpoints.up('md'), (0, _objectSpread8.default)({
-      right: 'auto'
-    }, bottomSpace, leftSpace)))
-  };
-};
-
-exports.styles = styles;
-
-var Snackbar =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(Snackbar, _React$Component);
-
-  function Snackbar() {
-    var _ref;
-
-    var _temp, _this;
-
-    (0, _classCallCheck2.default)(this, Snackbar);
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return (0, _possibleConstructorReturn2.default)(_this, (_temp = _this = (0, _possibleConstructorReturn2.default)(this, (_ref = Snackbar.__proto__ || (0, _getPrototypeOf.default)(Snackbar)).call.apply(_ref, [this].concat(args))), Object.defineProperty((0, _assertThisInitialized2.default)(_this), "state", {
-      configurable: true,
-      enumerable: true,
-      writable: true,
-      value: {}
-    }), Object.defineProperty((0, _assertThisInitialized2.default)(_this), "timerAutoHide", {
-      configurable: true,
-      enumerable: true,
-      writable: true,
-      value: null
-    }), Object.defineProperty((0, _assertThisInitialized2.default)(_this), "handleMouseEnter", {
-      configurable: true,
-      enumerable: true,
-      writable: true,
-      value: function value(event) {
-        if (_this.props.onMouseEnter) {
-          _this.props.onMouseEnter(event);
-        }
-
-        _this.handlePause();
-      }
-    }), Object.defineProperty((0, _assertThisInitialized2.default)(_this), "handleMouseLeave", {
-      configurable: true,
-      enumerable: true,
-      writable: true,
-      value: function value(event) {
-        if (_this.props.onMouseLeave) {
-          _this.props.onMouseLeave(event);
-        }
-
-        _this.handleResume();
-      }
-    }), Object.defineProperty((0, _assertThisInitialized2.default)(_this), "handleClickAway", {
-      configurable: true,
-      enumerable: true,
-      writable: true,
-      value: function value(event) {
-        if (_this.props.onClose) {
-          _this.props.onClose(event, 'clickaway');
-        }
-      }
-    }), Object.defineProperty((0, _assertThisInitialized2.default)(_this), "handlePause", {
-      configurable: true,
-      enumerable: true,
-      writable: true,
-      value: function value() {
-        clearTimeout(_this.timerAutoHide);
-      }
-    }), Object.defineProperty((0, _assertThisInitialized2.default)(_this), "handleResume", {
-      configurable: true,
-      enumerable: true,
-      writable: true,
-      value: function value() {
-        if (_this.props.autoHideDuration != null) {
-          if (_this.props.resumeHideDuration !== undefined) {
-            _this.setAutoHideTimer(_this.props.resumeHideDuration);
-
-            return;
-          }
-
-          _this.setAutoHideTimer((_this.props.autoHideDuration || 0) * 0.5);
-        }
-      }
-    }), Object.defineProperty((0, _assertThisInitialized2.default)(_this), "handleExited", {
-      configurable: true,
-      enumerable: true,
-      writable: true,
-      value: function value() {
-        _this.setState({
-          exited: true
-        });
-      }
-    }), _temp));
-  }
-
-  (0, _createClass2.default)(Snackbar, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      if (this.props.open) {
-        this.setAutoHideTimer();
-      }
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate(prevProps) {
-      if (prevProps.open !== this.props.open) {
-        if (this.props.open) {
-          this.setAutoHideTimer();
-        } else {
-          clearTimeout(this.timerAutoHide);
-        }
-      }
-    }
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      clearTimeout(this.timerAutoHide);
-    } // Timer that controls delay before snackbar auto hides
-
-  }, {
-    key: "setAutoHideTimer",
-    value: function setAutoHideTimer() {
-      var _this2 = this;
-
-      var autoHideDuration = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-      if (!this.props.onClose || this.props.autoHideDuration == null) {
-        return;
-      }
-
-      clearTimeout(this.timerAutoHide);
-      this.timerAutoHide = setTimeout(function () {
-        if (!_this2.props.onClose || _this2.props.autoHideDuration == null) {
-          return;
-        }
-
-        _this2.props.onClose(null, 'timeout');
-      }, autoHideDuration || this.props.autoHideDuration || 0);
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _props = this.props,
-          action = _props.action,
-          _props$anchorOrigin = _props.anchorOrigin,
-          vertical = _props$anchorOrigin.vertical,
-          horizontal = _props$anchorOrigin.horizontal,
-          autoHideDuration = _props.autoHideDuration,
-          children = _props.children,
-          classes = _props.classes,
-          className = _props.className,
-          ContentProps = _props.ContentProps,
-          disableWindowBlurListener = _props.disableWindowBlurListener,
-          message = _props.message,
-          onClose = _props.onClose,
-          onEnter = _props.onEnter,
-          onEntered = _props.onEntered,
-          onEntering = _props.onEntering,
-          onExit = _props.onExit,
-          onExited = _props.onExited,
-          onExiting = _props.onExiting,
-          onMouseEnter = _props.onMouseEnter,
-          onMouseLeave = _props.onMouseLeave,
-          open = _props.open,
-          resumeHideDuration = _props.resumeHideDuration,
-          TransitionComponent = _props.TransitionComponent,
-          transitionDuration = _props.transitionDuration,
-          TransitionProps = _props.TransitionProps,
-          other = (0, _objectWithoutProperties2.default)(_props, ["action", "anchorOrigin", "autoHideDuration", "children", "classes", "className", "ContentProps", "disableWindowBlurListener", "message", "onClose", "onEnter", "onEntered", "onEntering", "onExit", "onExited", "onExiting", "onMouseEnter", "onMouseLeave", "open", "resumeHideDuration", "TransitionComponent", "transitionDuration", "TransitionProps"]); // So we only render active snackbars.
-
-      if (!open && this.state.exited) {
-        return null;
-      }
-
-      return _react.default.createElement(_ClickAwayListener.default, {
-        onClickAway: this.handleClickAway
-      }, _react.default.createElement("div", (0, _extends2.default)({
-        className: (0, _classnames.default)(classes.root, classes["anchorOrigin".concat((0, _helpers.capitalize)(vertical)).concat((0, _helpers.capitalize)(horizontal))], className),
-        onMouseEnter: this.handleMouseEnter,
-        onMouseLeave: this.handleMouseLeave
-      }, other), _react.default.createElement(_reactEventListener.default, {
-        target: "window",
-        onFocus: disableWindowBlurListener ? undefined : this.handleResume,
-        onBlur: disableWindowBlurListener ? undefined : this.handlePause
-      }), _react.default.createElement(TransitionComponent, (0, _extends2.default)({
-        appear: true,
-        "in": open,
-        onEnter: onEnter,
-        onEntered: onEntered,
-        onEntering: onEntering,
-        onExit: onExit,
-        onExited: (0, _helpers.createChainedFunction)(this.handleExited, onExited),
-        onExiting: onExiting,
-        timeout: transitionDuration,
-        direction: vertical === 'top' ? 'down' : 'up'
-      }, TransitionProps), children || _react.default.createElement(_SnackbarContent.default, (0, _extends2.default)({
-        message: message,
-        action: action
-      }, ContentProps)))));
-    }
-  }], [{
-    key: "getDerivedStateFromProps",
-    value: function getDerivedStateFromProps(nextProps, prevState) {
-      if (typeof prevState.exited === 'undefined') {
-        return {
-          exited: !nextProps.open
-        };
-      }
-
-      if (nextProps.open) {
-        return {
-          exited: false
-        };
-      }
-
-      return null;
-    }
-  }]);
-  return Snackbar;
-}(_react.default.Component);
-
-Snackbar.propTypes =  true ? {
-  /**
-   * The action to display.
-   */
-  action: _propTypes.default.node,
-
-  /**
-   * The anchor of the `Snackbar`.
-   */
-  anchorOrigin: _propTypes.default.shape({
-    horizontal: _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.oneOf(['left', 'center', 'right'])]),
-    vertical: _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.oneOf(['top', 'center', 'bottom'])])
-  }),
-
-  /**
-   * The number of milliseconds to wait before automatically calling the
-   * `onClose` function. `onClose` should then set the state of the `open`
-   * prop to hide the Snackbar. This behavior is disabled by default with
-   * the `null` value.
-   */
-  autoHideDuration: _propTypes.default.number,
-
-  /**
-   * If you wish the take control over the children of the component you can use this property.
-   * When used, you replace the `SnackbarContent` component with the children.
-   */
-  children: _propTypes.default.element,
-
-  /**
-   * Override or extend the styles applied to the component.
-   * See [CSS API](#css-api) below for more details.
-   */
-  classes: _propTypes.default.object.isRequired,
-
-  /**
-   * @ignore
-   */
-  className: _propTypes.default.string,
-
-  /**
-   * Properties applied to the `SnackbarContent` element.
-   */
-  ContentProps: _propTypes.default.object,
-
-  /**
-   * If `true`, the `autoHideDuration` timer will expire even if the window is not focused.
-   */
-  disableWindowBlurListener: _propTypes.default.bool,
-
-  /**
-   * When displaying multiple consecutive Snackbars from a parent rendering a single
-   * <Snackbar/>, add the key property to ensure independent treatment of each message.
-   * e.g. <Snackbar key={message} />, otherwise, the message may update-in-place and
-   * features such as autoHideDuration may be canceled.
-   */
-  key: _propTypes.default.any,
-
-  /**
-   * The message to display.
-   */
-  message: _propTypes.default.node,
-
-  /**
-   * Callback fired when the component requests to be closed.
-   * Typically `onClose` is used to set state in the parent component,
-   * which is used to control the `Snackbar` `open` prop.
-   * The `reason` parameter can optionally be used to control the response to `onClose`,
-   * for example ignoring `clickaway`.
-   *
-   * @param {object} event The event source of the callback
-   * @param {string} reason Can be:`"timeout"` (`autoHideDuration` expired) or: `"clickaway"`
-   */
-  onClose: _propTypes.default.func,
-
-  /**
-   * Callback fired before the transition is entering.
-   */
-  onEnter: _propTypes.default.func,
-
-  /**
-   * Callback fired when the transition has entered.
-   */
-  onEntered: _propTypes.default.func,
-
-  /**
-   * Callback fired when the transition is entering.
-   */
-  onEntering: _propTypes.default.func,
-
-  /**
-   * Callback fired before the transition is exiting.
-   */
-  onExit: _propTypes.default.func,
-
-  /**
-   * Callback fired when the transition has exited.
-   */
-  onExited: _propTypes.default.func,
-
-  /**
-   * Callback fired when the transition is exiting.
-   */
-  onExiting: _propTypes.default.func,
-
-  /**
-   * @ignore
-   */
-  onMouseEnter: _propTypes.default.func,
-
-  /**
-   * @ignore
-   */
-  onMouseLeave: _propTypes.default.func,
-
-  /**
-   * If true, `Snackbar` is open.
-   */
-  open: _propTypes.default.bool,
-
-  /**
-   * The number of milliseconds to wait before dismissing after user interaction.
-   * If `autoHideDuration` property isn't specified, it does nothing.
-   * If `autoHideDuration` property is specified but `resumeHideDuration` isn't,
-   * we default to `autoHideDuration / 2` ms.
-   */
-  resumeHideDuration: _propTypes.default.number,
-
-  /**
-   * Transition component.
-   */
-  TransitionComponent: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.func]),
-
-  /**
-   * The duration for the transition, in milliseconds.
-   * You may specify a single timeout for all transitions, or individually with an object.
-   */
-  transitionDuration: _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.shape({
-    enter: _propTypes.default.number,
-    exit: _propTypes.default.number
-  })]),
-
-  /**
-   * Properties applied to the `Transition` element.
-   */
-  TransitionProps: _propTypes.default.object
-} : undefined;
-Snackbar.defaultProps = {
-  anchorOrigin: {
-    vertical: 'bottom',
-    horizontal: 'center'
-  },
-  disableWindowBlurListener: false,
-  TransitionComponent: _Slide.default,
-  transitionDuration: {
-    enter: _transitions.duration.enteringScreen,
-    exit: _transitions.duration.leavingScreen
-  }
-};
-
-var _default = (0, _withStyles.default)(styles, {
-  flip: false,
-  name: 'MuiSnackbar'
-})(Snackbar);
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/@material-ui/core/SnackBar/index.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/@material-ui/core/SnackBar/index.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "default", {
-  enumerable: true,
-  get: function get() {
-    return _Snackbar.default;
-  }
-});
-
-var _Snackbar = _interopRequireDefault(__webpack_require__(/*! ./Snackbar */ "./node_modules/@material-ui/core/SnackBar/Snackbar.js"));
-
-/***/ }),
-
 /***/ "./node_modules/@material-ui/core/Snackbar/Snackbar.js":
 /*!*************************************************************!*\
   !*** ./node_modules/@material-ui/core/Snackbar/Snackbar.js ***!
@@ -28630,124 +28102,6 @@ Object.defineProperty(exports, "default", {
 });
 
 var _TextField = _interopRequireDefault(__webpack_require__(/*! ./TextField */ "./node_modules/@material-ui/core/TextField/TextField.js"));
-
-/***/ }),
-
-/***/ "./node_modules/@material-ui/core/ToolBar/Toolbar.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/@material-ui/core/ToolBar/Toolbar.js ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.styles = void 0;
-
-var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "./node_modules/@babel/runtime/helpers/extends.js"));
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js"));
-
-var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "./node_modules/@babel/runtime/helpers/objectWithoutProperties.js"));
-
-var _objectSpread2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectSpread */ "./node_modules/@babel/runtime/helpers/objectSpread.js"));
-
-var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
-var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
-
-var _classnames = _interopRequireDefault(__webpack_require__(/*! classnames */ "./node_modules/classnames/index.js"));
-
-var _withStyles = _interopRequireDefault(__webpack_require__(/*! ../styles/withStyles */ "./node_modules/@material-ui/core/styles/withStyles.js"));
-
-var styles = function styles(theme) {
-  return {
-    root: (0, _objectSpread2.default)({}, theme.mixins.toolbar, {
-      position: 'relative',
-      display: 'flex',
-      alignItems: 'center'
-    }),
-    gutters: theme.mixins.gutters()
-  };
-};
-
-exports.styles = styles;
-
-function Toolbar(props) {
-  var children = props.children,
-      classes = props.classes,
-      classNameProp = props.className,
-      disableGutters = props.disableGutters,
-      other = (0, _objectWithoutProperties2.default)(props, ["children", "classes", "className", "disableGutters"]);
-  var className = (0, _classnames.default)(classes.root, (0, _defineProperty2.default)({}, classes.gutters, !disableGutters), classNameProp);
-  return _react.default.createElement("div", (0, _extends2.default)({
-    className: className
-  }, other), children);
-}
-
-Toolbar.propTypes =  true ? {
-  /**
-   * Toolbar children, usually a mixture of `IconButton`, `Button` and `Typography`.
-   */
-  children: _propTypes.default.node,
-
-  /**
-   * Override or extend the styles applied to the component.
-   * See [CSS API](#css-api) below for more details.
-   */
-  classes: _propTypes.default.object.isRequired,
-
-  /**
-   * @ignore
-   */
-  className: _propTypes.default.string,
-
-  /**
-   * If `true`, disables gutter padding.
-   */
-  disableGutters: _propTypes.default.bool
-} : undefined;
-Toolbar.defaultProps = {
-  disableGutters: false
-};
-
-var _default = (0, _withStyles.default)(styles, {
-  name: 'MuiToolbar'
-})(Toolbar);
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/@material-ui/core/ToolBar/index.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/@material-ui/core/ToolBar/index.js ***!
-  \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "default", {
-  enumerable: true,
-  get: function get() {
-    return _Toolbar.default;
-  }
-});
-
-var _Toolbar = _interopRequireDefault(__webpack_require__(/*! ./Toolbar */ "./node_modules/@material-ui/core/ToolBar/Toolbar.js"));
 
 /***/ }),
 
@@ -56592,6 +55946,9 @@ class AdminContent extends React.Component {
             },
         };
     }
+    componentDidMount() {
+        this.onSearchInputChanged();
+    }
     render() {
         const { classes } = this.props;
         const titles = [];
@@ -56781,6 +56138,59 @@ exports.default = core_1.withStyles(styles, { withTheme: true })(BoardContent);
 
 /***/ }),
 
+/***/ "./src/component/button-attach.component.tsx":
+/*!***************************************************!*\
+  !*** ./src/component/button-attach.component.tsx ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Button for file attach
+ *
+ * author: Jinwoo Shin
+ * date: 2018-05-29
+ */
+const React = __webpack_require__(/*! react */ "react");
+const Button_1 = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/Button/index.js");
+const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
+const styles = {
+    attachButton: {
+        position: "relative",
+        overflow: "hidden",
+        background: "#2CDC6D",
+        color: "white",
+    },
+    attachInput: {
+        position: "absolute",
+        top: 0,
+        right: 0,
+        minWidth: "100%",
+        minHeight: "100%",
+        textAlign: "right",
+        filter: "alpha(opcity=0)",
+        opacity: 0,
+        outline: "none",
+        display: "block",
+    },
+};
+class AttachButton extends React.Component {
+    render() {
+        const { classes } = this.props;
+        return (React.createElement(Button_1.default, { className: classes.attachButton, variant: "raised" },
+            React.createElement("img", { className: "icon mr-2", src: "/img/baseline-attachment-24px.svg" }),
+            "\uD30C\uC77C \uCCA8\uBD80",
+            React.createElement("input", { className: classes.attachInput, type: "file", onChange: (e) => this.props.onChange(e.target.files) })));
+    }
+}
+exports.default = core_1.withStyles(styles)(AttachButton);
+
+
+/***/ }),
+
 /***/ "./src/component/button.component.tsx":
 /*!********************************************!*\
   !*** ./src/component/button.component.tsx ***!
@@ -56831,7 +56241,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(/*! react */ "react");
 const AppBar_1 = __webpack_require__(/*! @material-ui/core/AppBar */ "./node_modules/@material-ui/core/AppBar/index.js");
 const Button_1 = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/Button/index.js");
-const ToolBar_1 = __webpack_require__(/*! @material-ui/core/ToolBar */ "./node_modules/@material-ui/core/ToolBar/index.js");
+const Toolbar_1 = __webpack_require__(/*! @material-ui/core/Toolbar */ "./node_modules/@material-ui/core/Toolbar/index.js");
 const Typography_1 = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/Typography/index.js");
 const Menu_1 = __webpack_require__(/*! @material-ui/icons/Menu */ "./node_modules/@material-ui/icons/Menu.js");
 const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
@@ -56862,7 +56272,7 @@ class Header extends React.Component {
     }
     render() {
         return (React.createElement(AppBar_1.default, { className: this.props.classes.appBar, color: "default", elevation: 4 },
-            React.createElement(ToolBar_1.default, null,
+            React.createElement(Toolbar_1.default, null,
                 React.createElement(Button_1.default, { onClick: () => { this.onMenuClick(); }, className: this.props.classes.menuIcon },
                     React.createElement(Menu_1.default, null)),
                 React.createElement(Typography_1.default, { variant: "title", className: this.props.classes.headerTitle, noWrap: true }, "Primitive"))));
@@ -56882,23 +56292,48 @@ exports.default = core_1.withStyles(styles, { withTheme: true })(Header);
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const jquery = __webpack_require__(/*! jquery */ "jquery");
 const React = __webpack_require__(/*! react */ "react");
 const Button_1 = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/Button/index.js");
 const TextField_1 = __webpack_require__(/*! @material-ui/core/TextField */ "./node_modules/@material-ui/core/TextField/index.js");
 class LoginForm extends React.Component {
-    constructor() {
-        super(...arguments);
+    constructor(props) {
+        super(props);
         this.onKeyUp = (e) => {
             if (e.keyCode === 13) {
                 this.onLoginClicked();
             }
         };
-        this.onLoginClicked = () => {
+        this.onLoginClicked = () => __awaiter(this, void 0, void 0, function* () {
             const id = jquery("#username").val();
             const pw = jquery("#password").val();
-            this.props.onLoginButtonClick(id, pw);
+            try {
+                const succeed = yield this.props.onLoginButtonClick(id, pw);
+                if (!succeed) {
+                    // show helper text with error state
+                    this.setState({ error: true,
+                        helperText: LoginForm.HELPERTEXT_LOGIN_ERROR });
+                }
+                else {
+                    this.setState({ error: false, helperText: "" });
+                }
+            }
+            catch (e) {
+                this.setState({ error: true, helperText: LoginForm.HLEPERTEXT_SERVER_FAULT });
+            }
+        });
+        this.state = {
+            error: false,
+            helperText: "",
         };
     }
     render() {
@@ -56906,12 +56341,14 @@ class LoginForm extends React.Component {
             React.createElement("div", { className: "row" },
                 React.createElement("form", { className: "col" },
                     React.createElement("div", { className: "form-group" },
-                        React.createElement(TextField_1.default, { id: "username", type: "text", label: "\uC544\uC774\uB514", fullWidth: true, onKeyUp: this.onKeyUp })),
+                        React.createElement(TextField_1.default, { id: "username", type: "text", label: "\uC544\uC774\uB514", fullWidth: true, onKeyUp: this.onKeyUp, error: this.state.error })),
                     React.createElement("div", { className: "form-group" },
-                        React.createElement(TextField_1.default, { id: "password", type: "password", label: "\uBE44\uBC00\uBC88\uD638", fullWidth: true, onKeyUp: this.onKeyUp }))),
+                        React.createElement(TextField_1.default, { id: "password", type: "password", label: "\uBE44\uBC00\uBC88\uD638", fullWidth: true, onKeyUp: this.onKeyUp, error: this.state.error, helperText: this.state.helperText }))),
                 React.createElement(Button_1.default, { variant: "raised", color: "primary", className: "btn text-white col-2 my-5 mx-3 px-2 py-4", onClick: this.onLoginClicked }, "LOGIN"))));
     }
 }
+LoginForm.HELPERTEXT_LOGIN_ERROR = "아이디 또는 비밀번호가 일치하지 않습니다";
+LoginForm.HLEPERTEXT_SERVER_FAULT = "로그인 에러, 관리자에게 문의하세요";
 exports.LoginForm = LoginForm;
 
 
@@ -57002,7 +56439,7 @@ const IconButton_1 = __webpack_require__(/*! @material-ui/core/IconButton */ "./
 const Input_1 = __webpack_require__(/*! @material-ui/core/Input */ "./node_modules/@material-ui/core/Input/index.js");
 const InputLabel_1 = __webpack_require__(/*! @material-ui/core/InputLabel */ "./node_modules/@material-ui/core/InputLabel/index.js");
 const Paper_1 = __webpack_require__(/*! @material-ui/core/Paper */ "./node_modules/@material-ui/core/Paper/index.js");
-const SnackBar_1 = __webpack_require__(/*! @material-ui/core/SnackBar */ "./node_modules/@material-ui/core/SnackBar/index.js");
+const Snackbar_1 = __webpack_require__(/*! @material-ui/core/Snackbar */ "./node_modules/@material-ui/core/Snackbar/index.js");
 const TextField_1 = __webpack_require__(/*! @material-ui/core/TextField */ "./node_modules/@material-ui/core/TextField/index.js");
 const Typography_1 = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/Typography/index.js");
 const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
@@ -57073,7 +56510,7 @@ class MyPageContent extends React.Component {
                 React.createElement(TextField_1.default, { id: "password-new-confirm", className: classes.field, type: "password", label: "\uC0C8 \uBE44\uBC00\uBC88\uD638 \uD655\uC778", fullWidth: true }),
                 React.createElement("div", null,
                     React.createElement(button_component_1.MyButton, { text: "\uC644\uB8CC", className: classes.buttonSubmit, iconSrc: "/img/ic_create_white_48px.svg", onClick: () => this.onSubmitClick() }))),
-            React.createElement(SnackBar_1.default, { anchorOrigin: {
+            React.createElement(Snackbar_1.default, { anchorOrigin: {
                     vertical: "top",
                     horizontal: "right",
                 }, open: this.state.snackBarUserUpdatedOpened, onClose: this.onSnackBarClosed, autoHideDuration: 1500, ContentProps: {
@@ -57169,10 +56606,24 @@ exports.BoardPaginator = BoardPaginator;
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const query = __webpack_require__(/*! query-string */ "./node_modules/query-string/index.js");
 const React = __webpack_require__(/*! react */ "react");
 const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+const Button_1 = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/Button/index.js");
+const Dialog_1 = __webpack_require__(/*! @material-ui/core/Dialog */ "./node_modules/@material-ui/core/Dialog/index.js");
+const DialogActions_1 = __webpack_require__(/*! @material-ui/core/DialogActions */ "./node_modules/@material-ui/core/DialogActions/index.js");
+const DialogContent_1 = __webpack_require__(/*! @material-ui/core/DialogContent */ "./node_modules/@material-ui/core/DialogContent/index.js");
+const DialogContentText_1 = __webpack_require__(/*! @material-ui/core/DialogContentText */ "./node_modules/@material-ui/core/DialogContentText/index.js");
+const DialogTitle_1 = __webpack_require__(/*! @material-ui/core/DialogTitle */ "./node_modules/@material-ui/core/DialogTitle/index.js");
 const Paper_1 = __webpack_require__(/*! @material-ui/core/Paper */ "./node_modules/@material-ui/core/Paper/index.js");
 const Typography_1 = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/Typography/index.js");
 const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
@@ -57185,6 +56636,7 @@ const object_factory_1 = __webpack_require__(/*! ../lib/object-factory */ "./src
 const reply_input_component_1 = __webpack_require__(/*! ../component/reply-input.component */ "./src/component/reply-input.component.tsx");
 const reply_list_component_1 = __webpack_require__(/*! ../component/reply-list.component */ "./src/component/reply-list.component.tsx");
 const routes_1 = __webpack_require__(/*! ../routes */ "./src/routes.ts");
+const config_1 = __webpack_require__(/*! ../config */ "./src/config.ts");
 const styles = {
     backToList: {
         marginTop: "16px",
@@ -57244,11 +56696,30 @@ class PostContent extends React.Component {
                 this.update();
             });
         };
+        this.handleDeletionDialogClose = (accepted) => {
+            if (accepted) {
+                this.deletePost();
+            }
+            this.setState({ deletionDialogOpened: false });
+        };
+        this.handleDelete = () => {
+            this.setState({ deletionDialogOpened: true });
+        };
+        this.deletePost = () => __awaiter(this, void 0, void 0, function* () {
+            post_request_1.PostAPIRequest.deletePost(this.state.post.getId())
+                .then((res) => {
+                if (res.status === 200) {
+                    alert("삭제되었습니다");
+                    this.props.history["push"](routes_1.Routes.routeBoardContent);
+                }
+            });
+        });
         const queries = query.parse(location.search);
         const title = queries["title"] ? queries["title"] : post_obj_1.BoardTitle.seminar;
         const page = queries["page"] ? queries["page"] : "1";
         this.state = {
             post: new post_obj_1.PostObject("", "", "", "", [], new Date(), this.props.user),
+            deletionDialogOpened: false,
         };
     }
     componentDidMount() {
@@ -57266,22 +56737,37 @@ class PostContent extends React.Component {
                 author.getRole(),
                 ")"),
             React.createElement(Typography_1.default, { variant: "caption", className: classes.postDate }, utils_1.formatDate(this.state.post.getDateCreated())));
+        const filesAttached = (React.createElement("div", null, this.state.post.getFilesAttached().map((f) => {
+            return (React.createElement("a", { key: f.getId(), href: `${config_1.config.baseurl}/${f.getFilename()}` },
+                React.createElement(Typography_1.default, { variant: "subheading" }, f.getFilename())));
+        })));
+        // Link to Edit and Delete post
         const editPost = utils_1.checkPermission(this.state.post, this.props.user) && (React.createElement("div", null,
             React.createElement(react_router_dom_1.Link, { to: `${routes_1.Routes.routeWriteContent}?mod=true&id=${this.state.post.getId()}`, className: classes.postActionItem },
                 React.createElement(Typography_1.default, { variant: "caption" }, "\uC218\uC815")),
-            React.createElement("a", { className: classes.postActionItem },
+            React.createElement("a", { className: classes.postActionItem, onClick: () => this.handleDelete() },
                 React.createElement(Typography_1.default, { variant: "caption" }, "\uC0AD\uC81C"))));
+        // Dialog asking confirmation for deleting post
+        const postDeletionDialog = (React.createElement(Dialog_1.default, { open: this.state.deletionDialogOpened, onClose: () => this.handleDeletionDialogClose(false) },
+            React.createElement(DialogTitle_1.default, null, "\uAC8C\uC2DC\uBB3C \uC0AD\uC81C"),
+            React.createElement(DialogContent_1.default, null,
+                React.createElement(DialogContentText_1.default, null, "\uAC8C\uC2DC\uBB3C\uC744 \uC815\uB9D0 \uC0AD\uC81C\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?")),
+            React.createElement(DialogActions_1.default, null,
+                React.createElement(Button_1.default, { color: "primary", onClick: () => this.handleDeletionDialogClose(false) }, "\uC544\uB2C8\uC624"),
+                React.createElement(Button_1.default, { color: "primary", onClick: () => this.handleDeletionDialogClose(true) }, "\uC608"))));
         return (React.createElement("div", null,
             React.createElement(Typography_1.default, { variant: "headline", className: classes.boardTitle }, this.props.boardTitleFrom),
             React.createElement(Paper_1.default, { className: classes.contentPaper },
                 React.createElement(Typography_1.default, { variant: "title", className: classes.postTitle }, this.state.post ? this.state.post.getTitle() : ""),
                 postInfo,
+                filesAttached,
                 React.createElement(Typography_1.default, { paragraph: true, variant: "body1" }, this.state.post ? this.state.post.getContent() : ""),
                 editPost,
                 React.createElement(react_router_dom_1.Link, { to: `${routes_1.Routes.routeBoardContent}?title=${this.props.boardTitleFrom}&page=${this.props.pageNumFrom}` },
                     React.createElement("h5", { className: classes.backToList }, "\u226A \uBAA9\uB85D\uC73C\uB85C")),
                 React.createElement(reply_input_component_1.default, { onInputClick: this.writeReply }),
-                replyList)));
+                replyList),
+            postDeletionDialog));
     }
 }
 const mapStateToProps = (state) => {
@@ -57522,13 +57008,17 @@ exports.ReplyList = ReplyList;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const jquery = __webpack_require__(/*! jquery */ "jquery");
+const query = __webpack_require__(/*! query-string */ "./node_modules/query-string/index.js");
 const React = __webpack_require__(/*! react */ "react");
 const Paper_1 = __webpack_require__(/*! @material-ui/core/Paper */ "./node_modules/@material-ui/core/Paper/index.js");
 const TextField_1 = __webpack_require__(/*! @material-ui/core/TextField */ "./node_modules/@material-ui/core/TextField/index.js");
 const Typography_1 = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/Typography/index.js");
 const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
+const file_req_1 = __webpack_require__(/*! ../lib/file.req */ "./src/lib/file.req.ts");
 const reqPost = __webpack_require__(/*! ../lib/post.request */ "./src/lib/post.request.ts");
-const button_component_1 = __webpack_require__(/*! ../component/button.component */ "./src/component/button.component.tsx");
+const object_factory_1 = __webpack_require__(/*! ../lib/object-factory */ "./src/lib/object-factory.ts");
+const button_attach_component_1 = __webpack_require__(/*! ./button-attach.component */ "./src/component/button-attach.component.tsx");
+const button_component_1 = __webpack_require__(/*! ./button.component */ "./src/component/button.component.tsx");
 const routes_1 = __webpack_require__(/*! ../routes */ "./src/routes.ts");
 const styles = {
     boardTitle: {
@@ -57549,39 +57039,140 @@ const styles = {
     contentPaper: {},
 };
 class WritePostContent extends React.Component {
-    constructor() {
-        super(...arguments);
+    constructor(props) {
+        super(props);
         this.onWriteClicked = () => {
             const title = jquery("#title").val();
             const content = jquery("#content").val();
             const boardTitle = this.props.boardFrom;
             const files = [];
-            reqPost.PostAPIRequest.createPost(title, content, boardTitle, files)
+            let hasError = false;
+            // Validation input value
+            if (title.length === 0) {
+                this.setState({ titleError: true, titleHelperText: WritePostContent.HELPERTEXT_INPUT_TITLE });
+                hasError = true;
+            }
+            else {
+                this.setState({ titleError: false, titleHelperText: "" });
+            }
+            if (content.length === 0) {
+                this.setState({ contentError: true, contentHelperText: WritePostContent.HLEPERTEXT_INPUT_CONTENT });
+                hasError = true;
+            }
+            else {
+                this.setState({ contentError: false, contentHelperText: "" });
+            }
+            if (hasError) {
+                return;
+            }
+            if (this.state.currentFile) {
+                file_req_1.default.upload(this.state.currentFile)
+                    .then((res) => {
+                    if (res.status === 200) {
+                        files.push(String(object_factory_1.ObjectFactory.createFileObject(res.data["file"]).getId()));
+                        if (this.state.mod) {
+                            reqPost.PostAPIRequest.updatePost(this.state.modPostId, this.state.modPostTitle, this.state.modPostContent, files)
+                                .then((res2) => {
+                                if (res2.status === 200) {
+                                    alert("수정되었습니다.");
+                                    this.props.history["push"](routes_1.Routes.routeBoardContent);
+                                }
+                            });
+                        }
+                        reqPost.PostAPIRequest.createPost(title, content, boardTitle, files)
+                            .then((res2) => {
+                            const body = res2.data;
+                            if (body["result"] === "ok") {
+                                alert("등록되었습니다.");
+                                this.props.history["push"](routes_1.Routes.routeBoardContent);
+                            }
+                            else {
+                                alert("등록에 실패하였습니다.");
+                            }
+                        });
+                    }
+                    else {
+                        alert("파일 업로드에 실패했습니다");
+                    }
+                });
+            }
+            else {
+                reqPost.PostAPIRequest.createPost(title, content, boardTitle, files)
+                    .then((res) => {
+                    const body = res.data;
+                    if (body["result"] === "ok") {
+                        alert("등록되었습니다.");
+                        this.props.history["push"](routes_1.Routes.routeBoardContent);
+                    }
+                    else {
+                        alert("등록에 실패하였습니다.");
+                    }
+                });
+            }
+        };
+        this.onFileChanged = (files) => {
+            if (files) {
+                const file = files.item(0);
+                this.setState({ currentFile: file });
+            }
+        };
+        this.onTitleChanged = (event) => {
+            this.setState({ modPostTitle: event["target"]["value"] });
+        };
+        this.onContentChanged = (event) => {
+            this.setState({ modPostContent: event["target"]["value"] });
+        };
+        const queries = query.parse(location.search);
+        const mod = queries["mod"];
+        const id = queries["id"];
+        this.state = {
+            currentFile: null,
+            mod: mod === "true",
+            modPostId: id,
+            modPostTitle: "",
+            modPostContent: "",
+            titleError: false,
+            contentError: false,
+            titleHelperText: "",
+            contentHelperText: "",
+        };
+        if (this.state.mod) {
+            reqPost.PostAPIRequest.retrievePostById(this.state.modPostId)
                 .then((res) => {
-                const body = res.data;
-                if (body["result"] === "ok") {
-                    alert("등록되었습니다.");
-                    this.props.history["push"](routes_1.Routes.routeBoardContent);
-                }
-                else {
-                    alert("등록에 실패하였습니다.");
+                if (res.status === 200) {
+                    const post = object_factory_1.ObjectFactory.createPostObject(res.data["post"]);
+                    this.setState({
+                        modPostTitle: post.getTitle(),
+                        modPostContent: post.getContent(),
+                    });
                 }
             });
-        };
+        }
+    }
+    componentDidMount() {
     }
     render() {
         const { classes } = this.props;
+        let filename = "";
+        if (this.state.currentFile) {
+            filename = this.state.currentFile.name;
+        }
         return (React.createElement("div", null,
             React.createElement(Typography_1.default, { variant: "headline", className: classes.boardTitle }, this.props.boardFrom),
             React.createElement(Paper_1.default, { elevation: 2, className: classes.contentPaper },
                 React.createElement("div", { className: "form-group" },
-                    React.createElement(TextField_1.default, { fullWidth: true, id: "title", type: "text", label: "\uC81C\uBAA9", placeholder: "\uC81C\uBAA9\uC744 \uC785\uB825\uD558\uC138\uC694", margin: "normal" })),
+                    React.createElement(TextField_1.default, { fullWidth: true, id: "title", type: "text", label: "\uC81C\uBAA9", placeholder: "\uC81C\uBAA9\uC744 \uC785\uB825\uD558\uC138\uC694", margin: "normal", value: this.state.modPostTitle, onChange: this.onTitleChanged, error: this.state.titleError, helperText: this.state.titleHelperText })),
                 React.createElement("div", { className: "form-group" },
-                    React.createElement(TextField_1.default, { multiline: true, fullWidth: true, id: "content", label: "\uB0B4\uC6A9", placeholder: "\uAC8C\uC2DC\uBB3C \uB0B4\uC6A9", margin: "normal" }))),
+                    React.createElement(TextField_1.default, { multiline: true, fullWidth: true, id: "content", label: "\uB0B4\uC6A9", placeholder: "\uAC8C\uC2DC\uBB3C \uB0B4\uC6A9", margin: "normal", value: this.state.modPostContent, onChange: this.onContentChanged, error: this.state.contentError, helperText: this.state.contentHelperText })),
+                React.createElement("div", null,
+                    React.createElement(button_attach_component_1.default, { onChange: this.onFileChanged }),
+                    React.createElement(Typography_1.default, null, filename))),
             React.createElement("div", { className: classes.buttonWriteWrapper },
                 React.createElement(button_component_1.MyButton, { onClick: () => this.onWriteClicked(), text: "\uC644\uB8CC", iconSrc: "/img/ic_create_white_48px.svg" }))));
     }
 }
+WritePostContent.HELPERTEXT_INPUT_TITLE = "제목을 입력해주세요";
+WritePostContent.HLEPERTEXT_INPUT_CONTENT = "내용을 입력해주세요";
 exports.default = core_1.withStyles(styles)(WritePostContent);
 
 
@@ -57598,7 +57189,7 @@ exports.default = core_1.withStyles(styles)(WritePostContent);
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.config = {
-    baseurl: "http://altair.latera.kr/pw",
+    baseurl: "http://pluto.latera.kr/pw",
 };
 
 
@@ -57645,16 +57236,48 @@ ReactDOM.render(React.createElement(App_1.App, null), document.getElementById("r
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 class FileObject {
-    constructor(filename, path, id) {
+    constructor(filename, id) {
         this.filename = filename;
-        this.path = path;
         this.id = id;
     }
     getFilename() { return this.filename; }
-    getPath() { return this.path; }
     getId() { return this.id; }
 }
 exports.FileObject = FileObject;
+
+
+/***/ }),
+
+/***/ "./src/lib/file.req.ts":
+/*!*****************************!*\
+  !*** ./src/lib/file.req.ts ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * File request API
+ */
+const axios_1 = __webpack_require__(/*! axios */ "axios");
+const config_1 = __webpack_require__(/*! ../config */ "./src/config.ts");
+class FileAPIRequest {
+}
+FileAPIRequest.upload = (file) => {
+    const data = new FormData();
+    data.append("file", file);
+    return axios_1.default(`${config_1.config.baseurl}/api/v1/file/upload`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+        data,
+        withCredentials: true,
+    });
+};
+exports.default = FileAPIRequest;
 
 
 /***/ }),
@@ -57681,7 +57304,7 @@ const reply_obj_1 = __webpack_require__(/*! ./reply.obj */ "./src/lib/reply.obj.
 const user_obj_1 = __webpack_require__(/*! ./user.obj */ "./src/lib/user.obj.ts");
 class ObjectFactory {
     static createFileObject(obj) {
-        const file = new file_obj_1.FileObject(obj["filename"], obj["path"], obj["id"]);
+        const file = new file_obj_1.FileObject(obj["filename"], obj["id"]);
         return file;
     }
     static createUserObject(obj) {
@@ -57695,7 +57318,7 @@ class ObjectFactory {
     static createPostObject(obj) {
         const files = [];
         const replies = [];
-        if (Array.isArray(obj["files_Attached"])) {
+        if (Array.isArray(obj["files_attached"])) {
             for (const f of obj["files_attached"]) {
                 files.push(this.createFileObject(f));
             }
@@ -57800,13 +57423,18 @@ PostAPIRequest.retrievePostById = (postId) => {
         withCredentials: true,
     });
 };
-PostAPIRequest.updatePost = (post) => {
-    return axios_1.default(`${config_1.config.baseurl}/api/v1/post/update/${post.getId()}`, {
+/**
+ * 게시물 수정
+ *
+ * files 배열은 기존 상태를 유지하는 경우 null값
+ */
+PostAPIRequest.updatePost = (postId, title, content, files) => {
+    return axios_1.default(`${config_1.config.baseurl}/api/v1/post/update/${postId}`, {
         method: "PUT",
         data: {
-            post_title: post.getTitle(),
-            post_content: post.getContent(),
-            files_attached: post.getFilesAttached(),
+            post_title: title,
+            post_content: content,
+            files_attached: files,
         },
         withCredentials: true,
     });
@@ -57999,6 +57627,7 @@ UserAPIRequest.loginUser = (sid, pw) => {
             id: sid,
             pw,
         },
+        validateStatus: () => true,
         withCredentials: true,
     });
 };
@@ -58064,11 +57693,13 @@ exports.UserAPIRequest = UserAPIRequest;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 function checkPermission(post, user) {
-    if (user.getRole() === "관리자") {
-        return true;
+    if (user) {
+        if (user.getRole() === "관리자") {
+            return true;
+        }
     }
     const author = post.getAuthor();
-    if (author) {
+    if (author && user) {
         return author.getId() === user.getId();
     }
     return false;
@@ -58258,12 +57889,12 @@ class BoardPage extends React.Component {
             }),
             React.createElement(Divider_1.default, null),
             this.props.user && this.props.user.getRole() === "관리자" &&
-                React.createElement(ListItem_1.default, { button: true },
-                    React.createElement(ListItemText_1.default, { primary: "\uAD00\uB9AC", onClick: () => { this.onAdmin(); } })),
-            React.createElement(ListItem_1.default, { button: true },
-                React.createElement(ListItemText_1.default, { primary: "\uB9C8\uC774\uD398\uC774\uC9C0", onClick: () => { this.onMyPage(); } })),
-            React.createElement(ListItem_1.default, { button: true },
-                React.createElement(ListItemText_1.default, { primary: "\uB85C\uADF8\uC544\uC6C3", onClick: () => { this.onLogout(); } })),
+                React.createElement(ListItem_1.default, { button: true, onClick: () => { this.onAdmin(); } },
+                    React.createElement(ListItemText_1.default, { primary: "\uAD00\uB9AC" })),
+            React.createElement(ListItem_1.default, { button: true, onClick: () => { this.onMyPage(); } },
+                React.createElement(ListItemText_1.default, { primary: "\uB9C8\uC774\uD398\uC774\uC9C0" })),
+            React.createElement(ListItem_1.default, { button: true, onClick: () => { this.onLogout(); } },
+                React.createElement(ListItemText_1.default, { primary: "\uB85C\uADF8\uC544\uC6C3" })),
             React.createElement(Divider_1.default, null));
         return (React.createElement("div", { className: classes.root },
             React.createElement(header_component_1.default, { user: this.props.user, onMenu: this.onMenuClicked, classes: { appBar: classes.appBar,
@@ -58281,11 +57912,11 @@ class BoardPage extends React.Component {
                                 boardContent: classes.contentPaperNarrow,
                                 boardTitle: classes.contentTitle
                             }, location: this.props.location, history: this.props.history, postPerPage: this.POSTS_PER_PAGE, onBoardLoaded: this.props.onBoardLoaded, onSetUpdater: (updater) => { this.boardUpdater = updater; } }) }),
-                    React.createElement(ReactRouter.Route, { path: routes_1.Routes.routeWriteContent, render: () => React.createElement(write_post_content_component_1.default, { classes: { contentPaper: classes.contentPaperNormal }, history: this.props.history, boardFrom: this.props.navInfor.boardTitle }) }),
+                    React.createElement(ReactRouter.Route, { path: routes_1.Routes.routeWriteContent, render: () => React.createElement(write_post_content_component_1.default, { classes: { contentPaper: classes.contentPaperNormal }, location: this.props.location, history: this.props.history, boardFrom: this.props.navInfor.boardTitle }) }),
                     React.createElement(ReactRouter.Route, { path: routes_1.Routes.routePostContent, render: () => React.createElement(post_content_component_1.default, { classes: {
                                 contentPaper: classes.contentPaperNormal,
                                 boardTitle: classes.contentTitle
-                            }, location: this.props.location, boardTitleFrom: this.props.navInfor.boardTitle, pageNumFrom: this.props.navInfor.page, onPostNavigated: this.props.onPostNavigated, user: this.props.user }) }),
+                            }, location: this.props.location, history: this.props.history, boardTitleFrom: this.props.navInfor.boardTitle, pageNumFrom: this.props.navInfor.page, onPostNavigated: this.props.onPostNavigated, user: this.props.user }) }),
                     React.createElement(ReactRouter.Route, { path: routes_1.Routes.routeMyPageContent, render: () => React.createElement(my_page_content_component_1.default, { classes: {
                                 title: classes.contentTitle,
                                 paper: classes.contentPaperNarrow,
@@ -58351,25 +57982,24 @@ const routes_1 = __webpack_require__(/*! ../routes */ "./src/routes.ts");
 class HomePage extends React.Component {
     constructor() {
         super(...arguments);
-        this.onLoginButtonClick = (id, pw) => {
-            user_request_1.UserAPIRequest.loginUser(id, pw)
-                .then((res) => __awaiter(this, void 0, void 0, function* () {
+        this.onLoginButtonClick = (id, pw) => __awaiter(this, void 0, void 0, function* () {
+            return user_request_1.UserAPIRequest.loginUser(id, pw)
+                .then((res) => {
                 const body = res.data;
                 if (body["result"] === "ok") {
                     // 로그인 성공
                     this.props.onLoginSucceed(object_factory_1.ObjectFactory.createUserObject(body["user"]));
                     this.props.history["push"](routes_1.Routes.routeBoardContent);
+                    return true;
                 }
                 else {
-                    if (res.status === 403) {
-                        alert("로그인 정보 불일치");
-                    }
-                    else if (res.status === 500) {
+                    if (res.status === 500) {
                         alert("서버 이상, 관리자에게 문의 바랍니다.");
                     }
+                    return false;
                 }
-            }));
-        };
+            });
+        });
     }
     componentDidMount() {
         session_verfying_interface_1.verifySession(this.props, (signed) => {
